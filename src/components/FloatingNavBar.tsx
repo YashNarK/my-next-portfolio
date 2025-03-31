@@ -1,7 +1,9 @@
 "use client";
-import * as React from "react";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -10,14 +12,11 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import ThemeToggleButton from "./ThemeToggleButton";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import * as React from "react";
+import ThemeToggleButton from "./ThemeToggleButton";
 
 const drawerWidth = 240;
 const navItems = [
@@ -69,7 +68,7 @@ export default function FloatingNavBar() {
         <AppBar
           component="nav"
           sx={{
-            backgroundColor: theme.palette.background.paper,
+            backgroundColor: theme.palette.primary.main,
           }}
         >
           <Toolbar>
@@ -104,6 +103,10 @@ export default function FloatingNavBar() {
                     color: "inherit",
                     fontWeight: pathname === path ? "bold" : "normal",
                     textTransform: "none",
+                    ":hover": {
+                      bgcolor: theme.palette.secondary.main,
+                      color: theme.palette.primary.main,
+                    },
                   }}
                 >
                   {label}
@@ -131,7 +134,6 @@ export default function FloatingNavBar() {
             {drawer}
           </Drawer>
         </nav>
-
       </Box>
     </>
   );

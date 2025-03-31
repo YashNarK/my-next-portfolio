@@ -34,8 +34,8 @@ const lightTheme = createTheme({
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
-    primary: { main: "#90EE90" },
-    secondary: { main: "#FF69B4" },
+    primary: { main: "rgb(8, 2, 30)" }, 
+    secondary: { main: "rgb(131, 137, 82)" }, 
     background: { default: "#121212", paper: "rgba(65, 58, 58, 0.68)" }, 
     text: { primary: "#FFFFFF", secondary: "#BBBBBB" },
   },
