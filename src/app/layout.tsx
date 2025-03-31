@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Providers } from "@/providers/Providers";
-
+import FloatingNavBar from "../components/FloatingNavBar";
+import { Box } from "@mui/material";
 export const metadata: Metadata = {
   title: "Narendran A I's portfolio",
   description:
@@ -15,8 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <FloatingNavBar />
+          <Box component={"main"} p={3} mt={"80px"} color={"inherit"}>{children}</Box>
+        </Providers>
       </body>
     </html>
-  );
+  )
 }
