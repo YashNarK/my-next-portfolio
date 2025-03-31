@@ -1,0 +1,47 @@
+import { createTheme } from "@mui/material";
+
+const typography = {
+  fontFamily: "Montserrat, sans-serif",
+  fontSize: 14,
+  h1: {
+    fontFamily: "sacramento, cursive",
+  },
+  h3: {
+    fontFamily: "Merriweather Sans",
+  },
+};
+
+// 🎨 MUI Palette Explanation:
+// - `primary.main`: Main brand color used for buttons, links, and highlights.
+// - `secondary.main`: Accent color used for secondary actions and highlights.
+// - `background.default`: Main background color of the app (applied to <body>).
+// - `background.paper`: Used for surfaces like cards, modals, and popups.
+// - `text.primary`: Default text color used for headings and body content.
+// - `text.secondary`: Lighter text color used for subtitles and less important text.
+
+
+const lightTheme = createTheme({
+  palette: {
+    mode: "light",
+    primary: { main: "#DAFDBA" },
+    secondary: { main: "#012030" },
+    background: { default: "#FFFFFF", paper: "#F8F9FA" },
+    text: { primary: "#000000", secondary: "#555555" },
+  },
+  typography,
+});
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+    primary: { main: "#90EE90" },
+    secondary: { main: "#FF69B4" },
+    background: { default: "#121212", paper: "#1E1E1E" },
+    text: { primary: "#FFFFFF", secondary: "#BBBBBB" },
+  },
+  typography,
+});
+export type LightTheme = typeof lightTheme;
+export type DarkTheme = typeof darkTheme;
+
+export { lightTheme, darkTheme };
