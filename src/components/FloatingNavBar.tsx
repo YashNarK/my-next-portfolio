@@ -119,15 +119,17 @@ export default function FloatingNavBar() {
                       "::after": {
                         content: '""',
                         position: "absolute",
-                        bottom: -2, 
+                        bottom: -2,
                         left: "25%",
-                        width: pathname === path ? "0.5cm" : "0%", 
+                        width: pathname === path ? "0.5cm" : "0%",
                         height: "2px",
                         backgroundColor: theme.palette.secondary.main,
                         transition: "width 0.3s ease-in-out",
-                        transform: "translateX(-50%)", 
+                        transform: "translateX(-50%)",
                       },
-
+                      ":hover::after": {
+                        display: "none",
+                      },
                     }}
                   >
                     {label}
