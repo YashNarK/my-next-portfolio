@@ -94,7 +94,7 @@ export default function FloatingNavBar() {
               <ThemeToggleButton />
             </Box>
 
-            <Box sx={{ display: { xs: "none", sm: "block" }, width:"100%" }}>
+            <Box sx={{ display: { xs: "none", sm: "block" }, width: "100%" }}>
               <Stack
                 direction="row"
                 divider={<Divider orientation="vertical" flexItem />}
@@ -116,6 +116,18 @@ export default function FloatingNavBar() {
                         bgcolor: theme.palette.secondary.main,
                         color: theme.palette.primary.main,
                       },
+                      "::after": {
+                        content: '""',
+                        position: "absolute",
+                        bottom: -2, 
+                        left: "25%",
+                        width: pathname === path ? "0.5cm" : "0%", 
+                        height: "2px",
+                        backgroundColor: theme.palette.secondary.main,
+                        transition: "width 0.3s ease-in-out",
+                        transform: "translateX(-50%)", 
+                      },
+
                     }}
                   >
                     {label}
