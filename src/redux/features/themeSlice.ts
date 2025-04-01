@@ -7,9 +7,17 @@ type ThemeState = {
 };
 // Define Name
 const name = "theme";
+// Function to get initial theme safely
+const getInitialTheme = (): Mode => {
+  if (typeof window !== "undefined") {
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  return "light"; // Default theme during SSR
+};
+
 // Initial state
 const initialState: ThemeState = {
-  mode: "light",
+  mode: getInitialTheme(),
 };
 // create Slice
 const themeSlice = createSlice({
