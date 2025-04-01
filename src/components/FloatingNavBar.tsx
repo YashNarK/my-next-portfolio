@@ -17,6 +17,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import ThemeToggleButton from "./ThemeToggleButton";
+import Stack from "@mui/material/Stack";
 
 const drawerWidth = 240;
 const navItems = [
@@ -93,25 +94,34 @@ export default function FloatingNavBar() {
               <ThemeToggleButton />
             </Box>
 
-            <Box sx={{ display: { xs: "none", sm: "block" } }}>
-              {navItems.map(({ label, path }) => (
-                <Button
-                  key={path}
-                  component={Link}
-                  href={path}
-                  sx={{
-                    color: "inherit",
-                    fontWeight: pathname === path ? "bold" : "normal",
-                    textTransform: "none",
-                    ":hover": {
-                      bgcolor: theme.palette.secondary.main,
-                      color: theme.palette.primary.main,
-                    },
-                  }}
-                >
-                  {label}
-                </Button>
-              ))}
+            <Box sx={{ display: { xs: "none", sm: "block" }, width:"100%" }}>
+              <Stack
+                direction="row"
+                divider={<Divider orientation="vertical" flexItem />}
+                spacing={2}
+                sx={{
+                  justifyContent: "flex-end",
+                }}
+              >
+                {navItems.map(({ label, path }) => (
+                  <Button
+                    key={path}
+                    component={Link}
+                    href={path}
+                    sx={{
+                      color: "inherit",
+                      fontWeight: pathname === path ? "bold" : "normal",
+                      textTransform: "none",
+                      ":hover": {
+                        bgcolor: theme.palette.secondary.main,
+                        color: theme.palette.primary.main,
+                      },
+                    }}
+                  >
+                    {label}
+                  </Button>
+                ))}
+              </Stack>
             </Box>
           </Toolbar>
         </AppBar>
