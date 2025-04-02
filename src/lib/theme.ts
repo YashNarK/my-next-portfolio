@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material";
 
 const typography = {
   fontFamily: "Montserrat, sans-serif",
-  fontSize: 14,
+  fontSize: 16,
   h1: {
     // fontFamily: "sacramento, cursive",
   },
