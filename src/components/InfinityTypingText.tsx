@@ -53,6 +53,7 @@ export default function InfinityTypingText() {
         padding: 2, // Add some padding for better appearance
         display: "inline-block", // Prevent full-width stretching
         width: { xs: "100%", md: "50%" },
+        minHeight: { xs: "4cm" },
       }}
     >
       <Typography
@@ -67,7 +68,7 @@ export default function InfinityTypingText() {
       <Typography
         component="h1"
         sx={{
-          fontSize: { xs: "28px", sm: "36px", md: "48px" }, // Responsive font size
+          fontSize: { xs: "28px", sm: "34px", md: "48px" }, // Responsive font size
           fontWeight: "bold",
         }}
       >
