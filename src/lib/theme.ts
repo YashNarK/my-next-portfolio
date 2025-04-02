@@ -4,10 +4,10 @@ const typography = {
   fontFamily: "Montserrat, sans-serif",
   fontSize: 14,
   h1: {
-    fontFamily: "sacramento, cursive",
+    // fontFamily: "sacramento, cursive",
   },
-  h3: {
-    fontFamily: "Merriweather Sans",
+  h4: {
+    // fontFamily: "Merriweather Sans",
   },
 };
 
