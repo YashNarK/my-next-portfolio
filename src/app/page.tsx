@@ -1,5 +1,9 @@
-import { Typography } from "@mui/material";
+import InfinityTypingText from "@/components/InfinityTypingText";
 import Box from "@mui/material/Box";
 export default function Home() {
-  return <div>Home</div>;
+  return (
+    <Box>
+      <InfinityTypingText />
+    </Box>
+  );
 }
