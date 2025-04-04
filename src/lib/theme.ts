@@ -3,11 +3,11 @@ import { createTheme } from "@mui/material";
 const typography = {
   fontFamily: "Montserrat, sans-serif",
   fontSize: 16,
-  h1: {
-    // fontFamily: "sacramento, cursive",
+  professional: {
+    fontFamily: "Merriweather Sans",
   },
-  h4: {
-    // fontFamily: "Merriweather Sans",
+  playful: {
+    fontFamily: "sacramento, cursive",
   },
 };
 
