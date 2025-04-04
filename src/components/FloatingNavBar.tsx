@@ -71,13 +71,17 @@ export default function FloatingNavBar() {
         <CssBaseline />
         <AppBar
           component="nav"
-          sx={{ backgroundColor: theme.palette.primary.main }}
+          sx={{
+            backgroundColor: theme.palette.primary.main,
+            height: "100px",
+          }}
         >
           <Toolbar
             sx={{
               width: "100%",
               display: "flex",
               justifyContent: "space-between",
+              my: "auto",
             }}
           >
             <IconButton
@@ -93,8 +97,8 @@ export default function FloatingNavBar() {
             {/* Use full-width Stack inside Toolbar */}
             <Stack
               direction={"row"}
-              justifyContent={"space-between"}
-              sx={{ flexGrow: 1 }}
+              justifyContent={"space-around"}
+              sx={{ flexGrow: 1, alignItems: "center" }}
             >
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 <ThemeToggleButton />
@@ -103,13 +107,13 @@ export default function FloatingNavBar() {
               <Box>
                 <Typography
                   component={"span"}
-                  fontFamily={"sacramento, cursive"}
+                  fontFamily={theme.typography.playful.fontFamily}
                   sx={{ fontSize: { xs: "24px", sm: "24px", md: "32px" } }}
                 >
-                  Hey {user}
+                  Hi {user}
                 </Typography>{" "}
-                <SlideToLogin />
               </Box>
+              <SlideToLogin />
 
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 <Stack
