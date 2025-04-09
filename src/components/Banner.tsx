@@ -15,6 +15,16 @@ import InfinityTypingText from "./InfinityTypingText";
 import { OverridableStringUnion } from "@mui/types";
 import { ResponsiveStyleValue } from "@mui/system";
 import { Property } from "csstype";
+import { SvgImage } from "./SvgImage";
+import {
+  bounceUp,
+  mirrorAndRevert,
+  pulseSpin,
+  rotate,
+  slideRightToLeft,
+  zoomOutFade,
+} from "@/lib/animation";
+import { useAppSelector } from "@/hooks/useReduxCustom";
 
 const getTheme = () => {
   const theme = useAppTheme();
@@ -33,7 +43,7 @@ const getTheme = () => {
   };
 };
 
-type propsType = {
+type codePropsType = {
   children: ReactNode;
   addTab?: boolean;
   noRuler?: boolean;
@@ -57,7 +67,7 @@ const CodeLikeTypography = ({
   noRuler,
   variant = "codeLike",
   display = "block",
-}: propsType) => {
+}: codePropsType) => {
   const { textColor } = getTheme();
   return (
     <Typography
@@ -68,11 +78,7 @@ const CodeLikeTypography = ({
         fontSize: { xs: "1.2rem", sm: "1.8rem" },
       }}
     >
-      {addTab && (
-        <>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </>
-      )}
+      {addTab && <>&nbsp;&nbsp;&nbsp;&nbsp;</>}
       {children}
       {!noRuler && <hr />}
     </Typography>
@@ -80,6 +86,7 @@ const CodeLikeTypography = ({
 };
 
 const Banner = () => {
+  const mode = useAppSelector((state) => state.theme.mode);
   return (
     <Stack
       justifyContent={"center"}
@@ -111,11 +118,28 @@ const Banner = () => {
         </CodeLikeTypography>
         <CodeLikeTypography>Tools of My Trade:</CodeLikeTypography>
         <CodeLikeTypography addTab={true}>
+          <SvgImage
+            src={"/svg/react" + (mode === "dark" ? "-dark" : "") + ".svg"}
+            alt="React"
+            animation={rotate}
+          />
           1. React JS
           <Typography variant="handWritten"> (With TypeScript)</Typography>
         </CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>2. Express JS</CodeLikeTypography>
         <CodeLikeTypography addTab={true}>
+          <SvgImage
+            src={"/svg/express" + (mode === "dark" ? "-dark" : "") + ".svg"}
+            alt="Express"
+            animation={slideRightToLeft}
+          />
+          2. Express JS
+        </CodeLikeTypography>
+        <CodeLikeTypography addTab={true}>
+          <SvgImage
+            src={"/svg/typescript" + (mode === "dark" ? "-dark" : "") + ".svg"}
+            alt="TypeScript"
+            animation={zoomOutFade}
+          />
           3.{" "}
           <Typography
             variant="handWritten"
@@ -129,12 +153,32 @@ const Banner = () => {
           </Typography>
           TypeScript
         </CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>4. Next JS</CodeLikeTypography>
+
         <CodeLikeTypography addTab={true}>
+          <SvgImage
+            src={"/svg/nextjs" + (mode === "dark" ? "-dark" : "") + ".svg"}
+            alt="NextJS"
+            animation={mirrorAndRevert}
+          />
+          4. Next JS
+        </CodeLikeTypography>
+        <CodeLikeTypography addTab={true}>
+          <SvgImage
+            src={"/svg/redux" + (mode === "dark" ? "-dark" : "") + ".svg"}
+            alt="Redux"
+            animation={pulseSpin}
+          />
           5. Redux{" "}
           <Typography variant="handWritten"> (react-redux toolkit)</Typography>
         </CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>6. Blockchain</CodeLikeTypography>
+        <CodeLikeTypography addTab={true}>
+          <SvgImage
+            src={"/svg/bitcoin" + (mode === "dark" ? "-dark" : "") + ".svg"}
+            alt="Bitcoin"
+            animation={bounceUp}
+          />
+          6. Blockchain
+        </CodeLikeTypography>
       </Box>
     </Stack>
   );
