@@ -1,7 +1,5 @@
 "use client";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { Box, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const titles = [
   "Full-Stack Web Developer ",
@@ -15,7 +13,6 @@ export default function InfinityTypingText() {
   const [index, setIndex] = useState(0); // Tracks the current title
   const [isDeleting, setIsDeleting] = useState(false); // Determines if deleting or typing
   const [charIndex, setCharIndex] = useState(0); // Tracks character position in current title
-  const theme = useAppTheme();
 
   useEffect(() => {
     const currentTitle = titles[index];
@@ -46,35 +43,10 @@ export default function InfinityTypingText() {
   }, [charIndex, isDeleting, index]);
 
   return (
-    <Box
-      sx={{
-        border: `2px solid ${theme.palette.secondary.main}`, // Border color from theme
-        borderRadius: "12px", // Rounded corners
-        padding: 2, // Add some padding for better appearance
-        display: "inline-block", // Prevent full-width stretching
-        width: { xs: "100%", md: "50%" },
-        minHeight: { xs: "4cm" },
-      }}
-    >
-      <Typography
-        component="h2"
-        sx={{
-          fontSize: { xs: "20px", sm: "24px", md: "32px" }, // Responsive font size
-          fontWeight: "medium",
-        }}
-      >
-        I am a{" "}
-      </Typography>
-      <Typography
-        component="h1"
-        sx={{
-          fontSize: { xs: "28px", sm: "34px", md: "48px" }, // Responsive font size
-          fontWeight: "bold",
-        }}
-      >
-        {text}
-        <span style={{ color: "#ff5733" }}>|</span> {/* Blinking cursor */}
-      </Typography>
-    </Box>
+    <span>
+      &nbsp;
+      {text}
+      <span style={{ color: "#ff5733" }}>|</span>
+    </span>
   );
 }
