@@ -15,6 +15,9 @@ const typography = {
   playful: {
     fontFamily: "'Lavishly Yours',sacramento",
   },
+  handWritten: {
+    fontFamily: "'Caveat', sacramento",
+  },
 };
 
 // 🎨 MUI Palette Explanation:
