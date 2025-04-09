@@ -1,3 +1,4 @@
+import "./globals.css";
 import type { Metadata } from "next";
 import { Providers } from "@/providers/Providers";
 import FloatingNavBar from "../components/FloatingNavBar";
@@ -18,9 +19,11 @@ export default function RootLayout({
       <body>
         <Providers>
           <FloatingNavBar />
-          <Box component={"main"} p={3} mt={"80px"} color={"inherit"}>{children}</Box>
+          <Box component={"main"} p={3} mt={"80px"} color={"inherit"}>
+            {children}
+          </Box>
         </Providers>
       </body>
     </html>
-  )
+  );
 }
