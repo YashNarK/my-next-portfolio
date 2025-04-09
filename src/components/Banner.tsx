@@ -15,6 +15,24 @@ import InfinityTypingText from "./InfinityTypingText";
 import { OverridableStringUnion } from "@mui/types";
 import { ResponsiveStyleValue } from "@mui/system";
 import { Property } from "csstype";
+
+const getTheme = () => {
+  const theme = useAppTheme();
+  const textColor = theme.palette.text.primary;
+  const paperColor = theme.palette.background.paper;
+  const backgroundColor = theme.palette.background.default;
+  const holeColor = theme.palette.secondary.main;
+  const defaultColor = theme.palette.background.default;
+  return {
+    theme,
+    textColor,
+    paperColor,
+    backgroundColor,
+    holeColor,
+    defaultColor,
+  };
+};
+
 type propsType = {
   children: ReactNode;
   addTab?: boolean;
@@ -40,13 +58,12 @@ const CodeLikeTypography = ({
   variant = "codeLike",
   display = "block",
 }: propsType) => {
-  const theme = useAppTheme();
-  const textColor = theme.palette.text.primary;
+  const { textColor } = getTheme();
   return (
     <Typography
       variant={variant}
       sx={{
-        display: { display },
+        display: display,
         color: textColor,
         fontSize: { xs: "1.2rem", sm: "1.8rem" },
       }}
