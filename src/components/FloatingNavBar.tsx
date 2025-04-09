@@ -107,7 +107,7 @@ export default function FloatingNavBar() {
               <Box>
                 <Typography
                   component={"span"}
-                  fontFamily={theme.typography.playful.fontFamily}
+                  variant="professional"
                   sx={{ fontSize: { xs: "24px", sm: "24px", md: "32px" } }}
                 >
                   Hi {user}
