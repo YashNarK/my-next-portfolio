@@ -26,8 +26,23 @@ const ImageIntro = () => {
             backgroundPosition: "center",
             zIndex: 2,
             borderRadius: "50%",
+            m: "auto",
           }}
-        />
+        >
+          {/* Signature Overlay */}
+          <Box
+            component="img"
+            src="/img/sign-black.png"
+            alt="Signature"
+            sx={{
+              position: "absolute",
+              bottom: "10px",
+              right: "10px",
+              width: { xs: "120px", sm: "200px" },
+              opacity: 0.8, // optional: to blend it better
+            }}
+          />
+        </Box>
       </Stack>
     </>
   );
