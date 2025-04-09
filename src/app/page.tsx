@@ -1,9 +1,9 @@
-import InfinityTypingText from "@/components/InfinityTypingText";
-import Box from "@mui/material/Box";
+import Banner from "@/components/Banner";
+import { Box } from "@mui/material";
 export default function Home() {
   return (
     <Box>
-      <InfinityTypingText />
+      <Banner />
     </Box>
   );
 }
