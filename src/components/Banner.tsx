@@ -78,16 +78,45 @@ const Banner = () => {
           width: { xs: "100%", sm: "60%" },
         }}
       >
-        <CodeLikeTypography>Hello, I'm Narendran</CodeLikeTypography>{" "}
+        <CodeLikeTypography>
+          Hello, I'm{" "}
+          <Typography
+            variant="playful"
+            sx={{
+              fontSize: { xs: "2rem", sm: "3rem" },
+            }}
+          >
+            Narendran
+          </Typography>
+        </CodeLikeTypography>
         <CodeLikeTypography>
           I am a <InfinityTypingText />
         </CodeLikeTypography>
         <CodeLikeTypography>Tools of My Trade:</CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>1. React JS</CodeLikeTypography>
+        <CodeLikeTypography addTab={true}>
+          1. React JS
+          <Typography variant="handWritten"> (With TypeScript)</Typography>
+        </CodeLikeTypography>
         <CodeLikeTypography addTab={true}>2. Express JS</CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>3. TypeScript</CodeLikeTypography>
+        <CodeLikeTypography addTab={true}>
+          3.{" "}
+          <Typography
+            variant="handWritten"
+            sx={{
+              textDecoration: "line-through",
+              textDecorationColor: "red",
+              textDecorationThickness: "4px",
+            }}
+          >
+            JavaScript{" "}
+          </Typography>
+          TypeScript
+        </CodeLikeTypography>
         <CodeLikeTypography addTab={true}>4. Next JS</CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>5. Redux</CodeLikeTypography>
+        <CodeLikeTypography addTab={true}>
+          5. Redux{" "}
+          <Typography variant="handWritten"> (react-redux toolkit)</Typography>
+        </CodeLikeTypography>
         <CodeLikeTypography addTab={true}>6. Blockchain</CodeLikeTypography>
       </Box>
     </Stack>
