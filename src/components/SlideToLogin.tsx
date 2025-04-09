@@ -69,29 +69,30 @@ const SlideToLogin = () => {
         textAlign: { xs: "start", sm: "center" },
       }}
     >
-      <Typography
-        component={"span"}
-        sx={{
-          fontSize: { xs: "12px", sm: "16px" },
-          fontFamily: theme.typography.playful.fontFamily,
-          fontWeight: "bold",
-        }}
-      >
-        Slide To Login
-      </Typography>
+      <Box mb={"10px"}>
+        <Typography
+          component={"span"}
+          variant="professional"
+          sx={{
+            fontSize: { xs: "12px", sm: "16px" },
+          }}
+        >
+          Slide To Login
+        </Typography>
+      </Box>
       <Box
         ref={sliderRef}
         sx={{
           position: "relative",
           width: {
-            xs: "130px", // phones
+            xs: "150px", // phones
             sm: "320px", // tablets and up
           },
           height: {
-            xs: "50px",
+            xs: "30px",
             sm: "60px",
           },
-          background: `url('/img/space-image.jpg') no-repeat center center`,
+          background: `url('/img/starry-sky-mini.png') no-repeat center center`,
           backgroundSize: "cover",
           borderRadius: "30px",
           display: "flex",
