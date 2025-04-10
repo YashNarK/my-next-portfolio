@@ -13,7 +13,6 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
-    "@prisma/client": "^6.6.0",
     "@reduxjs/toolkit": "^2.6.1",
     "framer-motion": "^12.6.2",
     "next": "15.2.4",
@@ -29,7 +28,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
-    "prisma": "^6.6.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
