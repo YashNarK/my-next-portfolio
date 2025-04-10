@@ -97,22 +97,13 @@ export default function FloatingNavBar() {
             {/* Use full-width Stack inside Toolbar */}
             <Stack
               direction={"row"}
-              justifyContent={"space-around"}
+              justifyContent={"space-between"}
               sx={{ flexGrow: 1, alignItems: "center" }}
             >
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 <ThemeToggleButton />
               </Box>
 
-              <Box>
-                <Typography
-                  component={"span"}
-                  variant="professional"
-                  sx={{ fontSize: { xs: "24px", sm: "24px", md: "32px" } }}
-                >
-                  Hi {user}
-                </Typography>{" "}
-              </Box>
               <SlideToLogin />
 
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
