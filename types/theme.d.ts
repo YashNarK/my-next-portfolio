@@ -7,6 +7,7 @@ declare module "@mui/material/styles" {
     playful: React.CSSProperties;
     codeLike: React.CSSProperties;
     handWritten: React.CSSProperties;
+    caligraphy: React.CSSProperties;
   }
 }
 
@@ -15,6 +16,7 @@ interface TypographyVariantsOptions {
   playful?: React.CSSProperties;
   codeLike?: React.CSSProperties;
   handWritten?: React.CSSProperties;
+  caligraphy?: React.CSSProperties;
 }
 
 declare module "@mui/material/Typography" {
@@ -23,5 +25,6 @@ declare module "@mui/material/Typography" {
     playful: true;
     codeLike: true;
     handWritten: true;
+    caligraphy: true;
   }
 }

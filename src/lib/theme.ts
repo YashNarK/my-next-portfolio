@@ -13,7 +13,10 @@ const typography = {
     fontFamily: "'DM Mono',Merriweather Sans",
   },
   playful: {
-    fontFamily: "'Lavishly Yours',sacramento",
+    fontFamily: "'Sacramento', cursive",
+  },
+  caligrapghy: {
+    fontFamily: "'Lavishly Yours', cursive",
   },
   handWritten: {
     fontFamily: "'Caveat', sacramento",
