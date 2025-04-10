@@ -18,9 +18,24 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <FloatingNavBar />
-          <Box component={"main"} p={3} mt={"80px"} color={"inherit"}>
-            {children}
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              backgroundColor: "background.default",
+            }}
+          >
+            <FloatingNavBar />
+            <Box
+              component="main"
+              sx={{
+                flexGrow: 1,
+                mt: "50px",
+                color: "inherit",
+              }}
+            >
+              {children}
+            </Box>
           </Box>
         </Providers>
       </body>

@@ -113,12 +113,35 @@ const Banner = () => {
   }, [variantIndex, nameVariant]);
   return (
     <Stack
+      className="banner-intro-area"
       justifyContent={"center"}
+      alignItems={"center"}
       gap={2}
       direction={{ xs: "column", sm: "row" }}
       spacing={2}
-      sx={{ padding: 2 }}
+      sx={{
+        padding: 10,
+        position: "relative",
+        overflow: "hidden",
+        m: 0,
+      }}
     >
+      {/* Background Layer */}
+      <Box
+        className="background-layer"
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          backgroundImage: `url('/img/space-doodle-${mode}.jpg')`,
+          backgroundSize: "400px",
+          backgroundRepeat: "repeat",
+          opacity: 0.07, // only background is transparent
+          zIndex: 0,
+        }}
+      />
       <ImageIntro />
       <Box
         className="banner-intro-text-area"
