@@ -51,7 +51,7 @@ export const bounceUp = {
 export const pulseSpin = {
   initial: { scale: 1, rotate: 0 },
   animate: {
-    scale: [1, 1.1, 1], // gentle pulse
+    scale: [1, 1.4, 1], // gentle pulse
     rotate: [0, 360],
     transition: {
       duration: 4,
