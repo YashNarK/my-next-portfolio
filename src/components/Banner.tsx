@@ -75,7 +75,7 @@ const CodeLikeTypography = ({
       sx={{
         display: display,
         color: textColor,
-        fontSize: { xs: "1.2rem", sm: "1.8rem" },
+        fontSize: { xs: "1.1rem", sm: "1.5rem" },
       }}
     >
       {addTab && <>&nbsp;&nbsp;&nbsp;&nbsp;</>}
