@@ -9,7 +9,7 @@ import {
   TypographyVariant,
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import ImageIntro from "./ImageIntro";
 import InfinityTypingText from "./InfinityTypingText";
 import { OverridableStringUnion } from "@mui/types";
@@ -84,9 +84,33 @@ const CodeLikeTypography = ({
     </Typography>
   );
 };
-
+type variantType =
+  | "playful"
+  | "handWritten"
+  | "caligraphy"
+  | "codeLike"
+  | "professional";
 const Banner = () => {
   const mode = useAppSelector((state) => state.theme.mode);
+  const { textColor } = getTheme();
+  const [nameVariant, setNameVariant] = useState<variantType>("codeLike");
+  const [variantIndex, setVariantIndex] = useState<number>(0);
+  const variantList: variantType[] = [
+    "playful",
+    "professional",
+    "handWritten",
+    "caligraphy",
+    "codeLike",
+  ];
+  useEffect(() => {
+    const nextVariant = async () => {
+      await setTimeout(() => {
+        setVariantIndex((prev) => (prev + 1) % variantList.length);
+        setNameVariant(variantList[variantIndex as number]);
+      }, 3000);
+    };
+    nextVariant();
+  }, [variantIndex, nameVariant]);
   return (
     <Stack
       justifyContent={"center"}
@@ -105,9 +129,11 @@ const Banner = () => {
         <CodeLikeTypography>
           Hello, I'm{" "}
           <Typography
-            variant="playful"
+            variant={nameVariant}
+            color={textColor}
             sx={{
-              fontSize: { xs: "2rem", sm: "3rem" },
+              fontSize: { xs: "1.5rem", sm: "2.5rem" },
+              fontWeight: "bold",
             }}
           >
             Narendran
