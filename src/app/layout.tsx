@@ -1,8 +1,8 @@
-import "./globals.css";
-import type { Metadata } from "next";
 import { Providers } from "@/providers/Providers";
-import FloatingNavBar from "../components/FloatingNavBar";
 import { Box } from "@mui/material";
+import type { Metadata } from "next";
+import FloatingNavBar from "../components/FloatingNavBar";
+import "./globals.css";
 export const metadata: Metadata = {
   title: "Narendran A I's portfolio",
   description:

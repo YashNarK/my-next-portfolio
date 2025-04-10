@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Box } from "@mui/material";
+import { motion } from "framer-motion";
 
 type SvgImageProps = {
   src: string;

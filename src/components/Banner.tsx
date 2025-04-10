@@ -1,21 +1,7 @@
 "use client";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
-import {
-  Box,
-  Theme,
-  Typography,
-  TypographyPropsVariantOverrides,
-  TypographyVariant,
-} from "@mui/material";
-import Stack from "@mui/material/Stack";
-import React, { ReactNode, useEffect, useState } from "react";
-import ImageIntro from "./ImageIntro";
-import InfinityTypingText from "./InfinityTypingText";
-import { OverridableStringUnion } from "@mui/types";
-import { ResponsiveStyleValue } from "@mui/system";
-import { Property } from "csstype";
-import { SvgImage } from "./SvgImage";
+import { useAppSelector } from "@/hooks/useReduxCustom";
 import {
   bounceUp,
   mirrorAndRevert,
@@ -24,7 +10,21 @@ import {
   slideRightToLeft,
   zoomOutFade,
 } from "@/lib/animation";
-import { useAppSelector } from "@/hooks/useReduxCustom";
+import {
+  Box,
+  Theme,
+  Typography,
+  TypographyPropsVariantOverrides,
+  TypographyVariant,
+} from "@mui/material";
+import Stack from "@mui/material/Stack";
+import { ResponsiveStyleValue } from "@mui/system";
+import { OverridableStringUnion } from "@mui/types";
+import { Property } from "csstype";
+import { ReactNode, useEffect, useState } from "react";
+import ImageIntro from "./ImageIntro";
+import InfinityTypingText from "./InfinityTypingText";
+import { SvgImage } from "./SvgImage";
 
 const getTheme = () => {
   const theme = useAppTheme();
