@@ -2,8 +2,7 @@
 import { useEffect, useState } from "react";
 
 const titles = [
-  "Full-Stack Web Developer ",
-  "MERN Stack Engineer",
+  "MERN Fullstack Developer",
   "Blockchain Solutions Architect",
   "Smart Contract & DeFi Developer",
 ];
