@@ -15,8 +15,8 @@ export const SvgImage = ({ src, alt, animation }: SvgImageProps) => {
       component={motion.img}
       src={src}
       alt={alt}
-      width={30}
-      height={30}
+      width={{ xs: 20, sm: 30 }}
+      height={{ xs: 20, sm: 30 }}
       sx={{
         display: "inline-block",
         mx: "8px",
