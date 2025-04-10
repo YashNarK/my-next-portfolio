@@ -12,14 +12,13 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
+import Stack from "@mui/material/Stack";
 import Toolbar from "@mui/material/Toolbar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
+import SlideButton from "./SlideButton";
 import ThemeToggleButton from "./ThemeToggleButton";
-import Stack from "@mui/material/Stack";
-import { Typography } from "@mui/material";
-import SlideToLogin from "./SlideToLogin";
 
 const drawerWidth = 240;
 const navItems = [
@@ -104,7 +103,7 @@ export default function FloatingNavBar() {
                 <ThemeToggleButton />
               </Box>
 
-              <SlideToLogin />
+              <SlideButton />
 
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
                 <Stack

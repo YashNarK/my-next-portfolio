@@ -1,15 +1,17 @@
 "use client";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { Typography } from "@mui/material";
+import { Typography, useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
 import { useState, useRef, useEffect } from "react";
 
-const SlideToLogin = () => {
+const SlideButton = () => {
   const [progress, setProgress] = useState(10);
   const [isDragging, setIsDragging] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const theme = useAppTheme();
+  const isPhone = useMediaQuery(theme.breakpoints.down("sm"));
+  const buttonLabel = isPhone ? "Swipe for Resume" : "Slide for Resume";
   useEffect(() => {
     const slider = sliderRef.current;
     if (!slider) return;
@@ -67,23 +69,27 @@ const SlideToLogin = () => {
     <Box
       sx={{
         textAlign: { xs: "start", sm: "center" },
+        position: "relative",
       }}
     >
-      <Box mb={"10px"}>
+      <Box mb={"12px"} position={"relative"} zIndex={3}>
         <Typography
           component={"span"}
           variant="professional"
           sx={{
             fontSize: { xs: "12px", sm: "16px" },
+            color: theme.palette.text.primary,
+            WebkitTextStroke: `0.1px ${theme.palette.text.primary}`,
           }}
         >
-          Slide To Login
+          {buttonLabel}
         </Typography>
       </Box>
       <Box
         ref={sliderRef}
+        position={"relative"}
+        zIndex={2}
         sx={{
-          position: "relative",
           width: {
             xs: "150px", // phones
             sm: "320px", // tablets and up
@@ -151,4 +157,4 @@ const SlideToLogin = () => {
   );
 };
 
-export default SlideToLogin;
+export default SlideButton;
