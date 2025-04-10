@@ -45,7 +45,6 @@ const getTheme = () => {
 
 type codePropsType = {
   children: ReactNode;
-  addTab?: boolean;
   noRuler?: boolean;
   variant?: OverridableStringUnion<
     TypographyVariant | "inherit",
@@ -63,7 +62,6 @@ type codePropsType = {
 
 const CodeLikeTypography = ({
   children,
-  addTab,
   noRuler,
   variant = "codeLike",
   display = "block",
@@ -78,7 +76,6 @@ const CodeLikeTypography = ({
         fontSize: { xs: "1.1rem", sm: "1.5rem" },
       }}
     >
-      {addTab && <>&nbsp;&nbsp;&nbsp;&nbsp;</>}
       {children}
       {!noRuler && <hr />}
     </Typography>
@@ -120,10 +117,11 @@ const Banner = () => {
       direction={{ xs: "column", sm: "row" }}
       spacing={2}
       sx={{
-        padding: 10,
         position: "relative",
         overflow: "hidden",
         m: 0,
+        py: 10,
+        px: 2,
       }}
     >
       {/* Background Layer */}
@@ -166,7 +164,7 @@ const Banner = () => {
           I am a <InfinityTypingText />
         </CodeLikeTypography>
         <CodeLikeTypography>Tools of My Trade:</CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/react" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="React"
@@ -175,7 +173,7 @@ const Banner = () => {
           1. React JS
           <Typography variant="handWritten"> (With TypeScript)</Typography>
         </CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/express" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="Express"
@@ -183,7 +181,7 @@ const Banner = () => {
           />
           2. Express JS
         </CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/typescript" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="TypeScript"
@@ -203,7 +201,7 @@ const Banner = () => {
           TypeScript
         </CodeLikeTypography>
 
-        <CodeLikeTypography addTab={true}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/nextjs" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="NextJS"
@@ -211,7 +209,7 @@ const Banner = () => {
           />
           4. Next JS
         </CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/redux" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="Redux"
@@ -220,7 +218,7 @@ const Banner = () => {
           5. Redux{" "}
           <Typography variant="handWritten"> (react-redux toolkit)</Typography>
         </CodeLikeTypography>
-        <CodeLikeTypography addTab={true}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/bitcoin" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="Bitcoin"
