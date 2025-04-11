@@ -1,5 +1,6 @@
 "use client";
 
+import { useAppSelector } from "@/hooks/useReduxCustom";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
@@ -35,6 +36,7 @@ const Star = ({ radiusX, radiusY, speed, color, centerRef }: any) => {
 const BlackHoleScene = ({ mouse }: { mouse: Mouse }) => {
   const blackHoleRef = useRef<THREE.Mesh>(null!);
   const { size, camera } = useThree();
+  const mode = useAppSelector((state) => state.theme.mode);
 
   useFrame(() => {
     if (!blackHoleRef.current) return;
@@ -57,21 +59,21 @@ const BlackHoleScene = ({ mouse }: { mouse: Mouse }) => {
         radiusX={0.4}
         radiusY={0.2}
         speed={0.05}
-        color="yellow"
+        color={mode === "dark" ? "yellow" : "orange"}
         centerRef={blackHoleRef}
       />
       <Star
         radiusX={0.3}
         radiusY={0.4}
         speed={0.03}
-        color="white"
+        color={mode === "dark" ? "white" : "darkgreen"}
         centerRef={blackHoleRef}
       />
       <Star
         radiusX={0.5}
         radiusY={0.3}
         speed={0.07}
-        color="skyblue"
+        color={mode === "dark" ? "skyblue" : "blue"}
         centerRef={blackHoleRef}
       />
     </>
