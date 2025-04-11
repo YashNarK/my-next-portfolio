@@ -121,7 +121,7 @@ export default function FloatingNavBar() {
       </List>
       <Stack
         direction={isLandscape ? "row" : "column"}
-        spacing={2}
+        spacing={1}
         position={"absolute"}
         bottom={30}
         left={isLandscape ? "10%" : { xs: "20%", sm: "30%" }}
