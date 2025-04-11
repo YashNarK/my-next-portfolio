@@ -21,8 +21,9 @@ import * as React from "react";
 import SlideButton from "./SlideButton";
 import SocialButton from "./SocialButton";
 import ThemeToggleButton from "./ThemeToggleButton";
+import useIsLandscape from "@/hooks/useIsLandscape";
 
-const drawerWidth = 240;
+const drawerWidth = { xs: 240, sm: 400 };
 const navItems = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
@@ -35,6 +36,7 @@ export default function FloatingNavBar() {
   const theme = useAppTheme();
   const social = theme.palette.social;
   const pathname = usePathname(); // Get current route
+  const isLandscape = useIsLandscape();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -61,6 +63,12 @@ export default function FloatingNavBar() {
                 textAlign: "center",
                 bgcolor: "inherit",
                 "&:hover": { bgcolor: "inherit", color: "inherit" },
+                fontSize: {
+                  xs: "1.2rem",
+                  sm: "1.5rem",
+                  md: "2rem",
+                },
+                my: isLandscape ? "0" : "5%",
               }}
             >
               <ListItemText primary={label} color="inherit" />
@@ -75,7 +83,7 @@ export default function FloatingNavBar() {
         alignItems={"center"}
         position={"absolute"}
         bottom={30}
-        left={"20%"}
+        left={{ xs: "20%", sm: "30%" }}
         divider={<Divider orientation="horizontal" flexItem />}
       >
         <SocialButton
@@ -128,7 +136,7 @@ export default function FloatingNavBar() {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" } }}
+              sx={{ mr: 2, display: { lg: "none" } }}
             >
               <MenuIcon />
             </IconButton>
@@ -136,15 +144,19 @@ export default function FloatingNavBar() {
             {/* Use full-width Stack inside Toolbar */}
             <Stack
               direction={"row"}
-              justifyContent={"space-between"}
-              sx={{ flexGrow: 1, alignItems: "center" }}
+              sx={{
+                flexGrow: 1,
+                alignItems: "center",
+                justifyContent: { xs: "center", lg: "space-between" },
+              }}
             >
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <Box sx={{ display: { xs: "none", lg: "block" } }}>
                 <ThemeToggleButton />
               </Box>
 
               {/* Using social buttons here as icons */}
               <Stack
+                display={{ xs: "none", lg: "flex" }}
                 direction={"row"}
                 spacing={2}
                 justifyContent={"center"}
@@ -180,7 +192,7 @@ export default function FloatingNavBar() {
 
               <SlideButton />
 
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              <Box sx={{ display: { xs: "none", lg: "block" } }}>
                 <Stack
                   direction="row"
                   divider={<Divider orientation="vertical" flexItem />}
@@ -237,7 +249,7 @@ export default function FloatingNavBar() {
               keepMounted: true, // Better open performance on mobile.
             }}
             sx={{
-              display: { xs: "block", sm: "none" },
+              display: { xs: "block", lg: "none" },
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
