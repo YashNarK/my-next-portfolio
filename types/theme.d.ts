@@ -6,6 +6,7 @@ declare module "@mui/material/styles" {
   interface SocialPaletteColor {
     color: string;
     backgroundColor: string;
+    iconColor: string;
   }
 
   interface Palette {
@@ -13,6 +14,7 @@ declare module "@mui/material/styles" {
       github: SocialPaletteColor;
       instagram: SocialPaletteColor;
       linkedin: SocialPaletteColor;
+      mail: SocialPaletteColor;
     };
   }
 
@@ -21,6 +23,7 @@ declare module "@mui/material/styles" {
       github?: SocialPaletteColor;
       instagram?: SocialPaletteColor;
       linkedin?: SocialPaletteColor;
+      mail?: SocialPaletteColor;
     };
   }
 

@@ -39,9 +39,14 @@ const lightTheme = createTheme({
     background: { default: "#FFFFFF", paper: "rgb(218, 224, 231)" },
     text: { primary: "#000000", secondary: "#555555" },
     social: {
-      github: { color: "white", backgroundColor: "green" },
-      instagram: { color: "black", backgroundColor: "white" },
-      linkedin: { color: "white", backgroundColor: "blue" },
+      github: { color: "white", backgroundColor: "green", iconColor: "green" },
+      instagram: {
+        color: "black",
+        backgroundColor: "white",
+        iconColor: "black",
+      },
+      linkedin: { color: "white", backgroundColor: "blue", iconColor: "blue" },
+      mail: { color: "white", backgroundColor: "red", iconColor: "red" },
     },
   },
   typography,
@@ -55,9 +60,22 @@ const darkTheme = createTheme({
     background: { default: "#121212", paper: "rgba(65, 58, 58, 0.68)" },
     text: { primary: "#FFFFFF", secondary: "#BBBBBB" },
     social: {
-      github: { backgroundColor: "black", color: "greenyellow" },
-      instagram: { backgroundColor: "black", color: "white" },
-      linkedin: { backgroundColor: "black", color: "deepskyblue" },
+      github: {
+        backgroundColor: "black",
+        color: "greenyellow",
+        iconColor: "greenyellow",
+      },
+      instagram: {
+        backgroundColor: "black",
+        color: "white",
+        iconColor: "white",
+      },
+      linkedin: {
+        backgroundColor: "black",
+        color: "deepskyblue",
+        iconColor: "deepskyblue",
+      },
+      mail: { backgroundColor: "black", color: "red", iconColor: "red" },
     },
   },
   typography,
