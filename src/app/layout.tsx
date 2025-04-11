@@ -3,6 +3,7 @@ import { Box } from "@mui/material";
 import type { Metadata } from "next";
 import FloatingNavBar from "../components/FloatingNavBar";
 import "./globals.css";
+import BlackHoleCursor from "@/components/BlackHoleCursor";
 export const metadata: Metadata = {
   title: "Narendran A I's portfolio",
   description:
@@ -18,6 +19,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
+          <BlackHoleCursor />
+
           <Box
             className="firstChildOfBody"
             sx={{
