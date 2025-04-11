@@ -1,24 +1,24 @@
 "use client";
-import { Button } from "@mui/material";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { Button, Palette } from "@mui/material";
 import { ReactNode } from "react";
 
 interface ISocialButtonProps {
   icon: ReactNode;
   text: string;
-  color: string;
-  backgroundColor: string;
   href: string;
   mode?: "full" | "iconOnly";
+  themeSelector: keyof Palette["social"];
 }
 
 const SocialButton = ({
   icon,
   text,
-  color,
-  backgroundColor,
   href,
   mode = "full",
+  themeSelector,
 }: ISocialButtonProps) => {
+  const theme = useAppTheme();
   return (
     <>
       {mode === "full" ? (
@@ -28,8 +28,9 @@ const SocialButton = ({
           onClick={() => window.open(href, "_blank")}
           sx={{
             width: "100%",
-            color: { color },
-            backgroundColor: { backgroundColor },
+            color: theme.palette.social[themeSelector].color,
+            backgroundColor:
+              theme.palette.social[themeSelector].backgroundColor,
           }}
         >
           {text}
@@ -37,14 +38,12 @@ const SocialButton = ({
       ) : (
         <Button
           size="small"
-          variant="outlined"
           sx={{
             minWidth: 0,
-            color: { color },
+            color: theme.palette.social[themeSelector].iconColor,
             width: 40,
             height: 40,
             p: 0,
-            backgroundColor: { backgroundColor },
           }}
           onClick={() => window.open(href, "_blank")}
         >
