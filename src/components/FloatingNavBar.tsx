@@ -120,16 +120,19 @@ export default function FloatingNavBar() {
         ))}
       </List>
       <Stack
-        direction={"column"}
+        direction={isLandscape ? "row" : "column"}
         spacing={2}
-        justifyContent={"end"}
-        alignItems={"center"}
         position={"absolute"}
         bottom={30}
-        left={{ xs: "20%", sm: "30%" }}
-        divider={<Divider orientation="horizontal" flexItem />}
+        left={isLandscape ? "10%" : { xs: "20%", sm: "30%" }}
+        divider={
+          <Divider
+            orientation={`${isLandscape ? "vertical" : "horizontal"}`}
+            flexItem
+          />
+        }
       >
-        {ListSocialButtons(social, "full")}
+        {ListSocialButtons(social, isLandscape ? "iconOnly" : "full")}
       </Stack>
     </Box>
   );
