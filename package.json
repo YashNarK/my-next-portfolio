@@ -13,12 +13,18 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^7.0.1",
     "@mui/material": "^7.0.1",
+    "@react-three/drei": "^10.0.6",
+    "@react-three/fiber": "^9.1.2",
+    "@react-three/postprocessing": "^3.0.4",
     "@reduxjs/toolkit": "^2.6.1",
+    "drei": "^2.2.21",
     "framer-motion": "^12.6.2",
     "next": "15.2.4",
+    "postprocessing": "^6.37.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-redux": "^9.2.0"
+    "react-redux": "^9.2.0",
+    "three": "^0.175.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
