@@ -2,6 +2,29 @@
 import "@mui/material/styles";
 
 declare module "@mui/material/styles" {
+  // Extended for palettes
+  interface SocialPaletteColor {
+    color: string;
+    backgroundColor: string;
+  }
+
+  interface Palette {
+    social: {
+      github: SocialPaletteColor;
+      instagram: SocialPaletteColor;
+      linkedin: SocialPaletteColor;
+    };
+  }
+
+  interface PaletteOptions {
+    social?: {
+      github?: SocialPaletteColor;
+      instagram?: SocialPaletteColor;
+      linkedin?: SocialPaletteColor;
+    };
+  }
+
+  // Extended for typography
   interface TypographyVariants {
     professional: React.CSSProperties;
     playful: React.CSSProperties;

@@ -38,6 +38,11 @@ const lightTheme = createTheme({
     secondary: { main: "#012030" },
     background: { default: "#FFFFFF", paper: "rgb(218, 224, 231)" },
     text: { primary: "#000000", secondary: "#555555" },
+    social: {
+      github: { color: "white", backgroundColor: "green" },
+      instagram: { color: "black", backgroundColor: "white" },
+      linkedin: { color: "white", backgroundColor: "blue" },
+    },
   },
   typography,
 });
@@ -49,6 +54,11 @@ const darkTheme = createTheme({
     secondary: { main: "rgb(131, 137, 82)" },
     background: { default: "#121212", paper: "rgba(65, 58, 58, 0.68)" },
     text: { primary: "#FFFFFF", secondary: "#BBBBBB" },
+    social: {
+      github: { backgroundColor: "black", color: "greenyellow" },
+      instagram: { backgroundColor: "black", color: "white" },
+      linkedin: { backgroundColor: "black", color: "deepskyblue" },
+    },
   },
   typography,
 });
