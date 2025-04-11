@@ -116,6 +116,7 @@ const Banner = () => {
       gap={2}
       direction={{ xs: "column", sm: "row" }}
       spacing={2}
+      height={"100%"}
       sx={{
         position: "relative",
         overflow: "hidden",

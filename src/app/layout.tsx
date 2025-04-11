@@ -19,6 +19,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <Box
+            className="firstChildOfBody"
             sx={{
               display: "flex",
               flexDirection: "column",

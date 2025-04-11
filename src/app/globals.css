@@ -9,6 +9,9 @@ body {
     display: flex;
     flex-direction: column;
 }
+body>.firstChildOfBody {
+    height: 100%;
+}
 @font-face {
     font-family: 'Lavishly Yours';
     src: url('/fonts/LavishlyYours-Regular.ttf') format('truetype');
