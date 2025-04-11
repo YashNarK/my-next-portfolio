@@ -91,7 +91,7 @@ const SlideButton = () => {
         zIndex={2}
         sx={{
           width: {
-            xs: "150px", // phones
+            xs: "200px", // phones
             sm: "320px", // tablets and up
           },
           height: {
