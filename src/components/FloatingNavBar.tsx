@@ -1,5 +1,6 @@
 "use client";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { GitHub, Instagram, LinkedIn } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -18,6 +19,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as React from "react";
 import SlideButton from "./SlideButton";
+import SocialButton from "./SocialButton";
 import ThemeToggleButton from "./ThemeToggleButton";
 
 const drawerWidth = 240;
@@ -31,6 +33,7 @@ const navItems = [
 export default function FloatingNavBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const theme = useAppTheme();
+  const social = theme.palette.social;
   const pathname = usePathname(); // Get current route
 
   const handleDrawerToggle = () => {
@@ -38,7 +41,12 @@ export default function FloatingNavBar() {
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box
+      position={"relative"}
+      height={"100%"}
+      onClick={handleDrawerToggle}
+      sx={{ textAlign: "center" }}
+    >
       <Box sx={{ my: 2 }}>
         <ThemeToggleButton />
       </Box>
@@ -60,6 +68,39 @@ export default function FloatingNavBar() {
           </ListItem>
         ))}
       </List>
+      <Stack
+        direction={"column"}
+        spacing={2}
+        justifyContent={"end"}
+        alignItems={"center"}
+        position={"absolute"}
+        bottom={30}
+        left={"20%"}
+        divider={<Divider orientation="horizontal" flexItem />}
+      >
+        <SocialButton
+          text="LinkedIn"
+          icon={<LinkedIn />}
+          color={social.linkedin.color}
+          backgroundColor={social.linkedin.backgroundColor}
+          href="https://www.linkedin.com/in/narenkrithick/"
+        />
+
+        <SocialButton
+          text="Github"
+          icon={<GitHub />}
+          color={social.github.color}
+          backgroundColor={social.github.backgroundColor}
+          href="https://github.com/YashNarK"
+        />
+        <SocialButton
+          text="Instagram"
+          icon={<Instagram />}
+          color={social.instagram.color}
+          backgroundColor={social.instagram.backgroundColor}
+          href="https://www.instagram.com/narendran.a.i/"
+        />
+      </Stack>
     </Box>
   );
 
