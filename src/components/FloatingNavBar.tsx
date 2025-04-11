@@ -1,6 +1,6 @@
 "use client";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { GitHub, Instagram, LinkedIn } from "@mui/icons-material";
+import { GitHub, Instagram, LinkedIn, MailOutline } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -22,6 +22,7 @@ import SlideButton from "./SlideButton";
 import SocialButton from "./SocialButton";
 import ThemeToggleButton from "./ThemeToggleButton";
 import useIsLandscape from "@/hooks/useIsLandscape";
+import { Palette, SocialPaletteColor } from "@mui/material";
 
 const drawerWidth = { xs: 240, sm: 400 };
 const navItems = [
@@ -31,6 +32,48 @@ const navItems = [
   { label: "Projects", path: "/projects" },
   { label: "Publications", path: "/publications" },
 ];
+interface ISocialData {
+  text: string;
+  href: string;
+  icon: React.ReactNode;
+  themeSelector: keyof Palette["social"];
+}
+const ListSocialButtons = (
+  social: Palette["social"],
+  mode: "full" | "iconOnly" = "full"
+) => {
+  const socialDataList: ISocialData[] = [
+    {
+      text: "LinkedIn",
+      href: "https://www.linkedin.com/in/narenkrithick/",
+      icon: <LinkedIn />,
+      themeSelector: "linkedin",
+    },
+    {
+      text: "GitHub",
+      href: "https://github.com/YashNarK",
+      icon: <GitHub />,
+      themeSelector: "github",
+    },
+    {
+      text: "Instagram",
+      href: "https://www.instagram.com/narendran.a.i/",
+      icon: <Instagram />,
+      themeSelector: "instagram",
+    },
+    {
+      text: "Mail",
+      href: "mailto:narenkrithick@gmail.com",
+      icon: <MailOutline />,
+      themeSelector: "mail",
+    },
+  ];
+
+  return socialDataList.map((socialItem) => {
+    return <SocialButton {...socialItem} mode={mode} />;
+  });
+};
+
 export default function FloatingNavBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const theme = useAppTheme();
@@ -68,7 +111,7 @@ export default function FloatingNavBar() {
                   sm: "1.5rem",
                   md: "2rem",
                 },
-                my: isLandscape ? "0" : "5%",
+                my: isLandscape ? "0" : "1%",
               }}
             >
               <ListItemText primary={label} color="inherit" />
@@ -86,28 +129,7 @@ export default function FloatingNavBar() {
         left={{ xs: "20%", sm: "30%" }}
         divider={<Divider orientation="horizontal" flexItem />}
       >
-        <SocialButton
-          text="LinkedIn"
-          icon={<LinkedIn />}
-          color={social.linkedin.color}
-          backgroundColor={social.linkedin.backgroundColor}
-          href="https://www.linkedin.com/in/narenkrithick/"
-        />
-
-        <SocialButton
-          text="Github"
-          icon={<GitHub />}
-          color={social.github.color}
-          backgroundColor={social.github.backgroundColor}
-          href="https://github.com/YashNarK"
-        />
-        <SocialButton
-          text="Instagram"
-          icon={<Instagram />}
-          color={social.instagram.color}
-          backgroundColor={social.instagram.backgroundColor}
-          href="https://www.instagram.com/narendran.a.i/"
-        />
+        {ListSocialButtons(social, "full")}
       </Stack>
     </Box>
   );
@@ -163,31 +185,7 @@ export default function FloatingNavBar() {
                 alignItems={"center"}
                 divider={<Divider orientation="vertical" flexItem />}
               >
-                <SocialButton
-                  text="LinkedIn"
-                  icon={<LinkedIn />}
-                  color={social.linkedin.color}
-                  backgroundColor={social.linkedin.backgroundColor}
-                  href="https://www.linkedin.com/in/narenkrithick/"
-                  mode="iconOnly"
-                />
-
-                <SocialButton
-                  text="Github"
-                  icon={<GitHub />}
-                  color={social.github.color}
-                  backgroundColor={social.github.backgroundColor}
-                  href="https://github.com/YashNarK"
-                  mode="iconOnly"
-                />
-                <SocialButton
-                  text="Instagram"
-                  icon={<Instagram />}
-                  color={social.instagram.color}
-                  backgroundColor={social.instagram.backgroundColor}
-                  href="https://www.instagram.com/narendran.a.i/"
-                  mode="iconOnly"
-                />
+                {ListSocialButtons(social, "iconOnly")}
               </Stack>
 
               <SlideButton />
