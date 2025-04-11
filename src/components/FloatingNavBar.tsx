@@ -69,8 +69,8 @@ const ListSocialButtons = (
     },
   ];
 
-  return socialDataList.map((socialItem) => {
-    return <SocialButton {...socialItem} mode={mode} />;
+  return socialDataList.map((socialItem, index) => {
+    return <SocialButton {...socialItem} mode={mode} key={index} />;
   });
 };
 
