@@ -1,7 +1,9 @@
 "use client";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import useIsLandscape from "@/hooks/useIsLandscape";
 import { GitHub, Instagram, LinkedIn, MailOutline } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Palette } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -21,8 +23,6 @@ import * as React from "react";
 import SlideButton from "./SlideButton";
 import SocialButton from "./SocialButton";
 import ThemeToggleButton from "./ThemeToggleButton";
-import useIsLandscape from "@/hooks/useIsLandscape";
-import { Palette, SocialPaletteColor } from "@mui/material";
 
 const drawerWidth = { xs: 240, sm: 400 };
 const navItems = [
