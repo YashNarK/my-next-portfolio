@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from "react";
 const SlideButton = () => {
   const [progress, setProgress] = useState(10);
   const [isDragging, setIsDragging] = useState(false);
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const theme = useAppTheme();
   const isPhone = useMediaQuery(theme.breakpoints.down("sm"));
@@ -25,11 +25,11 @@ const SlideButton = () => {
   }, []);
 
   const handleStart = () => {
-    if (!isLoggingIn) setIsDragging(true);
+    if (!isDownloading) setIsDragging(true);
   };
 
   const handleMove = (clientX: number) => {
-    if (!isDragging || !sliderRef.current || isLoggingIn) return;
+    if (!isDragging || !sliderRef.current || isDownloading) return;
 
     const sliderRect = sliderRef.current.getBoundingClientRect();
     const newProgress = Math.min(
@@ -50,14 +50,10 @@ const SlideButton = () => {
   const handleEnd = () => {
     setIsDragging(false);
     if (progress >= 85) {
-      setIsLoggingIn(true);
-
-      // Simulate rocket falling into blackhole, then reset
-      setTimeout(() => {
-        alert("🚀 Logged In!");
-        setProgress(10);
-        setIsLoggingIn(false);
-      }, 1000); // Match animation duration
+      const resumeURL = `${window.location.origin}/resume`;
+      window.open(resumeURL, "_blank");
+      setProgress(10);
+      setIsDownloading(false);
     } else {
       setProgress(10);
     }
@@ -128,7 +124,7 @@ const SlideButton = () => {
             position: "absolute",
             left: rocketLeftPosition,
             top: "50%",
-            transform: isLoggingIn
+            transform: isDownloading
               ? "translateY(-50%) rotate(720deg) scale(0)"
               : "translateY(-50%) rotate(90deg)",
             cursor: "grab",
@@ -136,7 +132,7 @@ const SlideButton = () => {
             height: "80px",
             zIndex: 2,
             transition: "transform 1s ease-in-out, opacity 1s ease-in-out",
-            opacity: isLoggingIn ? 0 : 1,
+            opacity: isDownloading ? 0 : 1,
           }}
         />
 
