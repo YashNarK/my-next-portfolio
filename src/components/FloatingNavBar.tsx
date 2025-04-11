@@ -143,6 +143,41 @@ export default function FloatingNavBar() {
                 <ThemeToggleButton />
               </Box>
 
+              {/* Using social buttons here as icons */}
+              <Stack
+                direction={"row"}
+                spacing={2}
+                justifyContent={"center"}
+                alignItems={"center"}
+                divider={<Divider orientation="vertical" flexItem />}
+              >
+                <SocialButton
+                  text="LinkedIn"
+                  icon={<LinkedIn />}
+                  color={social.linkedin.color}
+                  backgroundColor={social.linkedin.backgroundColor}
+                  href="https://www.linkedin.com/in/narenkrithick/"
+                  mode="iconOnly"
+                />
+
+                <SocialButton
+                  text="Github"
+                  icon={<GitHub />}
+                  color={social.github.color}
+                  backgroundColor={social.github.backgroundColor}
+                  href="https://github.com/YashNarK"
+                  mode="iconOnly"
+                />
+                <SocialButton
+                  text="Instagram"
+                  icon={<Instagram />}
+                  color={social.instagram.color}
+                  backgroundColor={social.instagram.backgroundColor}
+                  href="https://www.instagram.com/narendran.a.i/"
+                  mode="iconOnly"
+                />
+              </Stack>
+
               <SlideButton />
 
               <Box sx={{ display: { xs: "none", sm: "block" } }}>
