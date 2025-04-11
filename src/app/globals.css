@@ -44,3 +44,15 @@ body>.firstChildOfBody {
     font-weight: normal;
     font-style: normal;
 }
+/* Custom Cursor */
+@media (pointer: fine) {
+    body {
+        cursor: none;
+    }
+}
+
+@media (pointer: coarse) {
+    .blackhole-container {
+        display: none !important;
+    }
+}
