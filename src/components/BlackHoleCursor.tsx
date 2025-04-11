@@ -4,6 +4,7 @@ import { useAppSelector } from "@/hooks/useReduxCustom";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
+import { Trail, Sparkles } from "@react-three/drei";
 
 type Mouse = { x: number; y: number };
 
@@ -26,10 +27,14 @@ const Star = ({ radiusX, radiusY, speed, color, centerRef }: any) => {
   });
 
   return (
-    <mesh ref={starRef}>
-      <circleGeometry args={[0.05, 16]} />
-      <meshBasicMaterial color={color} />
-    </mesh>
+    <>
+      <Trail width={0.05} length={5} color={color} attenuation={(t) => t * t}>
+        <mesh ref={starRef}>
+          <circleGeometry args={[0.05, 16]} />
+          <meshBasicMaterial color={color} />
+        </mesh>
+      </Trail>
+    </>
   );
 };
 
@@ -49,7 +54,7 @@ const BlackHoleScene = ({ mouse }: { mouse: Mouse }) => {
 
   return (
     <>
-      <mesh ref={blackHoleRef}>
+      <mesh ref={blackHoleRef} position={[0, 0, 1]}>
         <circleGeometry args={[0.15, 32]} />
         <meshBasicMaterial color="black" />
       </mesh>
