@@ -32,7 +32,6 @@ export default function FloatingNavBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const theme = useAppTheme();
   const pathname = usePathname(); // Get current route
-  const user = "Guest";
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
