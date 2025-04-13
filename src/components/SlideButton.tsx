@@ -50,10 +50,13 @@ const SlideButton = () => {
   const handleEnd = () => {
     setIsDragging(false);
     if (progress >= 85) {
-      const resumeURL = `${window.location.origin}/resume`;
-      window.open(resumeURL, "_blank");
-      setProgress(10);
-      setIsDownloading(false);
+      setTimeout(() => {
+        const resumeURL = `${window.location.origin}/resume`;
+        window.open(resumeURL, "_blank");
+        setProgress(10);
+        setIsDownloading(false);
+      }, 1500);
+      setIsDownloading(true);
     } else {
       setProgress(10);
     }
