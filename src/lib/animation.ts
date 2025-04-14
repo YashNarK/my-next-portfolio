@@ -60,3 +60,18 @@ export const pulseSpin = {
     },
   },
 };
+export const gravitationalRipple = {
+  initial: {
+    scale: 1,
+    filter: "blur(0px)",
+  },
+  animate: {
+    scale: [1, 1.03, 1],
+    filter: ["blur(0px)", "blur(2px)", "blur(0px)"],
+    transition: {
+      duration: 2,
+      ease: "easeInOut",
+      repeat: Infinity,
+    },
+  },
+};
