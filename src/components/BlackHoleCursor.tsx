@@ -5,6 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Trail, Sparkles } from "@react-three/drei";
+import { useAppTheme } from "@/hooks/useAppTheme";
 
 type Mouse = { x: number; y: number };
 
@@ -38,25 +39,51 @@ const Star = ({ radiusX, radiusY, speed, color, centerRef }: any) => {
   );
 };
 
-const BlackHoleScene = ({ mouse }: { mouse: Mouse }) => {
+const BlackHoleScene = ({ mouse }: { mouse: { x: number; y: number } }) => {
+  const theme = useAppTheme();
   const blackHoleRef = useRef<THREE.Mesh>(null!);
+  const glowRef = useRef<THREE.Mesh>(null!);
   const { size, camera } = useThree();
   const mode = useAppSelector((state) => state.theme.mode);
 
+  // Black hole follows cursor
   useFrame(() => {
     if (!blackHoleRef.current) return;
 
     const ndcX = (mouse.x / size.width) * 2 - 1;
     const ndcY = -(mouse.y / size.height) * 2 + 1;
-    const vector = new THREE.Vector3(ndcX, ndcY, 0).unproject(camera);
-    blackHoleRef.current.position.lerp(vector, 0.3);
+    const target = new THREE.Vector3(ndcX, ndcY, 0).unproject(camera);
+    blackHoleRef.current.position.lerp(target, 0.3);
+    glowRef.current.position.copy(blackHoleRef.current.position);
+  });
+
+  // Ring ripple pulse animation
+  useFrame(({ clock }) => {
+    if (glowRef.current) {
+      const t = clock.getElapsedTime();
+      const pulse = Math.sin(t * 3); // Pulsing effect
+      glowRef.current.scale.setScalar(pulse);
+      const material = glowRef.current.material as THREE.MeshBasicMaterial;
+      material.opacity = 0.7 * Math.sin(t * 2);
+    }
   });
 
   return (
     <>
+      {/* Black Hole */}
       <mesh ref={blackHoleRef} position={[0, 0, 1]}>
         <circleGeometry args={[0.15, 32]} />
         <meshBasicMaterial color="black" />
+      </mesh>
+
+      {/* Glowing Ring Pulse */}
+      <mesh ref={glowRef} position={[0, 0, 0.9]}>
+        <ringGeometry args={[0.2, 0.4, 64]} />
+        <meshBasicMaterial
+          color={theme.palette.secondary.main}
+          transparent
+          side={THREE.DoubleSide}
+        />
       </mesh>
 
       {/* Orbiting stars */}
@@ -84,6 +111,7 @@ const BlackHoleScene = ({ mouse }: { mouse: Mouse }) => {
     </>
   );
 };
+
 
 const BlackHoleCursor = () => {
   const [mouse, setMouse] = useState<Mouse>({
