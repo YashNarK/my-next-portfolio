@@ -6,6 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Trail, Sparkles } from "@react-three/drei";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { motion } from "framer-motion";
+import { gravitationalRipple } from "@/lib/animation";
 
 type Mouse = { x: number; y: number };
 
@@ -112,7 +114,6 @@ const BlackHoleScene = ({ mouse }: { mouse: { x: number; y: number } }) => {
   );
 };
 
-
 const BlackHoleCursor = () => {
   const [mouse, setMouse] = useState<Mouse>({
     x: window.innerWidth / 2,
@@ -152,13 +153,27 @@ const BlackHoleCursor = () => {
         pointerEvents: "none", // This allows clicks to pass through
       }}
     >
-      <Canvas
-        orthographic
-        camera={{ zoom: 100, position: [0, 0, 10] }}
-        style={{ width: "100%", height: "100%", pointerEvents: "none" }}
+      <motion.div
+        variants={gravitationalRipple}
+        initial="initial"
+        animate="animate"
+        style={{
+          width: "100%",
+          height: "100%",
+        }}
       >
-        <BlackHoleScene mouse={mouse} />
-      </Canvas>
+        <Canvas
+          orthographic
+          camera={{ zoom: 100, position: [0, 0, 10] }}
+          style={{
+            width: "100%",
+            height: "100%",
+            pointerEvents: "none",
+          }}
+        >
+          <BlackHoleScene mouse={mouse} />
+        </Canvas>
+      </motion.div>
     </div>
   );
 };
