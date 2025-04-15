@@ -24,7 +24,7 @@ const projects: IProject[] = [
     sourceLink: "https://github.com/YashNarK/SimpleDex",
   },
   {
-    title: "SimpleDEX",
+    title: "SimpleDEX1",
     description: `
       A Simple decentralized exchange (DEX) that allows users to trade cryptocurrencies directly with each other.
       It allows exchange without the need for a centralized intermediary (like a traditional exchange). 
@@ -46,7 +46,7 @@ const projects: IProject[] = [
     sourceLink: "https://github.com/YashNarK/SimpleDex",
   },
   {
-    title: "SimpleDEX",
+    title: "SimpleDEX2",
     description: `
       A Simple decentralized exchange (DEX) that allows users to trade cryptocurrencies directly with each other.
       It allows exchange without the need for a centralized intermediary (like a traditional exchange). 
