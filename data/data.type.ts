@@ -6,7 +6,9 @@ type myFrontEndTechnologies =
   | "Next.js"
   | "Tailwind CSS"
   | "Chakra UI"
-  | "Material UI";
+  | "Material UI"
+  | "Zustand"
+  | "Vite";
 type myBackEndTechnologies = "Node.js" | "Express";
 type myDatabasetechnologies =
   | "MongoDB"
@@ -35,7 +37,8 @@ interface IProject {
   image: string;
   demoLink: string;
   sourceLink: string;
-  logo: string;
+  potrait: string;
+  oneLiner?: string;
 }
 
 interface ICertificate {
