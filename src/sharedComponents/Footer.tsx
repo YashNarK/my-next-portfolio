@@ -1,7 +1,10 @@
-import { Box } from "@mui/material";
+"use client";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { Box, Typography } from "@mui/material";
 
 const Footer = () => {
   const currentYear: number = new Date().getFullYear();
+  const theme = useAppTheme();
 
   return (
     <Box
@@ -9,9 +12,16 @@ const Footer = () => {
       textAlign="center"
       fontSize="lg"
       mx="auto"
-      my={5}
+      sx={{
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.text.primary,
+        padding: "20px",
+        boxShadow: `0 4px 8px ${theme.palette.text.secondary}`,
+      }}
     >
-      © {currentYear} YashNarK. All rights reserved.
+      <Typography variant="professional">
+        © {currentYear} YashNarK. All rights reserved.
+      </Typography>
     </Box>
   );
 };

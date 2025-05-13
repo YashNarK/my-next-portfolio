@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import FloatingNavBar from "../components/FloatingNavBar";
 import "./globals.css";
 import BlackHoleCursor from "@/components/BlackHoleCursor";
+import Footer from "@/sharedComponents/Footer";
 export const metadata: Metadata = {
   title: "Narendran A I's portfolio",
   description:
@@ -39,6 +40,7 @@ export default function RootLayout({
               }}
             >
               {children}
+              <Footer />
             </Box>
           </Box>
         </Providers>
