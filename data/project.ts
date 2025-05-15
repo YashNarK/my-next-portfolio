@@ -4,11 +4,7 @@ const projects: IProject[] = [
   {
     title: "SimpleDEX",
     oneLiner: "A Decentralized Exchange on the Sepolia TestNet.",
-    description: `
-      A Simple decentralized exchange (DEX) that allows users to trade cryptocurrencies directly with each other.
-      It allows exchange without the need for a centralized intermediary (like a traditional exchange). 
-      DEXs use smart contracts to facilitate trades and manage liquidity pools. 
-      The DEX is currently available on Sepolia Testnet only.`,
+    description: `A Simple decentralized exchange (DEX) that allows users to trade cryptocurrencies directly with each other. It allows exchange without the need for a centralized intermediary (like a traditional exchange). DEXs use smart contracts to facilitate trades and manage liquidity pools. The DEX is currently available on Sepolia Testnet only.`,
     technologiesUsed: [
       "React",
       "Redux",
