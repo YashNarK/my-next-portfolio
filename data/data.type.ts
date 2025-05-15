@@ -34,10 +34,10 @@ interface IProject {
   title: string;
   description: string;
   technologiesUsed: string[];
-  image?: string;
+  image?: string | File;
   demoLink: string;
   sourceLink: string;
-  potrait?: string;
+  potrait?: string | File;
   oneLiner: string;
 }
 
