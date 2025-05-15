@@ -1,13 +1,29 @@
 "use client";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { getAllProjects } from "@/lib/firebase/firestore-crud";
 import { Grid } from "@mui/material";
+import { useEffect, useState } from "react";
+import { IProject } from "../../../data/data.type";
 import ProjectDisplay from "./ProjectDisplay";
-import data from "../../../data/data";
 
 const Project = () => {
   const theme = useAppTheme();
-  const projectsList = data.projects;
+  const [projectsList, setProjectsList] = useState<
+    (IProject & {
+      id: string;
+    })[]
+  >([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      const res = await getAllProjects();
+      setProjectsList(res);
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <Grid
       container
