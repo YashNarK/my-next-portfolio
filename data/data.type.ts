@@ -33,12 +33,12 @@ type myTechnologies =
 interface IProject {
   title: string;
   description: string;
-  technologiesUsed: myTechnologies[];
-  image: string;
+  technologiesUsed: string[];
+  image?: string;
   demoLink: string;
   sourceLink: string;
-  potrait: string;
-  oneLiner?: string;
+  potrait?: string;
+  oneLiner: string;
 }
 
 interface ICertificate {
