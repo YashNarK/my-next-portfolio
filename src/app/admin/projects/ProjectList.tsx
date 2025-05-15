@@ -68,9 +68,7 @@ const ProjectList = ({
 
       <Stack spacing={2}>
         {paginatedProjects.map((project) => {
-          const visibleTechCount = isMobile
-            ? 3
-            : project.technologiesUsed.length;
+          const visibleTechCount = isMobile ? 3 : 6;
           const hiddenCount =
             project.technologiesUsed.length - visibleTechCount;
           return (
@@ -95,13 +93,25 @@ const ProjectList = ({
                 <Typography variant="body2" color="text.secondary">
                   {project.oneLiner}
                 </Typography>
-                <Stack direction="row" spacing={1} gap={1} flexWrap="wrap">
+                {/* Tags for technologies used */}
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  gap={1}
+                  flexWrap="wrap"
+                  sx={{
+                    position: "relative",
+                    top: "40%",
+                    left: "0%",
+                    zIndex: 5,
+                  }}
+                >
                   {project.technologiesUsed
                     .slice(0, visibleTechCount)
                     .map((tech) => (
                       <Typography
                         key={tech}
-                        variant="caption"
+                        variant="codeLike"
                         sx={{
                           px: 1,
                           py: 0.5,
@@ -110,13 +120,15 @@ const ProjectList = ({
                           borderRadius: 1,
                           mr: 1,
                           my: 1,
+                          fontWeight: 800,
+                          fontSize: "0.8rem",
                         }}
                       >
                         {tech}
                       </Typography>
                     ))}
 
-                  {isMobile && hiddenCount - visibleTechCount > 0 && (
+                  {hiddenCount > 0 && (
                     <Typography
                       variant="caption"
                       sx={{
@@ -129,7 +141,7 @@ const ProjectList = ({
                         my: 1,
                       }}
                     >
-                      +{hiddenCount - visibleTechCount}
+                      +{hiddenCount}
                     </Typography>
                   )}
                 </Stack>
