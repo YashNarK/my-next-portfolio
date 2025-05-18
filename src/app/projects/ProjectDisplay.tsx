@@ -25,11 +25,9 @@ const ProjectDisplay = ({
         m={0}
         p={0}
         sx={{
-          left: "50%",
-          transform: "translate(-50%, 0%)",
           transition: "transform 0.2s, box-shadow 0.2s",
           "&:hover": {
-            transform: "translate(-50%, 0%) scale(1.1)", // Combine both
+            transform: "scale(1.1)",
             boxShadow: 6,
             zIndex: 10,
             cursor: "pointer",
