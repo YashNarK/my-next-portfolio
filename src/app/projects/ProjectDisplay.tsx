@@ -112,9 +112,10 @@ const ProjectDisplay = ({
         spacing={1}
         gap={1}
         flexWrap="wrap"
+        p={2}
         sx={{
           position: "relative",
-          top: "40%",
+          top: "30%",
           left: "0%",
           zIndex: 5,
         }}
@@ -131,8 +132,8 @@ const ProjectDisplay = ({
               borderRadius: 1,
               mr: 1,
               my: 1,
-              fontWeight: 800,
-              fontSize: "0.8rem",
+              fontWeight: 900,
+              fontSize: "0.9rem",
             }}
           >
             {tech}
