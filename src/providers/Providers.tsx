@@ -6,6 +6,23 @@ import { CssBaseline } from "@mui/material"; // Resets default CSS styles
 import { ReactNode, useEffect, useState } from "react"; // React utilities
 import { Provider } from "react-redux"; // Redux Provider
 import { useAppTheme } from "@/hooks/useAppTheme"; // Custom theme hook
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+// A client-side QueryClientProvider for React Query
+// This is used for data fetching and caching
+// It allows components to fetch data and manage server state
+// without needing to pass props down through the component tree
+// or manage loading states manually.
+export const QueryProvider = ({ children }: { children: ReactNode }) => {
+  const [client] = useState(() => new QueryClient());
+
+  return (
+    <QueryClientProvider client={client}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      {children}
+    </QueryClientProvider>
+  );
+};
 
 // A client-side ThemeProvider that applies the theme dynamically
 const ClientThemeProvider = ({ children }: { children: ReactNode }) => {
@@ -37,7 +54,9 @@ export const Providers = ({ children }: { children: ReactNode }) => {
       {/* 🛠️ **Fix #2: Circular Dependency Issue** */}
       {/* We wrap `ClientThemeProvider` inside `<Provider>` to prevent `useAppTheme()` from 
           accessing the Redux store before it's available */}
-      <ClientThemeProvider>{children}</ClientThemeProvider>
+      <QueryProvider>
+        <ClientThemeProvider>{children}</ClientThemeProvider>
+      </QueryProvider>
     </Provider>
   );
 };
