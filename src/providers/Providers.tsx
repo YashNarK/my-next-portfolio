@@ -8,13 +8,17 @@ import { Provider } from "react-redux"; // Redux Provider
 import { useAppTheme } from "@/hooks/useAppTheme"; // Custom theme hook
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import ErrorFallback from "@/components/ErrorFallback";
+import { ErrorBoundary } from "react-error-boundary";
 // A client-side QueryClientProvider for React Query
 // This is used for data fetching and caching
 // It allows components to fetch data and manage server state
 // without needing to pass props down through the component tree
 // or manage loading states manually.
 export const QueryProvider = ({ children }: { children: ReactNode }) => {
-  const [client] = useState(() => new QueryClient());
+  const [client] = useState(() => {
+    return new QueryClient();
+  });
 
   return (
     <QueryClientProvider client={client}>
@@ -50,13 +54,15 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <Provider store={store}>
-      {/* 🛠️ **Fix #2: Circular Dependency Issue** */}
-      {/* We wrap `ClientThemeProvider` inside `<Provider>` to prevent `useAppTheme()` from 
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Provider store={store}>
+        {/* 🛠️ **Fix #2: Circular Dependency Issue** */}
+        {/* We wrap `ClientThemeProvider` inside `<Provider>` to prevent `useAppTheme()` from 
           accessing the Redux store before it's available */}
-      <QueryProvider>
-        <ClientThemeProvider>{children}</ClientThemeProvider>
-      </QueryProvider>
-    </Provider>
+        <QueryProvider>
+          <ClientThemeProvider>{children}</ClientThemeProvider>
+        </QueryProvider>
+      </Provider>
+    </ErrorBoundary>
   );
 };
