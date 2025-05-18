@@ -1,12 +1,9 @@
 "use client";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { getAllProjects } from "@/lib/firebase/firestore-crud";
-import { Grid, Skeleton, Stack, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { IProject } from "../../../data/data.type";
-import ProjectDisplay from "./ProjectDisplay";
 import useProjects from "@/hooks/useProjects";
+import { Grid, Skeleton, Stack, Typography } from "@mui/material";
+import ProjectDisplay from "./ProjectDisplay";
 
 const Project = () => {
   const theme = useAppTheme();
