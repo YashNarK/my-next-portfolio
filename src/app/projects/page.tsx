@@ -7,11 +7,6 @@ import ProjectDisplay from "./ProjectDisplay";
 
 const Project = () => {
   const theme = useAppTheme();
-  // const [projectsList, setProjectsList] = useState<
-  //   (IProject & {
-  //     id: string;
-  //   })[]
-  // >([]);
 
   const { data: projectsList, error, isLoading } = useProjects();
 
