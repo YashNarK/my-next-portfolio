@@ -2,7 +2,7 @@
 
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useProjects from "@/hooks/useProjects";
-import { Box, Grid, Skeleton, Stack, Typography } from "@mui/material";
+import { Grid, Skeleton, Stack, Typography } from "@mui/material";
 import ProjectDisplay from "./ProjectDisplay";
 
 const Project = () => {
@@ -10,10 +10,7 @@ const Project = () => {
 
   const { data: projectsList, error, isLoading } = useProjects();
 
-  if (error) {
-    console.error("Error fetching projects:", error);
-    return <Box mt={40}>Error: {error}</Box>;
-  }
+  if (error) throw new Error(error);
 
   return (
     <Grid
