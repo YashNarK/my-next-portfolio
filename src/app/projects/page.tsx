@@ -2,32 +2,28 @@
 
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { getAllProjects } from "@/lib/firebase/firestore-crud";
-import { Grid } from "@mui/material";
+import { Grid, Skeleton, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { IProject } from "../../../data/data.type";
 import ProjectDisplay from "./ProjectDisplay";
+import useProjects from "@/hooks/useProjects";
 
 const Project = () => {
   const theme = useAppTheme();
-  const [projectsList, setProjectsList] = useState<
-    (IProject & {
-      id: string;
-    })[]
-  >([]);
+  // const [projectsList, setProjectsList] = useState<
+  //   (IProject & {
+  //     id: string;
+  //   })[]
+  // >([]);
 
-  useEffect(() => {
-    const fetchProjects = async () => {
-      const res = await getAllProjects();
-      setProjectsList(res);
-    };
+  const { data: projectsList, error, isLoading } = useProjects();
 
-    fetchProjects();
-  }, []);
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <Grid
       container
-      spacing={2}
+      spacing={5}
       pt={15}
       pb={10}
       sx={{
@@ -35,18 +31,45 @@ const Project = () => {
         alignItems: "center",
       }}
     >
-      {projectsList.map((project, index) => {
-        const potraitUrl = `url(${project.potrait})`;
-        return (
-          <Grid size={{ xs: 12, md: 6 }} key={index}>
-            <ProjectDisplay
-              bgImageUrl={potraitUrl}
-              theme={theme}
-              project={project}
-            />
-          </Grid>
-        );
-      })}
+      {isLoading || !projectsList
+        ? Array(6)
+            .fill(true)
+            .map((_, index) => (
+              <Grid
+                size={{ xs: 12, md: 6 }}
+                key={index}
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Stack
+                  spacing={1}
+                  justifyContent="center"
+                  alignItems="center"
+                  border={1}
+                >
+                  <Skeleton variant="rectangular" width={200} height={200} />
+                  <Typography variant="handWritten">
+                    Cool Projects Loading...
+                  </Typography>
+                  <Skeleton variant="rounded" width={300} height={20} />
+                  <Skeleton variant="rounded" width={300} height={20} />
+                  <Skeleton variant="rounded" width={300} height={20} />
+                </Stack>
+              </Grid>
+            ))
+        : projectsList.map((project, index) => {
+            const potraitUrl = `url(${project.potrait})`;
+            return (
+              <Grid size={{ xs: 12, md: 6 }} key={index}>
+                <ProjectDisplay
+                  bgImageUrl={potraitUrl}
+                  theme={theme}
+                  project={project}
+                />
+              </Grid>
+            );
+          })}
     </Grid>
   );
 };
