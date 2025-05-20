@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import type { Metadata } from "next";
 import FloatingNavBar from "../components/FloatingNavBar";
 import "./globals.css";
-import BlackHoleCursor from "@/sharedComponents/BlackHoleCursor";
+import BlackHoleCursor from "@/sharedComponents/animations/blackholeCursorAnimation/BlackHoleCursor";
 import Footer from "@/sharedComponents/Footer";
 export const metadata: Metadata = {
   title: "Narendran A I's portfolio",
