@@ -15,6 +15,7 @@ const Project = () => {
 
   return (
     <Grid
+      className="projects-main-grid"
       container
       spacing={5}
       pt={15}
@@ -22,6 +23,7 @@ const Project = () => {
       sx={{
         justifyContent: "flex-center",
         alignItems: "center",
+        background: "transparent",
       }}
     >
       {isLoading || !projectsList
