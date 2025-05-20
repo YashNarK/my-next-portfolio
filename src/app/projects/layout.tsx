@@ -1,4 +1,4 @@
-import SceneBackground from "@/sharedComponents/Scenebackground";
+import SceneBackground from "@/sharedComponents/animations/projectLayoutAnimations/Scenebackground";
 import { ReactNode } from "react";
 
 export default function ProjectsLayout({ children }: { children: ReactNode }) {
