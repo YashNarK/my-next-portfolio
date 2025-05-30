@@ -118,29 +118,13 @@ const Banner = () => {
       spacing={2}
       height={"100%"}
       sx={{
-        position: "relative",
         overflow: "hidden",
         m: 0,
         py: 10,
         px: 2,
+        background: "transparent",
       }}
     >
-      {/* Background Layer */}
-      <Box
-        className="background-layer"
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundImage: `url('/img/space-doodle-${mode}.jpg')`,
-          backgroundSize: "400px",
-          backgroundRepeat: "repeat",
-          opacity: 0.07, // only background is transparent
-          zIndex: 0,
-        }}
-      />
       <ImageIntro />
       <Box
         className="banner-intro-text-area"

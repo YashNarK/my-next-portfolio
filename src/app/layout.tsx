@@ -5,6 +5,7 @@ import FloatingNavBar from "../components/FloatingNavBar";
 import "./globals.css";
 import BlackHoleCursor from "@/sharedComponents/animations/blackholeCursorAnimation/BlackHoleCursor";
 import Footer from "@/sharedComponents/Footer";
+import SceneBackground from "@/sharedComponents/animations/backgroundAnimations/Scenebackground";
 export const metadata: Metadata = {
   title: "Narendran A I's portfolio",
   description:
@@ -39,6 +40,7 @@ export default function RootLayout({
                 color: "inherit",
               }}
             >
+              <SceneBackground />
               {children}
               <Footer />
             </Box>
