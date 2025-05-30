@@ -134,7 +134,7 @@ export default function Admin() {
               />
             </Grid>
 
-            <Grid size={{ xs: 6 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DatePicker
                   label="Published Date"
@@ -150,7 +150,7 @@ export default function Admin() {
               </LocalizationProvider>
             </Grid>
 
-            <Grid size={{ xs: 6 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <TextField
                 fullWidth
                 label="Publisher"
