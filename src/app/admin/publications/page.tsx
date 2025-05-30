@@ -20,10 +20,11 @@ import {
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IPublication } from "../../../../data/data.type";
 import PublicationList from "./PublicationList";
 import dayjs, { Dayjs } from "dayjs";
+import { uploadAudio } from "@/lib/firebase/uploadFiles";
 
 const emptyPublication: IPublication = {
   title: "",
@@ -41,6 +42,7 @@ export default function Admin() {
   const [formData, setFormData] = useState(emptyPublication);
 
   const theme = useAppTheme();
+  const audioInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     loadPublications();
@@ -78,12 +80,20 @@ export default function Admin() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    let audioUrl = "";
+
+    if (formData.audio instanceof File) {
+      audioUrl = await uploadAudio(formData.audio, `${formData.title}.mp3`);
+    } else if (typeof formData.audio === "string") {
+      audioUrl = formData.audio;
+    }
+
     const dataToSave = {
       ...formData,
+      audio: audioUrl,
     };
 
     delete (dataToSave as any).id; // in case id was carried over
-
     if (editingId) {
       await updatePublication(editingId, dataToSave);
     } else {
@@ -92,6 +102,7 @@ export default function Admin() {
 
     setFormData(emptyPublication);
     setEditingId(null);
+    audioInputRef.current!.value = ""; // Reset the file input
     await loadPublications();
   }
 
@@ -157,7 +168,6 @@ export default function Admin() {
                 name="publisher"
                 value={formData.publisher}
                 onChange={handleChange}
-                multiline
                 rows={2}
                 required
               />
@@ -174,6 +184,26 @@ export default function Admin() {
                 rows={4}
                 required
               />
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <input
+                ref={audioInputRef}
+                accept="audio/*"
+                type="file"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setFormData((prev) => ({ ...prev, audio: file }));
+                  }
+                }}
+              />
+              {typeof formData.audio === "string" && (
+                <audio controls style={{ marginTop: "1rem", width: "100%" }}>
+                  <source src={formData.audio} type="audio/mpeg" />
+                  Your browser does not support the audio element.
+                </audio>
+              )}
             </Grid>
 
             <Grid size={{ xs: 12 }}>
