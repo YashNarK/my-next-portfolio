@@ -193,7 +193,6 @@ export default function Admin() {
                 name="sourceLink"
                 value={formData.sourceLink}
                 onChange={handleChange}
-                inputRef={imageInputRef}
               />
             </Grid>
 
@@ -204,7 +203,7 @@ export default function Admin() {
                 accept="image/*"
                 onChange={handleImageChange}
                 name="image"
-                ref={potraitInputRef}
+                ref={imageInputRef}
               />
               {formData.image && typeof formData.image === "string" && (
                 <FormHelperText>
@@ -222,6 +221,7 @@ export default function Admin() {
                 accept="image/*"
                 onChange={handlePotraitChange}
                 name="potrait"
+                ref={potraitInputRef}
               />
               {formData.potrait && typeof formData.potrait === "string" && (
                 <FormHelperText>
