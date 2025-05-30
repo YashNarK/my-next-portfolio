@@ -56,6 +56,7 @@ interface IPublication {
   date: string;
   link: string;
   publisher: string;
+  audio?: string | File;
 }
 
 interface IWork {
