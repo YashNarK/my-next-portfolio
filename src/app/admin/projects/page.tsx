@@ -176,23 +176,25 @@ export default function Admin() {
               />
             </Grid>
 
-            <Grid size={{ xs: 12, sm: 6 }}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label="Demo Link"
                 name="demoLink"
                 value={formData.demoLink}
                 onChange={handleChange}
+                required
               />
             </Grid>
 
-            <Grid size={{ xs: 12, sm: 6 }}>
+            <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
                 label="Source Link"
                 name="sourceLink"
                 value={formData.sourceLink}
                 onChange={handleChange}
+                required
               />
             </Grid>
 
@@ -241,6 +243,7 @@ export default function Admin() {
                 onChange={handleChange}
                 multiline
                 rows={2}
+                required
               />
             </Grid>
 
@@ -253,6 +256,7 @@ export default function Admin() {
                 onChange={handleChange}
                 multiline
                 rows={4}
+                required
               />
             </Grid>
 
