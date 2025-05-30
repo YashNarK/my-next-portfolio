@@ -45,6 +45,7 @@ const BlackHoleScene = ({ mouse }: { mouse: { x: number; y: number } }) => {
   const theme = useAppTheme();
   const blackHoleRef = useRef<THREE.Mesh>(null!);
   const glowRef = useRef<THREE.Mesh>(null!);
+  const outlineRef = useRef<THREE.Mesh>(null!);
   const { size, camera } = useThree();
   const mode = useAppSelector((state) => state.theme.mode);
 
@@ -57,6 +58,7 @@ const BlackHoleScene = ({ mouse }: { mouse: { x: number; y: number } }) => {
     const target = new THREE.Vector3(ndcX, ndcY, 0).unproject(camera);
     blackHoleRef.current.position.lerp(target, 0.3);
     glowRef.current.position.copy(blackHoleRef.current.position);
+    outlineRef.current.position.copy(blackHoleRef.current.position);
   });
 
   // Ring ripple pulse animation
@@ -75,7 +77,17 @@ const BlackHoleScene = ({ mouse }: { mouse: { x: number; y: number } }) => {
       {/* Black Hole */}
       <mesh ref={blackHoleRef} position={[0, 0, 1]}>
         <circleGeometry args={[0.15, 32]} />
-        <meshBasicMaterial color="black" />
+        <meshBasicMaterial color={mode === "dark" ? "yellow" : "black"} />
+      </mesh>
+      {/* Yellow Outline */}
+      <mesh position={[0, 0, 0.99]} ref={outlineRef}>
+        <ringGeometry args={[0.25, 0.3, 64]} />{" "}
+        {/* Slightly larger than black hole */}
+        <meshBasicMaterial
+          color={mode === "light" ? "yellow" : "red"}
+          transparent
+          opacity={0.5}
+        />
       </mesh>
 
       {/* Glowing Ring Pulse */}
