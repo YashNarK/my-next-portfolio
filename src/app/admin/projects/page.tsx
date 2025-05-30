@@ -7,7 +7,7 @@ import {
 } from "@/lib/firebase/firestore-crud";
 import { useEffect, useRef, useState } from "react";
 import { IProject } from "../../../../data/data.type";
-import { uploadImage } from "@/lib/firebase/uploadImage";
+import { uploadImage } from "@/lib/firebase/uploadFiles";
 import {
   Container,
   Typography,
