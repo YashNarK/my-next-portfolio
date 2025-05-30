@@ -53,7 +53,7 @@ interface ICertificate {
 interface IPublication {
   title: string;
   description: string;
-  image: string;
+  date: string;
   link: string;
   publisher: string;
 }
