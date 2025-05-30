@@ -6,7 +6,6 @@ const typography = {
   codeLike: {
     fontSize: 40,
     fontWeight: "bold",
-    color: "white",
     fontFamily: "'Space Grotesk',Merriweather Sans",
   },
   professional: {
