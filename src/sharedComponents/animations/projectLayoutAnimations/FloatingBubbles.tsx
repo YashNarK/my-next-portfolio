@@ -78,7 +78,7 @@ export const FloatingBubbles = () => {
 
   return (
     <>
-      <color attach="background" args={["#87CEEB"]} />
+      <color attach="background" args={["#FFFFFF"]} />
       <ambientLight intensity={0.5} />
       <pointLight position={[10, 10, 10]} />
       {bubbles.map((bubble, i) => (
