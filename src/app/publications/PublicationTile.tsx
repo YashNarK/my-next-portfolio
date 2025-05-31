@@ -186,7 +186,7 @@ const PublicationTile = ({ publication }: PublicationTileProps) => {
                   </Box>
                 </IconButton>
               </Box>
-              {audioRef.current?.currentTime !== 0 && (
+              {Boolean(audioRef.current?.currentTime) && (
                 <Box width="100%" className="progress-bar">
                   <Typography>
                     {formatTime(audioRef.current?.currentTime || 0)} /{" "}
