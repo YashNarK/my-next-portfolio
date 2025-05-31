@@ -1,9 +1,9 @@
 // src/app/projects/[slug]/page.tsx
-import { getAllProjects } from "@/lib/firebase/firestore-crud";
 import { Box, Button, Divider, Grid, Stack, Typography } from "@mui/material";
 import { notFound } from "next/navigation";
 import { slugify } from "@/utils/slugify";
 import { GitHub, ImportantDevices } from "@mui/icons-material";
+import { getAllProjects } from "@/lib/firebase/projects-crud";
 
 interface Props {
   params: { slug: string };

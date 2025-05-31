@@ -1,8 +1,8 @@
 // hooks/useProjects.ts
-import { getAllProjects } from "@/lib/firebase/firestore-crud";
 import { useQuery } from "@tanstack/react-query";
 import { IProject } from "../../data/data.type";
 import { AxiosError } from "axios";
+import { getAllProjects } from "@/lib/firebase/projects-crud";
 
 export const useProjects = () => {
   const { data, error, isLoading, isFetching } = useQuery<

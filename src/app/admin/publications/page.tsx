@@ -1,11 +1,6 @@
 "use client";
 import { useAppTheme } from "@/hooks/useAppTheme";
-import {
-  addPublication,
-  deletePublciation,
-  getAllPublications,
-  updatePublication,
-} from "@/lib/firebase/firestore-crud";
+
 import {
   Box,
   Button,
@@ -25,6 +20,12 @@ import { IPublication } from "../../../../data/data.type";
 import PublicationList from "./PublicationList";
 import dayjs, { Dayjs } from "dayjs";
 import { uploadAudio } from "@/lib/firebase/uploadFiles";
+import {
+  getAllPublications,
+  updatePublication,
+  addPublication,
+  deletePublication,
+} from "@/lib/firebase/publications-crud";
 
 const emptyPublication: IPublication = {
   title: "",
@@ -72,7 +73,7 @@ export default function Admin() {
 
   async function handleDelete(id: string) {
     if (confirm("Are you sure?")) {
-      await deletePublciation(id);
+      await deletePublication(id);
       loadPublications();
     }
   }

@@ -1,4 +1,3 @@
-import { IProject, IPublication } from "../../../data/data.type";
 import { db } from "./firebase-client";
 import {
   collection,
@@ -7,64 +6,46 @@ import {
   doc,
   updateDoc,
   deleteDoc,
+  CollectionReference,
+  DocumentData,
 } from "firebase/firestore";
 
-// Projects CRUD
-const projectsCollection = collection(db, "projects");
-export async function getAllProjects(): Promise<(IProject & { id: string })[]> {
-  const snapshot = await getDocs(projectsCollection);
+// Create collection ref
+function getCollectionRef<T = DocumentData>(
+  path: string
+): CollectionReference<T> {
+  return collection(db, path) as CollectionReference<T>;
+}
+
+// Generic CRUD functions
+export async function getAll<T>(
+  collectionName: string
+): Promise<(T & { id: string })[]> {
+  const snapshot = await getDocs(getCollectionRef<T>(collectionName));
   return snapshot.docs.map((doc) => ({
     id: doc.id,
-    ...(doc.data() as IProject),
+    ...(doc.data() as T),
   }));
 }
 
-export async function addProject(project: IProject): Promise<string> {
-  const docRef = await addDoc(projectsCollection, project);
+export async function add<T>(collectionName: string, data: T): Promise<string> {
+  const docRef = await addDoc(getCollectionRef<T>(collectionName), data);
   return docRef.id;
 }
 
-export async function updateProject(
+export async function update<T>(
+  collectionName: string,
   id: string,
-  project: Partial<IProject>
+  data: Partial<T>
 ): Promise<void> {
-  const docRef = doc(db, "projects", id);
-  await updateDoc(docRef, project);
+  const docRef = doc(db, collectionName, id);
+  await updateDoc(docRef, data);
 }
 
-export async function deleteProject(id: string): Promise<void> {
-  const docRef = doc(db, "projects", id);
-  await deleteDoc(docRef);
-}
-
-// Publications CRUD
-const publicationsCollection = collection(db, "publications");
-export async function getAllPublications(): Promise<
-  (IPublication & { id: string })[]
-> {
-  const snapshot = await getDocs(publicationsCollection);
-  return snapshot.docs.map((doc) => ({
-    id: doc.id,
-    ...(doc.data() as IPublication),
-  }));
-}
-
-export async function addPublication(
-  publication: IPublication
-): Promise<string> {
-  const docRef = await addDoc(publicationsCollection, publication);
-  return docRef.id;
-}
-
-export async function updatePublication(
-  id: string,
-  publiation: Partial<IPublication>
+export async function remove(
+  collectionName: string,
+  id: string
 ): Promise<void> {
-  const docRef = doc(db, "publications", id);
-  await updateDoc(docRef, publiation);
-}
-
-export async function deletePublciation(id: string): Promise<void> {
-  const docRef = doc(db, "publications", id);
+  const docRef = doc(db, collectionName, id);
   await deleteDoc(docRef);
 }

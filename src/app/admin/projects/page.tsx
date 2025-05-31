@@ -1,10 +1,5 @@
 "use client";
-import {
-  getAllProjects,
-  addProject,
-  updateProject,
-  deleteProject,
-} from "@/lib/firebase/firestore-crud";
+
 import { useEffect, useRef, useState } from "react";
 import { IProject } from "../../../../data/data.type";
 import { uploadImage } from "@/lib/firebase/uploadFiles";
@@ -24,6 +19,12 @@ import {
 import Link from "next/link";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import ProjectList from "./ProjectList";
+import {
+  getAllProjects,
+  deleteProject,
+  updateProject,
+  addProject,
+} from "@/lib/firebase/projects-crud";
 
 const emptyProject: IProject = {
   demoLink: "",

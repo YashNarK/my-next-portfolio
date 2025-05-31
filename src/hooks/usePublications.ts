@@ -1,7 +1,7 @@
-import { getAllPublications } from "@/lib/firebase/firestore-crud";
 import { useQuery } from "@tanstack/react-query";
 import { IPublication } from "../../data/data.type";
 import { AxiosError } from "axios";
+import { getAllPublications } from "@/lib/firebase/publications-crud";
 
 export const usePublications = () => {
   const { data, error, isLoading, isFetching } = useQuery<
