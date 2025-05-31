@@ -1,24 +1,28 @@
 "use client";
+import formatTime from "@/utils/formatTime";
 import localeDate from "@/utils/localeDate";
-import { useTheme } from "@emotion/react";
-import {
-  Card,
-  Box,
-  CardContent,
-  Typography,
-  Stack,
-  IconButton,
-  Button,
-} from "@mui/material";
-import { useState, useRef } from "react";
-import { IPublication } from "../../../data/data.type";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { useEffect, useRef, useState } from "react";
+import { IPublication } from "../../../data/data.type";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { useAppTheme } from "@/hooks/useAppTheme";
 type PublicationTileProps = { publication: IPublication };
 
 const PublicationTile = ({ publication }: PublicationTileProps) => {
-  const theme = useTheme();
+  const theme = useAppTheme();
   const [isPlaying, setIsPlaying] = useState<Boolean>(false);
+  const [progress, setProgress] = useState(0); // 0 to 100
+
   const [isDescriptionExpanded, setIsDescriptionExpanded] =
     useState<Boolean>(false);
 
@@ -34,6 +38,29 @@ const PublicationTile = ({ publication }: PublicationTileProps) => {
       return !prev;
     });
   };
+  const handleRestartAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0; // Reset time
+      audioRef.current.pause(); // Optional: play immediately
+      setIsPlaying(false); // Reset playing state
+    }
+  };
+
+  // Update progress bar while audio is playing
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    const updateProgress = () => {
+      const percent = (audio.currentTime / audio.duration) * 100;
+      setProgress(percent || 0);
+    };
+
+    audio.addEventListener("timeupdate", updateProgress);
+    return () => {
+      audio.removeEventListener("timeupdate", updateProgress);
+    };
+  }, []);
   return (
     <Card
       sx={{
@@ -46,9 +73,17 @@ const PublicationTile = ({ publication }: PublicationTileProps) => {
     >
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <CardContent sx={{ flex: "1 0 auto" }}>
-          <Typography variant="codeLike" sx={{ fontSize: "1.8rem" }}>
-            {publication.title}
-          </Typography>
+          <Box
+            sx={{
+              backgroundColor: theme.palette.primary.main,
+              minHeight: "3cm",
+              p: 2,
+            }}
+          >
+            <Typography variant="codeLike" sx={{ fontSize: "1.8rem" }}>
+              {publication.title}
+            </Typography>
+          </Box>
           <Box>
             <Typography variant="professional">
               {isDescriptionExpanded
@@ -89,9 +124,9 @@ const PublicationTile = ({ publication }: PublicationTileProps) => {
             <Box
               sx={{
                 display: "flex",
-                direction: {
-                  xs: "column",
-                  sm: "row",
+                flexDirection: {
+                  xs: "column", // stacked on mobile
+                  sm: "row", // side-by-side on larger screens
                 },
                 width: "100%",
                 border: "1px solid gray",
@@ -101,32 +136,81 @@ const PublicationTile = ({ publication }: PublicationTileProps) => {
                 gap: 3,
                 my: 2,
                 p: 1,
+                flexWrap: "wrap", // ensures new lines if needed
               }}
             >
               <Typography variant="handWritten" sx={{ fontSize: "2rem" }}>
                 Listen to the blog
               </Typography>
-              <IconButton aria-label="play/pause" onClick={handleTogglePlay}>
-                <Box
-                  sx={{
-                    height: 60,
-                    width: 60,
-                    border: "3px solid gray",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    transition: "transform 0.2s, box-shadow 0.2s",
-                    "&:hover": {
-                      boxShadow: 6,
-                      transform: "scale(1.8)",
-                    },
-                  }}
-                >
-                  {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+              <Box className="play-pause-restart-button-group">
+                <IconButton aria-label="play/pause" onClick={handleTogglePlay}>
+                  <Box
+                    sx={{
+                      height: 60,
+                      width: 60,
+                      border: "3px solid gray",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      transition: "transform 0.2s, box-shadow 0.2s",
+                      "&:hover": {
+                        boxShadow: 6,
+                        transform: "scale(1.8)",
+                      },
+                    }}
+                  >
+                    {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+                  </Box>
+                </IconButton>
+                <IconButton aria-label="restart" onClick={handleRestartAudio}>
+                  <Box
+                    sx={{
+                      height: 60,
+                      width: 60,
+                      border: "3px solid gray",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      transition: "transform 0.2s, box-shadow 0.2s",
+                      "&:hover": {
+                        boxShadow: 6,
+                        transform: "scale(1.8)",
+                      },
+                    }}
+                  >
+                    {<RestartAltIcon />}
+                  </Box>
+                </IconButton>
+              </Box>
+              {audioRef.current?.currentTime !== 0 && (
+                <Box width="100%" className="progress-bar">
+                  <Typography>
+                    {formatTime(audioRef.current?.currentTime || 0)} /{" "}
+                    {formatTime(audioRef.current?.duration || 0)}
+                  </Typography>
+                  <input
+                    style={{ width: "100%" }}
+                    type="range"
+                    value={progress}
+                    onChange={(e) => {
+                      const percent = Number(e.target.value);
+                      setProgress(percent);
+
+                      const audio = audioRef.current;
+                      if (audio && audio.duration) {
+                        audio.currentTime = (percent / 100) * audio.duration;
+                      }
+                    }}
+                    min="0"
+                    max="100"
+                    step="0.1"
+                  />
                 </Box>
-              </IconButton>
+              )}
             </Box>
             <Stack
               direction={"row"}
@@ -154,6 +238,7 @@ const PublicationTile = ({ publication }: PublicationTileProps) => {
                 sx={{
                   width: "100%",
                 }}
+                size="large"
                 variant="outlined"
                 color="secondary"
                 LinkComponent={"a"}
