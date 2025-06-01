@@ -41,13 +41,13 @@ interface IProject {
   oneLiner: string;
 }
 
-interface ICertificate {
+interface ICredential {
   title: string;
   description: string;
-  image: string;
+  image: string | File;
   link: string;
-  date: string;
-  issuer: string;
+  issuedDate: string;
+  issuedBy: string;
 }
 
 interface IPublication {
@@ -68,4 +68,4 @@ interface IWork {
   company: string;
 }
 
-export type { myTechnologies, IProject, ICertificate, IPublication, IWork };
+export type { myTechnologies, IProject, ICredential, IPublication, IWork };
