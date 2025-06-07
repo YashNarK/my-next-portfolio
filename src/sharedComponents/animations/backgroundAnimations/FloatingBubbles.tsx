@@ -4,7 +4,7 @@ import { Mesh } from "three";
 import { useFrame } from "@react-three/fiber";
 
 const BUBBLE_COUNT = 5;
-const RADIUS = 0.8;
+const RADIUS = 0.5;
 const BOUNDARY = 3; // X and Y limits for simplicity
 const VELOCITY_FACTOR = 0.01; // Adjust for speed
 const colors = [
