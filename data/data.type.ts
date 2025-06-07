@@ -48,6 +48,7 @@ interface ICredential {
   link: string;
   issuedDate: string;
   issuedBy: string;
+  credentialID: string;
 }
 
 interface IPublication {
@@ -59,13 +60,23 @@ interface IPublication {
   audio?: string | File;
 }
 
-interface IWork {
-  jobTitle: string;
-  jobDescription: string;
+interface IExperience {
+  title: string;
+  description: string;
   startDate: string;
   endDate?: string;
   isCurrent: boolean;
-  company: string;
+  companyOrInstitution: string;
+  cgpa?: number;
+  location: string;
+  type: "work" | "education";
+  order: number;
 }
 
-export type { myTechnologies, IProject, ICredential, IPublication, IWork };
+export type {
+  myTechnologies,
+  IProject,
+  ICredential,
+  IPublication,
+  IExperience,
+};
