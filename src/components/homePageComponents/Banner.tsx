@@ -133,7 +133,7 @@ const Banner = () => {
           width: { xs: "100%", sm: "60%" },
         }}
       >
-        <CodeLikeTypography textColor={textColor}>
+        <CodeLikeTypography>
           Hello, I'm{" "}
           <Typography
             variant={nameVariant}
@@ -146,13 +146,11 @@ const Banner = () => {
             Narendran
           </Typography>
         </CodeLikeTypography>
-        <CodeLikeTypography textColor={textColor}>
+        <CodeLikeTypography>
           I am a <InfinityTypingText />
         </CodeLikeTypography>
-        <CodeLikeTypography textColor={textColor}>
-          Tools of My Trade:
-        </CodeLikeTypography>
-        <CodeLikeTypography textColor={textColor}>
+        <CodeLikeTypography>Tools of My Trade:</CodeLikeTypography>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/react" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="React"
@@ -161,7 +159,7 @@ const Banner = () => {
           1. React JS
           <Typography variant="handWritten"> (With TypeScript)</Typography>
         </CodeLikeTypography>
-        <CodeLikeTypography textColor={textColor}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/express" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="Express"
@@ -169,7 +167,7 @@ const Banner = () => {
           />
           2. Express JS
         </CodeLikeTypography>
-        <CodeLikeTypography textColor={textColor}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/typescript" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="TypeScript"
@@ -189,7 +187,7 @@ const Banner = () => {
           TypeScript
         </CodeLikeTypography>
 
-        <CodeLikeTypography textColor={textColor}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/nextjs" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="NextJS"
@@ -197,7 +195,7 @@ const Banner = () => {
           />
           4. Next JS
         </CodeLikeTypography>
-        <CodeLikeTypography textColor={textColor}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/redux" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="Redux"
@@ -206,7 +204,7 @@ const Banner = () => {
           5. Redux{" "}
           <Typography variant="handWritten"> (react-redux toolkit)</Typography>
         </CodeLikeTypography>
-        <CodeLikeTypography textColor={textColor}>
+        <CodeLikeTypography>
           <SvgImage
             src={"/svg/bitcoin" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="Bitcoin"

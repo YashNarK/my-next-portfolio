@@ -16,7 +16,7 @@ type codePropsType = {
     TypographyVariant | "inherit",
     TypographyPropsVariantOverrides
   >;
-  textColor: string;
+  textColor?: string;
 
   display?:
     | ResponsiveStyleValue<Property.Display | readonly string[] | undefined>
@@ -33,14 +33,14 @@ const CodeLikeTypography = ({
   noRuler,
   variant = "codeLike",
   display = "block",
-  textColor,
+  textColor = "",
 }: codePropsType) => {
   return (
     <Typography
       variant={variant}
       sx={{
         display: display,
-        color: textColor,
+        ...(textColor && { color: textColor }),
         fontSize: { xs: "1.1rem", sm: "1.5rem" },
       }}
     >
