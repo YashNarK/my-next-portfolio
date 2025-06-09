@@ -25,6 +25,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { SvgImage } from "./SvgImage";
 import ImageIntro from "./ImageIntro";
 import InfinityTypingText from "./InfinityTypingText";
+import CodeLikeTypography from "./CodeLikeTypography";
 
 const getTheme = () => {
   const theme = useAppTheme();
@@ -43,44 +44,44 @@ const getTheme = () => {
   };
 };
 
-type codePropsType = {
-  children: ReactNode;
-  noRuler?: boolean;
-  variant?: OverridableStringUnion<
-    TypographyVariant | "inherit",
-    TypographyPropsVariantOverrides
-  >;
-  display?:
-    | ResponsiveStyleValue<Property.Display | readonly string[] | undefined>
-    | ((
-        theme: Theme
-      ) => ResponsiveStyleValue<
-        Property.Display | readonly string[] | undefined
-      >)
-    | null;
-};
+// type codePropsType = {
+//   children: ReactNode;
+//   noRuler?: boolean;
+//   variant?: OverridableStringUnion<
+//     TypographyVariant | "inherit",
+//     TypographyPropsVariantOverrides
+//   >;
+//   display?:
+//     | ResponsiveStyleValue<Property.Display | readonly string[] | undefined>
+//     | ((
+//         theme: Theme
+//       ) => ResponsiveStyleValue<
+//         Property.Display | readonly string[] | undefined
+//       >)
+//     | null;
+// };
 
-const CodeLikeTypography = ({
-  children,
-  noRuler,
-  variant = "codeLike",
-  display = "block",
-}: codePropsType) => {
-  const { textColor } = getTheme();
-  return (
-    <Typography
-      variant={variant}
-      sx={{
-        display: display,
-        color: textColor,
-        fontSize: { xs: "1.1rem", sm: "1.5rem" },
-      }}
-    >
-      {children}
-      {!noRuler && <hr />}
-    </Typography>
-  );
-};
+// const CodeLikeTypography = ({
+//   children,
+//   noRuler,
+//   variant = "codeLike",
+//   display = "block",
+// }: codePropsType) => {
+//   const { textColor } = getTheme();
+//   return (
+//     <Typography
+//       variant={variant}
+//       sx={{
+//         display: display,
+//         color: textColor,
+//         fontSize: { xs: "1.1rem", sm: "1.5rem" },
+//       }}
+//     >
+//       {children}
+//       {!noRuler && <hr />}
+//     </Typography>
+//   );
+// };
 type variantType =
   | "playful"
   | "handWritten"
@@ -132,7 +133,7 @@ const Banner = () => {
           width: { xs: "100%", sm: "60%" },
         }}
       >
-        <CodeLikeTypography>
+        <CodeLikeTypography textColor={textColor}>
           Hello, I'm{" "}
           <Typography
             variant={nameVariant}
@@ -145,11 +146,13 @@ const Banner = () => {
             Narendran
           </Typography>
         </CodeLikeTypography>
-        <CodeLikeTypography>
+        <CodeLikeTypography textColor={textColor}>
           I am a <InfinityTypingText />
         </CodeLikeTypography>
-        <CodeLikeTypography>Tools of My Trade:</CodeLikeTypography>
-        <CodeLikeTypography>
+        <CodeLikeTypography textColor={textColor}>
+          Tools of My Trade:
+        </CodeLikeTypography>
+        <CodeLikeTypography textColor={textColor}>
           <SvgImage
             src={"/svg/react" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="React"
@@ -158,7 +161,7 @@ const Banner = () => {
           1. React JS
           <Typography variant="handWritten"> (With TypeScript)</Typography>
         </CodeLikeTypography>
-        <CodeLikeTypography>
+        <CodeLikeTypography textColor={textColor}>
           <SvgImage
             src={"/svg/express" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="Express"
@@ -166,7 +169,7 @@ const Banner = () => {
           />
           2. Express JS
         </CodeLikeTypography>
-        <CodeLikeTypography>
+        <CodeLikeTypography textColor={textColor}>
           <SvgImage
             src={"/svg/typescript" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="TypeScript"
@@ -186,7 +189,7 @@ const Banner = () => {
           TypeScript
         </CodeLikeTypography>
 
-        <CodeLikeTypography>
+        <CodeLikeTypography textColor={textColor}>
           <SvgImage
             src={"/svg/nextjs" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="NextJS"
@@ -194,7 +197,7 @@ const Banner = () => {
           />
           4. Next JS
         </CodeLikeTypography>
-        <CodeLikeTypography>
+        <CodeLikeTypography textColor={textColor}>
           <SvgImage
             src={"/svg/redux" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="Redux"
@@ -203,7 +206,7 @@ const Banner = () => {
           5. Redux{" "}
           <Typography variant="handWritten"> (react-redux toolkit)</Typography>
         </CodeLikeTypography>
-        <CodeLikeTypography>
+        <CodeLikeTypography textColor={textColor}>
           <SvgImage
             src={"/svg/bitcoin" + (mode === "dark" ? "-dark" : "") + ".svg"}
             alt="Bitcoin"
