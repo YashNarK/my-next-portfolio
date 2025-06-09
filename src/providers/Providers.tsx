@@ -8,7 +8,7 @@ import { Provider } from "react-redux"; // Redux Provider
 import { useAppTheme } from "@/hooks/useAppTheme"; // Custom theme hook
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import ErrorFallback from "@/components/ErrorFallback";
+import ErrorFallback from "@/components/errorPageComponents/ErrorFallback";
 import { ErrorBoundary } from "react-error-boundary";
 // A client-side QueryClientProvider for React Query
 // This is used for data fetching and caching
