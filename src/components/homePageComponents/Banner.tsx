@@ -22,7 +22,7 @@ import { ResponsiveStyleValue } from "@mui/system";
 import { OverridableStringUnion } from "@mui/types";
 import { Property } from "csstype";
 import { ReactNode, useEffect, useState } from "react";
-import { SvgImage } from "../SvgImage";
+import { SvgImage } from "./SvgImage";
 import ImageIntro from "./ImageIntro";
 import InfinityTypingText from "./InfinityTypingText";
 

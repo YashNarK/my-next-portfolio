@@ -1,7 +1,7 @@
 import { Providers } from "@/providers/Providers";
 import { Box } from "@mui/material";
 import type { Metadata } from "next";
-import FloatingNavBar from "../components/FloatingNavBar";
+import FloatingNavBar from "../components/navbarComponents/FloatingNavBar";
 import "./globals.css";
 import BlackHoleCursor from "@/sharedComponents/animations/blackholeCursorAnimation/BlackHoleCursor";
 import Footer from "@/sharedComponents/Footer";
