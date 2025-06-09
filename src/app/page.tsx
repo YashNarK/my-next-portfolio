@@ -1,4 +1,4 @@
-import Banner from "@/components/Banner";
+import Banner from "@/components/homePageComponents/Banner";
 import { Box } from "@mui/material";
 export default function Home() {
   return (
