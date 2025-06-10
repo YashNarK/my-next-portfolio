@@ -69,7 +69,7 @@ const page = () => {
                   router.push(menu.path);
                 }}
               >
-                {menu.name}
+                <Typography variant="professional">{menu.name}</Typography>
               </Box>
             </Grid>
           );
