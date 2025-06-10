@@ -121,7 +121,7 @@ const Banner = () => {
       sx={{
         overflow: "hidden",
         m: 0,
-        py: 10,
+        pt: 10,
         px: 2,
         background: "transparent",
       }}
