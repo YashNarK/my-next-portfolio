@@ -24,6 +24,7 @@ const Project = () => {
         justifyContent: "flex-center",
         alignItems: "center",
         background: "transparent",
+        minHeight: "100%",
       }}
     >
       {isLoading || !projectsList

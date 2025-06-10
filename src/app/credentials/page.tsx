@@ -33,6 +33,7 @@ const Credentials = () => {
           justifyContent="center"
           alignItems="center"
           flexDirection="column"
+          minHeight={"100%"}
         >
           <Stack
             direction={{ xs: "column", md: "row" }}
