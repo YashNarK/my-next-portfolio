@@ -12,14 +12,15 @@ import { IExperience } from "../../../data/data.type";
 import "./professionalTimeline.css"; // Ensure you have the correct path to your CSS file
 import { useAppSelector } from "@/hooks/useReduxCustom";
 import { useEffect } from "react";
+import { localeDate } from "@/utils/dateFunctions";
 const data: (IExperience & { id: number })[] = [
   {
     id: 1,
     type: "work",
     title: "Senior Software Engineer",
     description: `Led development of an anomaly monitoring using React JS, Express.js, and AWS. Developed a demand forecast tool and ticketing portal using Angular, enhancing issue resolution workflows and user experience. Engaged in direct client interactions and requirement gathering, translating business needs into technical solutions.`,
-    startDate: "28/10/2020",
-    endDate: "11/06/2024",
+    startDate: "2020-10-28",
+    endDate: "2024-06-11",
     isCurrent: false,
     companyOrInstitution: "LTIMindtree",
     location: "Chennai",
@@ -30,7 +31,7 @@ const data: (IExperience & { id: number })[] = [
     type: "work",
     title: "Packaged App Development Senior Analyst",
     description: `Built and optimized ReactJS front-end components and pages for improved performance and user experience. Developed and integrated GraphQL and REST APIs for a leading global tech company. Worked in an Agile environment, consistently delivering high-quality features within deadlines. Collaborated with cross-functional teams to ensure seamless deployments and minimal defects.`,
-    startDate: "19/06/2024",
+    startDate: "2024-06-19",
     endDate: "",
     isCurrent: true,
     companyOrInstitution: "Accenture",
@@ -42,8 +43,8 @@ const data: (IExperience & { id: number })[] = [
     type: "education",
     title: "B.E. in Electrical and Electronics Engineering",
     description: `Although I am originally from an Electrical and Electronics Engineering background, I have successfully transitioned into the field of software development. My academic foundation has equipped me with strong analytical and problem-solving skills, which I have effectively applied in my software engineering career.`,
-    startDate: "11/07/2016",
-    endDate: "30/04/2020",
+    startDate: "2016-07-11",
+    endDate: "2020-04-30",
     cgpa: 8.9,
     isCurrent: false,
     companyOrInstitution: "Coimbatore Institute of Technology",
@@ -61,8 +62,10 @@ const CustomTimelineElement = ({
   const icon = isWork ? <WorkIcon /> : <SchoolIcon />;
   const bgColor = isWork ? "rgb(33, 150, 243)" : "rgb(233, 30, 99)";
   const displayDate = experienceItem.isCurrent
-    ? `${experienceItem.startDate} - Present`
-    : `${experienceItem.startDate} - ${experienceItem.endDate}`;
+    ? `${localeDate(experienceItem.startDate)} - Present`
+    : `${localeDate(experienceItem.startDate)} - ${
+        experienceItem.endDate && localeDate(experienceItem.endDate)
+      }`;
   return (
     <VerticalTimelineElement
       key={experienceItem.id}
@@ -104,9 +107,18 @@ const ProfessionalTimeline = () => {
       mode === "dark" ? "white" : "black"
     );
   }, [mode]);
+  const experiencesWithOrder = data
+    .sort(
+      (a, b) =>
+        new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+    )
+    .map((item, index) => ({
+      ...item,
+      order: index + 1, // oldest gets 1, newest gets highest
+    }));
   return (
     <VerticalTimeline>
-      {data
+      {experiencesWithOrder
         .sort((item, nextItem) => {
           return nextItem.order - item.order;
         })
