@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import { OverridableStringUnion } from "@mui/types";
 import { ReactNode } from "react";
-import { ResponsiveStyleValue } from "@mui/system";
+import { ResponsiveStyleValue, textAlign } from "@mui/system";
 import { Property } from "csstype";
 
 type codePropsType = {
@@ -17,7 +17,7 @@ type codePropsType = {
     TypographyPropsVariantOverrides
   >;
   textColor?: string;
-
+  textAlignment?: ResponsiveStyleValue<Property.TextAlign>;
   display?:
     | ResponsiveStyleValue<Property.Display | readonly string[] | undefined>
     | ((
@@ -34,6 +34,7 @@ const CodeLikeTypography = ({
   variant = "codeLike",
   display = "block",
   textColor = "",
+  textAlignment = "left",
 }: codePropsType) => {
   return (
     <Typography
@@ -43,6 +44,7 @@ const CodeLikeTypography = ({
         ...(textColor && { color: textColor }),
         fontSize: { xs: "1.1rem", sm: "1.5rem" },
       }}
+      textAlign={textAlignment}
     >
       {children}
       {!noRuler && <hr />}
