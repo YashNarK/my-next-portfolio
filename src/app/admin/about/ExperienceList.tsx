@@ -85,6 +85,12 @@ const ExperienceList = ({
                 <Typography variant="h6" fontWeight={600}>
                   {experience.title}
                 </Typography>
+                <Typography variant="body1" fontWeight={600}>
+                  {experience.companyOrInstitution} | {experience.location}
+                </Typography>
+                <Typography variant="body2">
+                  {experience.description}
+                </Typography>
 
                 {/* Tags for technologies used */}
 
