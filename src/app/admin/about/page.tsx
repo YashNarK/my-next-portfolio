@@ -40,7 +40,7 @@ const emptyExperience: IExperience = {
   startDate: "",
   endDate: "",
   order: 0,
-  cgpa: undefined,
+  cgpa: 0,
 };
 
 export default function Admin() {
@@ -50,8 +50,6 @@ export default function Admin() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState(emptyExperience);
 
-  const imageInputRef = useRef<HTMLInputElement>(null);
-  const potraitInputRef = useRef<HTMLInputElement>(null);
   const theme = useAppTheme();
 
   useEffect(() => {
@@ -94,13 +92,12 @@ export default function Admin() {
     if (editingId) {
       await updateExperience(editingId, dataToSave);
     } else {
+      console.log(dataToSave);
       await addExperience(dataToSave);
     }
 
     setFormData(emptyExperience);
     setEditingId(null);
-    imageInputRef.current!.value = "";
-    potraitInputRef.current!.value = "";
     await loadExperiences();
   }
 
