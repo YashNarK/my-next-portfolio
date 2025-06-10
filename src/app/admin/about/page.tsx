@@ -114,7 +114,14 @@ export default function Admin() {
   ) {
     const target = event.target as HTMLInputElement;
     const { name } = target;
-    setFormData((prev) => ({ ...prev, [name]: checked }));
+    if (name === "type") {
+      setFormData((prev) => ({
+        ...prev,
+        type: checked ? "education" : "work",
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+    }
   }
   return (
     <Paper
@@ -217,6 +224,15 @@ export default function Admin() {
             <Grid size={{ xs: 12, sm: 6 }}>
               <FormControlLabel
                 control={<Checkbox color="secondary" />}
+                label="Study Program?"
+                name="type"
+                checked={formData.type === "education"}
+                onChange={handleCheckboxChange}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, sm: 6 }}>
+              <FormControlLabel
+                control={<Checkbox color="secondary" />}
                 label={
                   (formData.type === "work"
                     ? "Currently Working Here"
@@ -227,6 +243,21 @@ export default function Admin() {
                 onChange={handleCheckboxChange}
               />
             </Grid>
+
+            {formData.type === "education" && (
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    label="Cgpa"
+                    name="cgpa"
+                    value={formData.cgpa}
+                    onChange={handleChange}
+                    required={formData.type === "education"}
+                  />
+                </Grid>
+              </Grid>
+            )}
+
             <Grid size={{ xs: 12 }}>
               <Stack direction="row" spacing={2}>
                 <Button type="submit" variant="contained">
