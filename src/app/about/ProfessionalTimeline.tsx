@@ -12,51 +12,14 @@ import { IExperience } from "../../../data/data.type";
 import "./professionalTimeline.css"; // Ensure you have the correct path to your CSS file
 import { useAppSelector } from "@/hooks/useReduxCustom";
 import { useEffect } from "react";
-import { localeDate } from "@/utils/dateFunctions";
-const data: (IExperience & { id: number })[] = [
-  {
-    id: 1,
-    type: "work",
-    title: "Senior Software Engineer",
-    description: `Led development of an anomaly monitoring using React JS, Express.js, and AWS. Developed a demand forecast tool and ticketing portal using Angular, enhancing issue resolution workflows and user experience. Engaged in direct client interactions and requirement gathering, translating business needs into technical solutions.`,
-    startDate: "2020-10-28",
-    endDate: "2024-06-11",
-    isCurrent: false,
-    companyOrInstitution: "LTIMindtree",
-    location: "Chennai",
-    order: 2,
-  },
-  {
-    id: 2,
-    type: "work",
-    title: "Packaged App Development Senior Analyst",
-    description: `Built and optimized ReactJS front-end components and pages for improved performance and user experience. Developed and integrated GraphQL and REST APIs for a leading global tech company. Worked in an Agile environment, consistently delivering high-quality features within deadlines. Collaborated with cross-functional teams to ensure seamless deployments and minimal defects.`,
-    startDate: "2024-06-19",
-    endDate: "",
-    isCurrent: true,
-    companyOrInstitution: "Accenture",
-    location: "Chennai",
-    order: 3,
-  },
-  {
-    id: 3,
-    type: "education",
-    title: "B.E. in Electrical and Electronics Engineering",
-    description: `Although I am originally from an Electrical and Electronics Engineering background, I have successfully transitioned into the field of software development. My academic foundation has equipped me with strong analytical and problem-solving skills, which I have effectively applied in my software engineering career.`,
-    startDate: "2016-07-11",
-    endDate: "2020-04-30",
-    cgpa: 8.9,
-    isCurrent: false,
-    companyOrInstitution: "Coimbatore Institute of Technology",
-    location: "Coimbatore",
-    order: 1,
-  },
-];
+import { calculateExperience, localeDate } from "@/utils/dateFunctions";
+import useExperiences from "@/hooks/useExperiences";
+import CodeLikeTypography from "@/components/homePageComponents/CodeLikeTypography";
 
 const CustomTimelineElement = ({
   experienceItem,
 }: {
-  experienceItem: IExperience & { id: number };
+  experienceItem: IExperience & { id: string };
 }) => {
   const isWork = experienceItem.type === "work";
   const icon = isWork ? <WorkIcon /> : <SchoolIcon />;
@@ -100,6 +63,7 @@ const CustomTimelineElement = ({
 };
 
 const ProfessionalTimeline = () => {
+  const { data, isLoading, error } = useExperiences();
   const mode = useAppSelector((state) => state.theme.mode);
   useEffect(() => {
     document.documentElement.style.setProperty(
@@ -107,7 +71,7 @@ const ProfessionalTimeline = () => {
       mode === "dark" ? "white" : "black"
     );
   }, [mode]);
-  const experiencesWithOrder = data
+  const experiencesWithOrder = (data || [])
     .sort(
       (a, b) =>
         new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
@@ -117,19 +81,28 @@ const ProfessionalTimeline = () => {
       order: index + 1, // oldest gets 1, newest gets highest
     }));
   return (
-    <VerticalTimeline>
-      {experiencesWithOrder
-        .sort((item, nextItem) => {
-          return nextItem.order - item.order;
-        })
-        .map((item) => {
-          return <CustomTimelineElement key={item.id} experienceItem={item} />;
-        })}
-      <VerticalTimelineElement
-        iconStyle={{ background: "rgb(16, 204, 82)", color: "#fff" }}
-        icon={<StarIcon />}
-      />
-    </VerticalTimeline>
+    <Box>
+      <CodeLikeTypography textAlignment={"center"}>
+        {`${calculateExperience("2020-10-28")} of Professional journey ${
+          Boolean(isLoading) ? "is now Loading...." : ""
+        }`}
+      </CodeLikeTypography>
+      <VerticalTimeline>
+        {experiencesWithOrder
+          .sort((item, nextItem) => {
+            return nextItem.order - item.order;
+          })
+          .map((item) => {
+            return (
+              <CustomTimelineElement key={item.id} experienceItem={item} />
+            );
+          })}
+        <VerticalTimelineElement
+          iconStyle={{ background: "rgb(16, 204, 82)", color: "#fff" }}
+          icon={<StarIcon />}
+        />
+      </VerticalTimeline>
+    </Box>
   );
 };
 
