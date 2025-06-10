@@ -10,7 +10,7 @@ import {
 import { useState, useMemo } from "react";
 import { IPublication } from "../../../../data/data.type";
 import { useMediaQuery, useTheme } from "@mui/material";
-import localeDate from "@/utils/localeDate";
+import { localeDate } from "@/utils/dateFunctions";
 
 const ITEMS_PER_PAGE = 2;
 

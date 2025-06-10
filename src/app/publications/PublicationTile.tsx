@@ -1,6 +1,5 @@
 "use client";
 import formatTime from "@/utils/formatTime";
-import localeDate from "@/utils/localeDate";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import {
@@ -16,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import { IPublication } from "../../../data/data.type";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { localeDate } from "@/utils/dateFunctions";
 type PublicationTileProps = { publication: IPublication };
 
 const PublicationTile = ({ publication }: PublicationTileProps) => {

@@ -16,7 +16,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import useCredentials from "@/hooks/useCredentials";
-import localeDate from "@/utils/localeDate";
+import { localeDate } from "@/utils/dateFunctions";
 
 const Credentials = () => {
   const [selectedCertificate, setSelectedCertificate] = useState(0);
