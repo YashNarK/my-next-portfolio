@@ -70,7 +70,7 @@ interface IExperience {
   cgpa?: number;
   location: string;
   type: "work" | "education";
-  order: number;
+  order?: number;
 }
 
 export type {
