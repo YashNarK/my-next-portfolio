@@ -23,7 +23,6 @@ import * as React from "react";
 import SlideButton from "./SlideButton";
 import SocialButton from "./SocialButton";
 import ThemeToggleButton from "./ThemeToggleButton";
-
 const drawerWidth = { xs: 240, sm: 400 };
 const navItems = [
   { label: "Home", path: "/" },
@@ -31,6 +30,7 @@ const navItems = [
   { label: "Credentials", path: "/credentials" },
   { label: "Projects", path: "/projects" },
   { label: "Publications", path: "/publications" },
+  { label: "Admin🔑", path: "/admin" },
 ];
 interface ISocialData {
   text: string;
