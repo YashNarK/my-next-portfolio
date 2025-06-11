@@ -1,7 +1,7 @@
 "use client";
 
 import usePublications from "@/hooks/usePublications";
-import { Box, Grid, Skeleton, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import PublicationTile from "./PublicationTile";
 import PublicationTileSkeleton from "./PublicationTileSkeleton";
 
