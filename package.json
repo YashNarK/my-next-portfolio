@@ -25,6 +25,7 @@
     "dayjs": "^1.11.13",
     "drei": "^2.2.21",
     "firebase": "^11.7.3",
+    "firebase-admin": "^13.4.0",
     "framer-motion": "^12.6.2",
     "next": "15.2.4",
     "postprocessing": "^6.37.2",
