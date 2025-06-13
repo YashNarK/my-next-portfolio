@@ -23,6 +23,10 @@ const page = () => {
       name: "Publications",
       path: "admin/publications",
     },
+    {
+      name: "Logout",
+      path: "api/auth/logout",
+    },
   ];
   return (
     <Box minHeight={"100%"} mt={20} textAlign={"center"}>
@@ -65,8 +69,17 @@ const page = () => {
                     transform: "scale(1.2)",
                   },
                 }}
-                onClick={() => {
-                  router.push(menu.path);
+                onClick={async () => {
+                  if (menu.name === "Logout") {
+                    try {
+                      await fetch("/api/auth/logout", { method: "POST" });
+                      router.push("/login");
+                    } catch (err) {
+                      console.error("Logout failed:", err);
+                    }
+                  } else {
+                    router.push(menu.path);
+                  }
                 }}
               >
                 <Typography variant="professional">{menu.name}</Typography>
