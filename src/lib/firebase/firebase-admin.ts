@@ -1,10 +1,9 @@
 // src/lib/firebase/firebase-admin.ts
 import {
-  initializeApp,
-  applicationDefault,
-  getApps,
-  getApp,
   cert,
+  getApp,
+  getApps,
+  initializeApp
 } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
 
