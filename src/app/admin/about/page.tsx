@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { IExperience } from "../../../../data/data.type";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import {
   addExperience,
@@ -10,25 +8,24 @@ import {
   updateExperience,
 } from "@/lib/firebase/experiences-crud";
 import {
-  Paper,
-  Container,
-  Typography,
   Box,
-  Grid,
-  TextField,
-  InputLabel,
-  FormHelperText,
   Button,
-  Stack,
-  Chip,
   Checkbox,
+  Container,
   FormControlLabel,
+  Grid,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
-import ExperienceList from "./ExperienceList";
-import dayjs, { Dayjs } from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs, { Dayjs } from "dayjs";
+import { useEffect, useState } from "react";
+import { IExperience } from "../../../../data/data.type";
+import ExperienceList from "./ExperienceList";
 
 const emptyExperience: IExperience = {
   description: "",
@@ -87,12 +84,11 @@ export default function Admin() {
       ...formData,
     };
 
-    delete (dataToSave as any).id; // in case id was carried over
+    delete (dataToSave as Record<string, unknown>).id; // in case id was carried over
 
     if (editingId) {
       await updateExperience(editingId, dataToSave);
     } else {
-      console.log(dataToSave);
       await addExperience(dataToSave);
     }
 

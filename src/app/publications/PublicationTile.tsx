@@ -20,11 +20,11 @@ type PublicationTileProps = { publication: IPublication };
 
 const PublicationTile = ({ publication }: PublicationTileProps) => {
   const theme = useAppTheme();
-  const [isPlaying, setIsPlaying] = useState<Boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [progress, setProgress] = useState(0); // 0 to 100
 
   const [isDescriptionExpanded, setIsDescriptionExpanded] =
-    useState<Boolean>(false);
+    useState<boolean>(false);
 
   const fullDescription = publication.description;
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -33,8 +33,13 @@ const PublicationTile = ({ publication }: PublicationTileProps) => {
   const handleTogglePlay = () => {
     const audio = audioRef.current;
     if (!audio) return;
+
     setIsPlaying((prev) => {
-      !prev ? audio.play() : audio.pause();
+      if (!prev) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
       return !prev;
     });
   };

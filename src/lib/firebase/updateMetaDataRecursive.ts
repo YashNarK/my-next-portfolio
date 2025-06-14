@@ -1,12 +1,4 @@
-import {
-  ref,
-  listAll,
-  updateMetadata,
-  StorageReference,
-} from "firebase/storage";
-import { storage } from "./firebase-client";
-
-const imagesRef = ref(storage, "images"); // The starting point
+import { listAll, StorageReference, updateMetadata } from "firebase/storage";
 
 async function updateMetadataRecursive(
   storageRef: StorageReference

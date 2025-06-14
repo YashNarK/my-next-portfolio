@@ -1,28 +1,29 @@
 "use client";
 
-import { Box } from "@mui/material";
 import { motion } from "framer-motion";
+import { ComponentProps } from "react";
 
 type SvgImageProps = {
   src: string;
   alt: string;
-  animation?: any;
+  animation?: ComponentProps<typeof motion.img>;
 };
 
 export const SvgImage = ({ src, alt, animation }: SvgImageProps) => {
   return (
-    <Box
-      component={motion.img}
+    <motion.img
       src={src}
       alt={alt}
-      width={{ xs: 20, sm: 30 }}
-      height={{ xs: 20, sm: 30 }}
-      sx={{
+      style={{
         display: "inline-block",
-        mx: "8px",
+        marginLeft: "8px",
+        marginRight: "8px",
         verticalAlign: "middle",
+        width: "20px",
+        height: "20px",
+        ...(animation?.style || {}),
       }}
-      {...(animation || {})}
+      {...animation}
     />
   );
 };

@@ -1,15 +1,14 @@
 import {
   Box,
   Button,
+  Pagination,
   Paper,
   Stack,
   TextField,
-  Typography,
-  Pagination,
+  Typography
 } from "@mui/material";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { IExperience } from "../../../../data/data.type";
-import { useMediaQuery, useTheme } from "@mui/material";
 
 const ITEMS_PER_PAGE = 2;
 
@@ -44,7 +43,6 @@ const ExperienceList = ({
     currentPage * ITEMS_PER_PAGE
   );
 
-  const theme = useTheme();
 
   return (
     <Box>

@@ -4,12 +4,13 @@ import { notFound } from "next/navigation";
 import { slugify } from "@/utils/slugify";
 import { GitHub, ImportantDevices } from "@mui/icons-material";
 import { getAllProjects } from "@/lib/firebase/projects-crud";
+import Image from "next/image";
 
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export default async function ProjectDetailsPage({params}: Props) {
+export default async function ProjectDetailsPage({ params }: Props) {
   const { slug } = await params;
   const projects = await getAllProjects();
   const project = projects.find((p) => slugify(p.title) === slug);
@@ -27,7 +28,16 @@ export default async function ProjectDetailsPage({params}: Props) {
         <Grid size={{ xs: 12, sm: 6 }}>
           <Box>
             {typeof project.image === "string" && (
-              <img src={project.image} width={"100%"} height={"auto"} />
+              <Image
+                alt={project.title + " Image"}
+                src={project.image}
+                width={500}
+                height={300}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                }}
+              />
             )}
           </Box>
         </Grid>

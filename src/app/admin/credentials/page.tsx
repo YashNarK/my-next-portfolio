@@ -1,23 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ICredential } from "../../../../data/data.type";
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { uploadImage } from "@/lib/firebase/uploadFiles";
 import {
-  Container,
-  Typography,
   Box,
-  Grid,
-  TextField,
-  InputLabel,
-  FormHelperText,
   Button,
-  Stack,
-  Chip,
+  Container,
+  FormHelperText,
+  Grid,
+  InputLabel,
   Paper,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 import Link from "next/link";
-import { useAppTheme } from "@/hooks/useAppTheme";
+import { useEffect, useRef, useState } from "react";
+import { ICredential } from "../../../../data/data.type";
 import CredentialList from "./CredentialList";
 
 import {
@@ -26,9 +25,9 @@ import {
   getAllCredentials,
   updateCredential,
 } from "@/lib/firebase/credentials-crud";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs, { Dayjs } from "dayjs";
 
 const emptyCredential: ICredential = {
@@ -104,7 +103,7 @@ export default function Admin() {
       image: imageURL,
     };
 
-    delete (dataToSave as any).id; // in case id was carried over
+    delete (dataToSave as Record<string, unknown>).id; // in case id was carried over
 
     if (editingId) {
       await updateCredential(editingId, dataToSave);

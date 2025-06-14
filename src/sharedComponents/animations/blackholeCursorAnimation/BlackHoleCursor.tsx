@@ -1,17 +1,25 @@
 "use client";
 
+import { useAppTheme } from "@/hooks/useAppTheme";
 import { useAppSelector } from "@/hooks/useReduxCustom";
+import { gravitationalRipple } from "@/lib/animation";
+import { Trail } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
-import { Trail, Sparkles } from "@react-three/drei";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { motion } from "framer-motion";
-import { gravitationalRipple } from "@/lib/animation";
 
 type Mouse = { x: number; y: number };
 
-const Star = ({ radiusX, radiusY, speed, color, centerRef }: any) => {
+type StarProps = {
+  radiusX: number;
+  radiusY: number;
+  speed: number;
+  color: string;
+  centerRef: React.RefObject<THREE.Mesh>;
+};
+
+const Star = ({ radiusX, radiusY, speed, color, centerRef }: StarProps) => {
   const starRef = useRef<THREE.Mesh>(null!);
   const angleRef = useRef(Math.random() * Math.PI * 2);
 

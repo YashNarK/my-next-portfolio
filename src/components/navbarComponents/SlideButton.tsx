@@ -2,6 +2,7 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Typography, useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 
 const SlideButton = () => {
@@ -116,13 +117,15 @@ const SlideButton = () => {
         onTouchEnd={handleEnd}
       >
         {/* Rocket GIF */}
-        <img
+        <Image
           src="/img/rocket-moving-colored.gif"
           alt="Rocket"
           draggable="false"
           onDragStart={(e) => e.preventDefault()}
           onMouseDown={handleStart}
           onTouchStart={handleStart}
+          width={50}
+          height={80}
           style={{
             position: "absolute",
             left: rocketLeftPosition,
@@ -140,9 +143,11 @@ const SlideButton = () => {
         />
 
         {/* Black Hole */}
-        <img
+        <Image
           src="/svg/blackhole.svg"
           alt="Black Hole"
+          width={100}
+          height={100}
           style={{
             position: "absolute",
             right: "-30px",

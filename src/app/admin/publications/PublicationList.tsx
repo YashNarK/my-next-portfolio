@@ -1,16 +1,15 @@
+import { localeDate } from "@/utils/dateFunctions";
 import {
   Box,
   Button,
+  Pagination,
   Paper,
   Stack,
   TextField,
-  Typography,
-  Pagination,
+  Typography
 } from "@mui/material";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import { IPublication } from "../../../../data/data.type";
-import { useMediaQuery, useTheme } from "@mui/material";
-import { localeDate } from "@/utils/dateFunctions";
 
 const ITEMS_PER_PAGE = 2;
 
@@ -45,8 +44,6 @@ const PublicationList = ({
     currentPage * ITEMS_PER_PAGE
   );
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box>

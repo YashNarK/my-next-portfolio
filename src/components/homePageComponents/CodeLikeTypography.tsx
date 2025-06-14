@@ -6,7 +6,7 @@ import {
 } from "@mui/material";
 import { OverridableStringUnion } from "@mui/types";
 import { ReactNode } from "react";
-import { ResponsiveStyleValue, textAlign } from "@mui/system";
+import { ResponsiveStyleValue } from "@mui/system";
 import { Property } from "csstype";
 
 type codePropsType = {

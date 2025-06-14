@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import useCredentials from "@/hooks/useCredentials";
+import { localeDate } from "@/utils/dateFunctions";
 import {
   Box,
   Button,
@@ -10,19 +11,19 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import useCredentials from "@/hooks/useCredentials";
-import { localeDate } from "@/utils/dateFunctions";
+import { Navigation, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import Image from "next/image";
 
 const Credentials = () => {
   const [selectedCertificate, setSelectedCertificate] = useState(0);
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
-  const { data: certificates, isLoading, error } = useCredentials();
+  const { data: certificates, isLoading } = useCredentials();
 
   const LoadingSkeleton = () => {
     return (
@@ -120,9 +121,11 @@ const Credentials = () => {
                     sx={{ background: "transparent" }}
                   >
                     {typeof cert.image === "string" && (
-                      <img
+                      <Image
                         src={cert.image}
                         alt={cert.title}
+                        width={500} // You can adjust this value
+                        height={300}
                         style={{
                           width: "100%",
                           height: "300px",

@@ -1,20 +1,20 @@
 "use client";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import CodeLikeTypography from "@/components/homePageComponents/CodeLikeTypography";
+import useExperiences from "@/hooks/useExperiences";
+import { useAppSelector } from "@/hooks/useReduxCustom";
+import { calculateExperience, localeDate } from "@/utils/dateFunctions";
+import SchoolIcon from "@mui/icons-material/School";
+import StarIcon from "@mui/icons-material/Star";
+import WorkIcon from "@mui/icons-material/Work";
+import { Box, Typography } from "@mui/material";
+import { useEffect } from "react";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import "react-vertical-timeline-component/style.min.css";
-import WorkIcon from "@mui/icons-material/Work";
-import SchoolIcon from "@mui/icons-material/School";
-import StarIcon from "@mui/icons-material/Star";
 import { IExperience } from "../../../data/data.type";
 import "./professionalTimeline.css"; // Ensure you have the correct path to your CSS file
-import { useAppSelector } from "@/hooks/useReduxCustom";
-import { useEffect } from "react";
-import { calculateExperience, localeDate } from "@/utils/dateFunctions";
-import useExperiences from "@/hooks/useExperiences";
-import CodeLikeTypography from "@/components/homePageComponents/CodeLikeTypography";
 
 const CustomTimelineElement = ({
   experienceItem,
@@ -63,7 +63,7 @@ const CustomTimelineElement = ({
 };
 
 const ProfessionalTimeline = () => {
-  const { data, isLoading, error } = useExperiences();
+  const { data, isLoading } = useExperiences();
   const mode = useAppSelector((state) => state.theme.mode);
   useEffect(() => {
     document.documentElement.style.setProperty(

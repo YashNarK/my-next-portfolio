@@ -2,15 +2,7 @@
 "use client";
 
 import { auth } from "@/lib/firebase/firebase-client";
-import { Email } from "@mui/icons-material";
-import {
-  Box,
-  Button,
-  InputAdornment,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -34,8 +26,12 @@ export default function LoginPage() {
         body: JSON.stringify({ token }),
       });
       router.push("/admin");
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("An unknown error occurred.");
+      }
     }
   };
 
@@ -86,9 +82,7 @@ export default function LoginPage() {
           Login
         </Button>
       </Paper>
-      <Typography>
-        
-      </Typography>
+      <Typography></Typography>
     </Box>
   );
 }

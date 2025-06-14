@@ -134,7 +134,7 @@ export default function Admin() {
       potrait: potraitURL,
     };
 
-    delete (dataToSave as any).id; // in case id was carried over
+    delete (dataToSave as Record<string, unknown>).id; // in case id was carried over
 
     if (editingId) {
       await updateProject(editingId, dataToSave);

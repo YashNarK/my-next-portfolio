@@ -2,7 +2,7 @@
 
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useProjects from "@/hooks/useProjects";
-import { Grid, Skeleton, Stack, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import ProjectDisplay from "./ProjectDisplay";
 import ProjectSkeleton from "./ProjectSkeleton";
 

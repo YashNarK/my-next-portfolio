@@ -10,78 +10,14 @@ import {
   slideRightToLeft,
   zoomOutFade,
 } from "@/lib/animation";
-import {
-  Box,
-  Theme,
-  Typography,
-  TypographyPropsVariantOverrides,
-  TypographyVariant,
-} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import { ResponsiveStyleValue } from "@mui/system";
-import { OverridableStringUnion } from "@mui/types";
-import { Property } from "csstype";
-import { ReactNode, useEffect, useState } from "react";
-import { SvgImage } from "./SvgImage";
+import { useEffect, useState, useMemo } from "react";
+import CodeLikeTypography from "./CodeLikeTypography";
 import ImageIntro from "./ImageIntro";
 import InfinityTypingText from "./InfinityTypingText";
-import CodeLikeTypography from "./CodeLikeTypography";
+import { SvgImage } from "./SvgImage";
 
-const getTheme = () => {
-  const theme = useAppTheme();
-  const textColor = theme.palette.text.primary;
-  const paperColor = theme.palette.background.paper;
-  const backgroundColor = theme.palette.background.default;
-  const holeColor = theme.palette.secondary.main;
-  const defaultColor = theme.palette.background.default;
-  return {
-    theme,
-    textColor,
-    paperColor,
-    backgroundColor,
-    holeColor,
-    defaultColor,
-  };
-};
-
-// type codePropsType = {
-//   children: ReactNode;
-//   noRuler?: boolean;
-//   variant?: OverridableStringUnion<
-//     TypographyVariant | "inherit",
-//     TypographyPropsVariantOverrides
-//   >;
-//   display?:
-//     | ResponsiveStyleValue<Property.Display | readonly string[] | undefined>
-//     | ((
-//         theme: Theme
-//       ) => ResponsiveStyleValue<
-//         Property.Display | readonly string[] | undefined
-//       >)
-//     | null;
-// };
-
-// const CodeLikeTypography = ({
-//   children,
-//   noRuler,
-//   variant = "codeLike",
-//   display = "block",
-// }: codePropsType) => {
-//   const { textColor } = getTheme();
-//   return (
-//     <Typography
-//       variant={variant}
-//       sx={{
-//         display: display,
-//         color: textColor,
-//         fontSize: { xs: "1.1rem", sm: "1.5rem" },
-//       }}
-//     >
-//       {children}
-//       {!noRuler && <hr />}
-//     </Typography>
-//   );
-// };
 type variantType =
   | "playful"
   | "handWritten"
@@ -90,16 +26,14 @@ type variantType =
   | "professional";
 const Banner = () => {
   const mode = useAppSelector((state) => state.theme.mode);
-  const { textColor } = getTheme();
+  const theme = useAppTheme();
+  const textColor = theme.palette.text.primary;
   const [nameVariant, setNameVariant] = useState<variantType>("codeLike");
   const [variantIndex, setVariantIndex] = useState<number>(0);
-  const variantList: variantType[] = [
-    "playful",
-    "professional",
-    "handWritten",
-    "caligraphy",
-    "codeLike",
-  ];
+  const variantList = useMemo<variantType[]>(
+    () => ["playful", "professional", "handWritten", "caligraphy", "codeLike"],
+    []
+  );
   useEffect(() => {
     const nextVariant = async () => {
       await setTimeout(() => {
@@ -108,7 +42,7 @@ const Banner = () => {
       }, 3000);
     };
     nextVariant();
-  }, [variantIndex, nameVariant]);
+  }, [variantIndex, nameVariant, variantList]);
   return (
     <Stack
       className="banner-intro-area"
@@ -134,7 +68,7 @@ const Banner = () => {
         }}
       >
         <CodeLikeTypography>
-          Hello, I'm{" "}
+          {" Hello, I'm"}
           <Typography
             variant={nameVariant}
             color={textColor}
@@ -197,7 +131,7 @@ const Banner = () => {
         </CodeLikeTypography>
         <CodeLikeTypography>
           <SvgImage
-            src={"/svg/redux" + (mode === "dark" ? "-dark" : "") + ".svg"}
+            src={`/svg/redux${mode === "dark" ? "-dark" : ""}.svg`}
             alt="Redux"
             animation={pulseSpin}
           />

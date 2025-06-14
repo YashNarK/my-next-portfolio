@@ -6,7 +6,7 @@ import PublicationTile from "./PublicationTile";
 import PublicationTileSkeleton from "./PublicationTileSkeleton";
 
 const Publications = () => {
-  const { data: publicationsList, error, isLoading } = usePublications();
+  const { data: publicationsList, isLoading } = usePublications();
 
   return (
     <Box minHeight={"100%"} px={4}>

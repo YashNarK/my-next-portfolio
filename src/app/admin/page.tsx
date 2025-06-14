@@ -3,7 +3,7 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Box, Grid, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   const theme = useAppTheme();
   const adminMenu = [
@@ -92,4 +92,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

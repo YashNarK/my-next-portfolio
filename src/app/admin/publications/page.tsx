@@ -2,30 +2,29 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
 
 import {
+  addPublication,
+  deletePublication,
+  getAllPublications,
+  updatePublication,
+} from "@/lib/firebase/publications-crud";
+import { uploadAudio } from "@/lib/firebase/uploadFiles";
+import {
   Box,
   Button,
   Container,
   Grid,
-  InputLabel,
   Paper,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import { IPublication } from "../../../../data/data.type";
 import PublicationList from "./PublicationList";
-import dayjs, { Dayjs } from "dayjs";
-import { uploadAudio } from "@/lib/firebase/uploadFiles";
-import {
-  getAllPublications,
-  updatePublication,
-  addPublication,
-  deletePublication,
-} from "@/lib/firebase/publications-crud";
 
 const emptyPublication: IPublication = {
   title: "",
@@ -94,7 +93,7 @@ export default function Admin() {
       audio: audioUrl,
     };
 
-    delete (dataToSave as any).id; // in case id was carried over
+    delete (dataToSave as Record<string, unknown>).id; // in case id was carried over
     if (editingId) {
       await updatePublication(editingId, dataToSave);
     } else {
