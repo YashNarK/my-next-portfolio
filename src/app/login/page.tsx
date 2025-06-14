@@ -1,8 +1,8 @@
-// src\app\login\page.tsx
 "use client";
 
 import { auth } from "@/lib/firebase/firebase-client";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import { useState } from "react";
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // 👈 add error state
   const router = useRouter();
 
   const login = async () => {
@@ -20,17 +21,23 @@ export default function LoginPage() {
         password
       );
       const token = await userCredential.user.getIdToken();
-      // Store token in a cookie
+
       await fetch("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({ token }),
       });
+
+      setError(""); // Clear any previous error
       router.push("/admin");
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        alert(err.message);
+      if (err instanceof FirebaseError) {
+        if (err.code === "auth/invalid-credential") {
+          setError("Incorrect username or password.");
+        } else {
+          setError(err.message); // fallback for other Firebase auth errors
+        }
       } else {
-        alert("An unknown error occurred.");
+        setError("An unknown error occurred.");
       }
     }
   };
@@ -72,6 +79,12 @@ export default function LoginPage() {
           margin="normal"
         />
 
+        {error && (
+          <Typography color="error" mt={1}>
+            {error}
+          </Typography>
+        )}
+
         <Button
           fullWidth
           variant="contained"
@@ -82,7 +95,6 @@ export default function LoginPage() {
           Login
         </Button>
       </Paper>
-      <Typography></Typography>
     </Box>
   );
 }
