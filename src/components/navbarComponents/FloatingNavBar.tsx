@@ -92,7 +92,7 @@ export default function FloatingNavBar() {
       onClick={handleDrawerToggle}
       sx={{ textAlign: "center" }}
     >
-      <Box sx={{ my: 2 }}>
+      <Box sx={{ my: 1 }}>
         <ThemeToggleButton />
       </Box>
       <Divider />
@@ -108,10 +108,10 @@ export default function FloatingNavBar() {
                 "&:hover": { bgcolor: "inherit", color: "inherit" },
                 fontSize: {
                   xs: "1.2rem",
-                  sm: "1.5rem",
+                  sm: "1.2rem",
                   md: "2rem",
                 },
-                my: isLandscape ? "0" : "1%",
+                my: isLandscape ? "0" : "0.5%",
               }}
             >
               <ListItemText primary={label} color="inherit" />
@@ -254,6 +254,7 @@ export default function FloatingNavBar() {
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: drawerWidth,
+                backgroundColor: theme.palette.primary.main,
               },
             }}
           >
