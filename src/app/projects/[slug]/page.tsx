@@ -6,10 +6,10 @@ import { GitHub, ImportantDevices } from "@mui/icons-material";
 import { getAllProjects } from "@/lib/firebase/projects-crud";
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
-export default async function ProjectDetailsPage({ params }: Props) {
+export default async function ProjectDetailsPage({params}: Props) {
   const { slug } = await params;
   const projects = await getAllProjects();
   const project = projects.find((p) => slugify(p.title) === slug);
