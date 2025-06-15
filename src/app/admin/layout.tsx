@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/hooks/useAuth";
+import { Box, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -17,6 +18,19 @@ export default function AdminLayout({
       router.replace("/login");
     }
   }, [loading, authenticated, router]);
-
+  if (loading)
+    return (
+      <>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          mt={20}
+        >
+          <Typography variant="codeLike">Checking Authentication...</Typography>
+        </Box>
+      </>
+    );
   return <>{children}</>;
 }
