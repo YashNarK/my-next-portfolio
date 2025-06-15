@@ -4,14 +4,12 @@ import { auth } from "@/lib/firebase/firebase-client";
 import { Box, Button, Paper, TextField, Typography } from "@mui/material";
 import { FirebaseError } from "firebase/app";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // 👈 add error state
-  const router = useRouter();
 
   const login = async () => {
     try {
@@ -28,7 +26,7 @@ export default function LoginPage() {
       });
 
       setError(""); // Clear any previous error
-      router.push("/admin");
+      window.location.href = "/admin";
     } catch (err: unknown) {
       if (err instanceof FirebaseError) {
         if (err.code === "auth/invalid-credential") {
