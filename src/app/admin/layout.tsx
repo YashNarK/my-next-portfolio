@@ -27,6 +27,7 @@ export default function AdminLayout({
           justifyContent={"center"}
           alignItems={"center"}
           mt={20}
+          minHeight={"100%"}
         >
           <Typography variant="codeLike">Checking Authentication...</Typography>
         </Box>
