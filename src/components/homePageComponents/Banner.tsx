@@ -68,7 +68,7 @@ const Banner = () => {
         }}
       >
         <CodeLikeTypography>
-          {" Hello, I'm"}
+          {` Hello, I'm `}
           <Typography
             variant={nameVariant}
             color={textColor}
