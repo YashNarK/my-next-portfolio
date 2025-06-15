@@ -1,11 +1,10 @@
 import { Grid, Box, Typography, Skeleton } from "@mui/material";
 import React from "react";
 
-const PublicationTileSkeleton = ({ key }: { key: number }) => {
+const PublicationTileSkeleton = () => {
   return (
     <Grid
       size={{ xs: 12, sm: 6 }}
-      key={key}
       border={"2px solid gray"}
       borderRadius={"10px"}
     >
