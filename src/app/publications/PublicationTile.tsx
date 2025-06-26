@@ -169,27 +169,29 @@ const PublicationTile = ({ publication }: PublicationTileProps) => {
                     {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
                   </Box>
                 </IconButton>
-                <IconButton aria-label="restart" onClick={handleRestartAudio}>
-                  <Box
-                    sx={{
-                      height: 60,
-                      width: 60,
-                      border: "3px solid gray",
-                      borderRadius: "50%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      transition: "transform 0.2s, box-shadow 0.2s",
-                      "&:hover": {
-                        boxShadow: 6,
-                        transform: "scale(1.8)",
-                      },
-                    }}
-                  >
-                    {<RestartAltIcon />}
-                  </Box>
-                </IconButton>
+                {Boolean(audioRef.current?.currentTime) && (
+                  <IconButton aria-label="restart" onClick={handleRestartAudio}>
+                    <Box
+                      sx={{
+                        height: 60,
+                        width: 60,
+                        border: "3px solid gray",
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        transition: "transform 0.2s, box-shadow 0.2s",
+                        "&:hover": {
+                          boxShadow: 6,
+                          transform: "scale(1.8)",
+                        },
+                      }}
+                    >
+                      {<RestartAltIcon />}
+                    </Box>
+                  </IconButton>
+                )}
               </Box>
               {Boolean(audioRef.current?.currentTime) && (
                 <Box width="100%" className="progress-bar">
