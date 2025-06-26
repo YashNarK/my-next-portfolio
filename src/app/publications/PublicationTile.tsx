@@ -83,7 +83,7 @@ const PublicationTile = ({
       audio?.pause();
       setIsPlaying(false);
     }
-  }, [publicationBeingPlayed]);
+  }, [publicationBeingPlayed, publication.id]);
   return (
     <Card
       sx={{
