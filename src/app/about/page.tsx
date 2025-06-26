@@ -4,14 +4,12 @@ import ProfessionalTimeline from "./ProfessionalTimeline";
 const About = () => {
   return (
     <Box
-      minHeight={"100%"}
+      minHeight={"90%"}
       mt={10}
       sx={{
         background: "transparent",
       }}
     >
-  
-
       <ProfessionalTimeline />
     </Box>
   );
