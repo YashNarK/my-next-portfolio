@@ -112,19 +112,10 @@ const SlideButton = () => {
           overflow: "visible",
         }}
         onMouseMove={handleMouseMove}
-        onMouseUp={() => {
-          console.log("mouse UP");
-          handleEnd();
-        }}
-        onMouseLeave={() => {
-          console.log("mouse LEAVE");
-          handleEnd();
-        }}
+        onMouseUp={handleEnd}
+        onMouseLeave={handleEnd}
         onTouchMove={handleTouchMove}
-        onTouchEnd={() => {
-          console.log("touch END");
-          handleEnd();
-        }}
+        onTouchEnd={handleEnd}
       >
         {/* Rocket GIF */}
         <Image
