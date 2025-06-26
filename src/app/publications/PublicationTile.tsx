@@ -1,7 +1,10 @@
 "use client";
+import { useAppTheme } from "@/hooks/useAppTheme";
+import { localeDate } from "@/utils/dateFunctions";
 import formatTime from "@/utils/formatTime";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import {
   Box,
   Button,
@@ -13,12 +16,19 @@ import {
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { IPublication } from "../../../data/data.type";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { useAppTheme } from "@/hooks/useAppTheme";
-import { localeDate } from "@/utils/dateFunctions";
-type PublicationTileProps = { publication: IPublication };
+type PublicationTileProps = {
+  publication: IPublication & {
+    id: string;
+  };
+  publicationBeingPlayed: string;
+  handlePublicationBeingPlayedChange: (publicationId: string) => void;
+};
 
-const PublicationTile = ({ publication }: PublicationTileProps) => {
+const PublicationTile = ({
+  publication,
+  publicationBeingPlayed,
+  handlePublicationBeingPlayedChange,
+}: PublicationTileProps) => {
   const theme = useAppTheme();
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [progress, setProgress] = useState(0); // 0 to 100
@@ -34,14 +44,14 @@ const PublicationTile = ({ publication }: PublicationTileProps) => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    setIsPlaying((prev) => {
-      if (!prev) {
-        audio.play();
-      } else {
-        audio.pause();
-      }
-      return !prev;
-    });
+    if (!isPlaying) {
+      audio.play();
+      handlePublicationBeingPlayedChange(publication.id);
+      setIsPlaying(true);
+    } else {
+      audio.pause();
+      setIsPlaying(false);
+    }
   };
   const handleRestartAudio = () => {
     if (audioRef.current) {
@@ -66,6 +76,14 @@ const PublicationTile = ({ publication }: PublicationTileProps) => {
       audio.removeEventListener("timeupdate", updateProgress);
     };
   }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (publicationBeingPlayed && publicationBeingPlayed !== publication.id) {
+      audio?.pause();
+      setIsPlaying(false);
+    }
+  }, [publicationBeingPlayed]);
   return (
     <Card
       sx={{

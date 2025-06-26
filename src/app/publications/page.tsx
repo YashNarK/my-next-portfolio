@@ -2,12 +2,14 @@
 
 import usePublications from "@/hooks/usePublications";
 import { Box, Grid } from "@mui/material";
+import { useState } from "react";
 import PublicationTile from "./PublicationTile";
 import PublicationTileSkeleton from "./PublicationTileSkeleton";
 
 const Publications = () => {
   const { data: publicationsList, isLoading } = usePublications();
-
+  const [publicationBeingPlayed, setPublicationBeingPlayed] =
+    useState<string>("");
   return (
     <Box minHeight={"100%"} px={4}>
       <Grid container mt={10} spacing={3} gap={3}>
@@ -22,7 +24,13 @@ const Publications = () => {
                 border={"2px solid gray"}
                 borderRadius={"10px"}
               >
-                <PublicationTile publication={publication} />
+                <PublicationTile
+                  publicationBeingPlayed={publicationBeingPlayed}
+                  handlePublicationBeingPlayedChange={(publicationId:string)=>{
+                    setPublicationBeingPlayed(publicationId)
+                  }}
+                  publication={publication}
+                />
               </Grid>
             ))}
       </Grid>
