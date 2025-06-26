@@ -1,4 +1,5 @@
 "use client";
+import { resumeOnedriveURL } from "@/app/resume/page";
 import { useAppTheme } from "@/hooks/useAppTheme";
 import { Typography, useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -50,10 +51,9 @@ const SlideButton = () => {
 
   const handleEnd = () => {
     setIsDragging(false);
-    if (progress >= 85) {
+    if (progress >= 85 && !isDownloading) {
       setTimeout(() => {
-        const resumeURL = `${window.location.origin}/resume`;
-        window.open(resumeURL, "_blank");
+        window.open(resumeOnedriveURL, "_blank");
         setProgress(10);
         setIsDownloading(false);
       }, 1500);
@@ -111,10 +111,19 @@ const SlideButton = () => {
           overflow: "visible",
         }}
         onMouseMove={handleMouseMove}
-        onMouseUp={handleEnd}
-        onMouseLeave={handleEnd}
+        onMouseUp={() => {
+          console.log("mouse UP");
+          handleEnd();
+        }}
+        onMouseLeave={() => {
+          console.log("mouse LEAVE");
+          handleEnd();
+        }}
         onTouchMove={handleTouchMove}
-        onTouchEnd={handleEnd}
+        onTouchEnd={() => {
+          console.log("touch END");
+          handleEnd();
+        }}
       >
         {/* Rocket GIF */}
         <Image
