@@ -13,5 +13,11 @@
       "source": "/",
       "destination": "https://yashnark.github.io/"
     }
+  ],
+  "redirects": [
+    {
+        "source": "/pymodulegen",
+        "destination": "https://pypi.org/project/pymodulegen/"
+    }
   ]
 }
