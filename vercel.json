@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/game-hub",
+      "destination": "https://yashnark.github.io/game-hub"
+    },
+    {
+      "source": "/game-hub/:match*",
+      "destination": "https://yashnark.github.io/game-hub/:match*"
+    },
+    {
+      "source": "/SimpleDex",
+      "destination": "https://yashnark.github.io/SimpleDex"
+    },
+    {
+      "source": "/SimpleDex/:match*",
+      "destination": "https://yashnark.github.io/SimpleDex/:match*"
+    }
+  ]
+}
