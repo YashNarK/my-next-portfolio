@@ -4,7 +4,9 @@ import { useAppTheme } from "@/hooks/useAppTheme";
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import MovingStars from "./MovingStars";
-import LiquidEther from "./LiquidEther";
+// LiquidEther kept for future use
+// import LiquidEther from "./LiquidEther";
+import ConstellationBackground from "./ConstellationBackground";
 
 export default function SceneBackground() {
   const theme = useAppTheme();
@@ -33,20 +35,15 @@ export default function SceneBackground() {
     );
   }
 
-  // Light mode: LiquidEther fluid simulation (manages its own Three.js renderer)
+  // Light mode: Constellation animation (white background, violet nodes & lines)
   return (
-    <LiquidEther
-      mouseForce={30}
-      cursorSize={150}
-      isViscous={false}
-      viscous={30}
-      colors={["#5227FF", "#FF9FFC", "#B19EEF", "#a1f406"]}
-      autoDemo
-      autoSpeed={0.5}
-      autoIntensity={2.2}
-      isBounce
-      resolution={0.5}
-      autoResumeDelay={2500}
+    <ConstellationBackground
+      nodeColor="rgba(139, 92, 246, 1)"
+      lineColor="rgba(139, 92, 246, 0.25)"
+      count={100}
+      connectionDistance={160}
+      mouseRadius={120}
+      glow
       style={{
         position: "fixed",
         top: 0,
