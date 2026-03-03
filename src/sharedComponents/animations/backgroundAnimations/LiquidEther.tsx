@@ -866,8 +866,10 @@ export default function LiquidEther({
         this.createShaderPass();
       }
       getFloatType() {
-        const isIOS = /(iPad|iPhone|iPod)/i.test(navigator.userAgent);
-        return isIOS ? THREE.HalfFloatType : THREE.FloatType;
+        // FloatType requires OES_texture_float which many Android GPUs don't support.
+        // HalfFloatType (16-bit) is universally supported on all mobile GPUs.
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod|IEMobile/i.test(navigator.userAgent);
+        return isMobile ? THREE.HalfFloatType : THREE.FloatType;
       }
       createAllFBO() {
         const type = this.getFloatType();
