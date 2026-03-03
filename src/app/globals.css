@@ -10,7 +10,6 @@ body {
 
 
 body>.firstChildOfBody {
-    height: 100%;
     background: transparent !important;
 }
 @font-face {
