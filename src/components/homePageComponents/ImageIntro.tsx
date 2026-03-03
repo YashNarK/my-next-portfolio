@@ -1,9 +1,12 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useProfileConfig } from "@/hooks/useProfileConfig";
 import { Box } from "@mui/material";
 
 const ImageIntro = () => {
-  const myImageUrl = `url('/img/myImageCropped.png')`;
   const theme = useAppTheme();
+  const { profileConfig } = useProfileConfig();
+
+  const imageUrl = profileConfig?.imageUrl || "/img/myImageCropped.png";
   const mySignUrl = `/img/sign-${
     theme.palette.mode === "light" ? "black" : "white"
   }.png`;
@@ -15,7 +18,7 @@ const ImageIntro = () => {
           width: { xs: "230px", sm: "360px" },
           height: { xs: "230px", sm: "360px" },
           backgroundColor: theme.palette.background.paper,
-          backgroundImage: myImageUrl,
+          backgroundImage: `url('${imageUrl}')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           zIndex: 2,
@@ -31,7 +34,7 @@ const ImageIntro = () => {
             bottom: "10px",
             right: "10px",
             width: { xs: "120px", sm: "200px" },
-            opacity: 0.8, // optional: to blend it better
+            opacity: 0.8,
           }}
         />
       </Box>
