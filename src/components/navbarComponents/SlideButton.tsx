@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { resumeOnedriveURL } from "@/lib/onedrive/resume";
+import { useResumeConfig } from "@/hooks/useResumeConfig";
 import { Typography, useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
 import Image from "next/image";
@@ -13,6 +13,7 @@ const SlideButton = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const sliderRef = useRef<HTMLDivElement | null>(null);
   const theme = useAppTheme();
+  const { resumeConfig } = useResumeConfig();
   const isPhone = useMediaQuery(theme.breakpoints.down("sm"));
   const buttonLabel = isPhone ? "Swipe for Resume" : "Slide for Resume";
   useEffect(() => {
@@ -53,8 +54,10 @@ const SlideButton = () => {
   const handleEnd = () => {
     setIsDragging(false);
     if (progress >= 85 && !isDownloading) {
+      const resumeUrl =
+        resumeConfig?.urls[resumeConfig.activeIndex] ?? "";
       setTimeout(() => {
-        window.open(resumeOnedriveURL, "_blank");
+        if (resumeUrl) window.open(resumeUrl, "_blank");
         setProgress(10);
         setIsDownloading(false);
       }, 1500);
