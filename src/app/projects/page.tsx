@@ -3,6 +3,7 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useProjects from "@/hooks/useProjects";
 import { Grid } from "@mui/material";
+import Image from "next/image";
 import ProjectDisplay from "./ProjectDisplay";
 import ProjectSkeleton from "./ProjectSkeleton";
 
@@ -27,6 +28,22 @@ const Project = () => {
         minHeight: "100%",
       }}
     >
+      {/* Hidden preload images — kick off Firebase Storage downloads immediately */}
+      {projectsList?.map((project) =>
+        project.potrait ? (
+          <Image
+            key={project.title}
+            src={project.potrait as string}
+            alt=""
+            width={1}
+            height={1}
+            unoptimized
+            priority
+            style={{ position: "absolute", width: 0, height: 0, opacity: 0 }}
+          />
+        ) : null
+      )}
+
       {isLoading || !projectsList
         ? Array(6)
             .fill(true)
