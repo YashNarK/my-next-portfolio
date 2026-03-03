@@ -124,8 +124,9 @@ const Credentials = () => {
                       <Image
                         src={cert.image}
                         alt={cert.title}
-                        width={500} // You can adjust this value
+                        width={500}
                         height={300}
+                        unoptimized
                         style={{
                           width: "100%",
                           height: "300px",
