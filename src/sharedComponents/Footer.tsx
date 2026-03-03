@@ -11,7 +11,7 @@ const Footer = () => {
       justifyContent="center"
       textAlign="center"
       fontSize="lg"
-      mx="auto"
+      width="100%"
       sx={{
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.text.primary,
