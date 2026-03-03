@@ -101,11 +101,20 @@ Two sets of Firebase credentials exist:
 
 ## Skill: Using react-bits Animations
 
-**react-bits** (`github.com/DavidHDev/react-bits`) is a MIT-licensed library of high-quality animated React components. Components are **copied directly into the project** (not installed as an npm package) — this gives full control and zero runtime dependency overhead.
+### Animation library sources
+
+When looking for ready-made animated React components, check these first:
+
+| Library | URL | Notes |
+|---|---|---|
+| **react-bits** | https://reactbits.dev/ | MIT licensed, copy-paste model, Three.js / CSS / Framer Motion components |
+| GitHub source | https://github.com/DavidHDev/react-bits | Raw TypeScript files, browse `src/ts-default/` |
+
+**react-bits** is a MIT-licensed library of high-quality animated React components. Components are **copied directly into the project** (not installed as an npm package) — this gives full control and zero runtime dependency overhead.
 
 ### How to find a component
 
-1. Browse categories at `reactbits.dev` (Backgrounds, Text, UI, etc.)
+1. Browse categories at https://reactbits.dev/ (Backgrounds, Text, UI, Components, etc.)
 2. Locate the TypeScript source on GitHub:
    - `src/ts-default/<Category>/<Name>/<Name>.tsx`
    - `src/ts-default/<Category>/<Name>/<Name>.css` (if it exists)
