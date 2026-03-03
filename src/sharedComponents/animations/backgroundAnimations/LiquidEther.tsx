@@ -1,3 +1,6 @@
+/* eslint-disable */
+// Vendored from https://github.com/DavidHDev/react-bits (MIT License)
+// Do not edit — update by re-downloading from the source repo.
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import './LiquidEther.css';
