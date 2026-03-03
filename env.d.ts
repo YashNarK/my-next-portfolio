@@ -14,6 +14,9 @@ declare namespace NodeJS {
       FIREBASE_PROJECT_ID: string;
       FIREBASE_CLIENT_EMAIL: string;
       FIREBASE_PRIVATE_KEY: string;
+      NEXT_PUBLIC_ENCRYPT_SECRET: string;
+      ENCRYPT_SECRET: string;
+      NEXT_PUBLIC_ADMIN_EMAIL: string;
     }
   }
   
