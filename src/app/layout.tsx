@@ -6,6 +6,7 @@ import "./globals.css";
 import BlackHoleCursor from "@/sharedComponents/animations/blackholeCursorAnimation/BlackHoleCursor";
 import Footer from "@/sharedComponents/Footer";
 import SceneBackground from "@/sharedComponents/animations/backgroundAnimations/Scenebackground";
+import NavigationLoader from "@/sharedComponents/NavigationLoader";
 export const metadata: Metadata = {
   title: "Narendran A I's portfolio",
   description:
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body>
         <Providers>
           <BlackHoleCursor />
+          <NavigationLoader />
 
           <Box
             className="firstChildOfBody"
@@ -29,6 +31,7 @@ export default function RootLayout({
               display: "flex",
               flexDirection: "column",
               backgroundColor: "background.default",
+              minHeight: "100vh",
             }}
           >
             <FloatingNavBar />
@@ -42,8 +45,8 @@ export default function RootLayout({
             >
               <SceneBackground />
               {children}
-              <Footer />
             </Box>
+            <Footer />
           </Box>
         </Providers>
       </body>
