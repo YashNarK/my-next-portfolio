@@ -1,32 +1,21 @@
 "use client";
 import { useAppTheme } from "@/hooks/useAppTheme";
+import { useNavigateWithLoader } from "@/hooks/useNavigateWithLoader";
+import { auth } from "@/lib/firebase/firebase-client";
 import { Box, Grid, Typography } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { signOut } from "firebase/auth";
 
 const Page = () => {
-  const router = useRouter();
+  const navigate = useNavigateWithLoader();
   const theme = useAppTheme();
   const adminMenu = [
-    {
-      name: "Projects",
-      path: "admin/projects",
-    },
-    {
-      name: "Experience",
-      path: "admin/about",
-    },
-    {
-      name: "Credentials",
-      path: "admin/credentials",
-    },
-    {
-      name: "Publications",
-      path: "admin/publications",
-    },
-    {
-      name: "Logout",
-      path: "api/auth/logout",
-    },
+    { name: "Projects", path: "admin/projects" },
+    { name: "Experience", path: "admin/about" },
+    { name: "Credentials", path: "admin/credentials" },
+    { name: "Publications", path: "admin/publications" },
+    { name: "Resume", path: "admin/resume" },
+    { name: "Profile Pic", path: "admin/profile" },
+    { name: "Logout", path: "api/auth/logout" },
   ];
   return (
     <Box minHeight={"100%"} mt={20} textAlign={"center"}>
@@ -73,12 +62,13 @@ const Page = () => {
                   if (menu.name === "Logout") {
                     try {
                       await fetch("/api/auth/logout", { method: "POST" });
-                      router.push("/login");
+                      await signOut(auth);
+                      navigate("/login");
                     } catch (err) {
                       console.error("Logout failed:", err);
                     }
                   } else {
-                    router.push(menu.path);
+                    navigate(menu.path);
                   }
                 }}
               >
