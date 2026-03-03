@@ -63,13 +63,17 @@ export function ConstellationBackground({
     let mouseX = -1000;
     let mouseY = -1000;
 
-    const createNode = (): Node => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      radius: Math.random() * nodeSize + nodeSize * 0.5,
-    });
+    const createNode = (): Node => {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 0.4 + Math.random() * 0.6;
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        radius: Math.random() * nodeSize + nodeSize * 0.5,
+      };
+    };
 
     const nodes: Node[] = Array.from({ length: count }, createNode);
 
@@ -115,10 +119,25 @@ export function ConstellationBackground({
 
         node.x += node.vx;
         node.y += node.vy;
-        node.vx *= 0.99;
-        node.vy *= 0.99;
-        node.vx += (Math.random() - 0.5) * 0.01;
-        node.vy += (Math.random() - 0.5) * 0.01;
+
+        // Gentle random steering (no damping so speed is preserved)
+        node.vx += (Math.random() - 0.5) * 0.05;
+        node.vy += (Math.random() - 0.5) * 0.05;
+
+        // Clamp to max speed
+        const maxSpeed = 1.2;
+        const speed = Math.sqrt(node.vx * node.vx + node.vy * node.vy);
+        if (speed > maxSpeed) {
+          node.vx = (node.vx / speed) * maxSpeed;
+          node.vy = (node.vy / speed) * maxSpeed;
+        }
+
+        // Enforce minimum speed so nodes never stall
+        const minSpeed = 0.3;
+        if (speed < minSpeed && speed > 0) {
+          node.vx = (node.vx / speed) * minSpeed;
+          node.vy = (node.vy / speed) * minSpeed;
+        }
 
         if (node.x < 0 || node.x > width) {
           node.vx *= -1;
