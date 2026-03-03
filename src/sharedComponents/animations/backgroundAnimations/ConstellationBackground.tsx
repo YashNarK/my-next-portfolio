@@ -33,7 +33,7 @@ interface Node {
 export function ConstellationBackground({
   className,
   children,
-  count = 80,
+  count = 10,
   connectionDistance = 150,
   nodeColor = "rgba(139, 92, 246, 1)",
   lineColor = "rgba(139, 92, 246, 0.25)",
@@ -59,7 +59,6 @@ export function ConstellationBackground({
     canvas.width = width;
     canvas.height = height;
 
-    let animationId: number;
     let mouseX = -1000;
     let mouseY = -1000;
 
@@ -102,7 +101,12 @@ export function ConstellationBackground({
     const ro = new ResizeObserver(handleResize);
     ro.observe(container);
 
+    // Guard flag: ensures old loop stops immediately when effect re-runs
+    let isActive = true;
+    let animationId: number;
+
     const animate = () => {
+      if (!isActive) return;
       ctx.clearRect(0, 0, width, height);
 
       for (const node of nodes) {
@@ -198,6 +202,7 @@ export function ConstellationBackground({
     animationId = requestAnimationFrame(animate);
 
     return () => {
+      isActive = false;
       cancelAnimationFrame(animationId);
       container.removeEventListener("mousemove", handleMouseMove);
       container.removeEventListener("mouseleave", handleMouseLeave);
