@@ -221,6 +221,17 @@ export default function Admin() {
             </Grid>
 
             <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="Credential ID"
+                name="credentialID"
+                value={formData.credentialID}
+                onChange={handleChange}
+                placeholder="e.g. ABC123XYZ"
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
               <Stack direction="row" spacing={2}>
                 <Button type="submit" variant="contained">
                   {editingId ? "Update" : "Add"} Credential
