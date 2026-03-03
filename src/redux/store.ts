@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { themeReducer } from "./features/themeSlice";
+import { navigationReducer } from "./features/navigationSlice";
 
 // Configure the store using the reducers we defined in the features
 const store = configureStore({
   reducer: {
     theme: themeReducer,
+    navigation: navigationReducer,
   },
 });
 
