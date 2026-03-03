@@ -98,7 +98,124 @@ Two sets of Firebase credentials exist:
 
 `NEXT_PUBLIC_ENCRYPT_SECRET` / `ENCRYPT_SECRET` are used for AES-GCM login encryption. `ALLOWED_ADMIN_EMAIL` / `NEXT_PUBLIC_ADMIN_EMAIL` gate admin access.
 
-### E2E test conventions
+
+## Skill: Using react-bits Animations
+
+**react-bits** (`github.com/DavidHDev/react-bits`) is a MIT-licensed library of high-quality animated React components. Components are **copied directly into the project** (not installed as an npm package) — this gives full control and zero runtime dependency overhead.
+
+### How to find a component
+
+1. Browse categories at `reactbits.dev` (Backgrounds, Text, UI, etc.)
+2. Locate the TypeScript source on GitHub:
+   - `src/ts-default/<Category>/<Name>/<Name>.tsx`
+   - `src/ts-default/<Category>/<Name>/<Name>.css` (if it exists)
+   - Example: `src/ts-default/Backgrounds/LiquidEther/LiquidEther.tsx`
+3. Fetch raw file URLs:
+   ```
+   https://raw.githubusercontent.com/DavidHDev/react-bits/main/src/ts-default/<Category>/<Name>/<Name>.tsx
+   https://raw.githubusercontent.com/DavidHDev/react-bits/main/src/ts-default/<Category>/<Name>/<Name>.css
+   ```
+
+### How to integrate into any React/Next.js project
+
+#### Step 1 — Download the source files
+
+```bash
+# In the project root, save to your components/animations directory
+curl -o src/components/animations/MyAnimation.tsx \
+  https://raw.githubusercontent.com/DavidHDev/react-bits/main/src/ts-default/<Category>/<Name>/<Name>.tsx
+
+curl -o src/components/animations/MyAnimation.css \
+  https://raw.githubusercontent.com/DavidHDev/react-bits/main/src/ts-default/<Category>/<Name>/<Name>.css
+```
+
+Or with PowerShell (Windows):
+```powershell
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/DavidHDev/react-bits/main/src/ts-default/<Category>/<Name>/<Name>.tsx" -OutFile "src\components\animations\MyAnimation.tsx"
+```
+
+#### Step 2 — Fix the CSS import path
+
+The downloaded file imports `'./ComponentName.css'`. If you renamed the CSS file or placed it elsewhere, update the import path at the top of the `.tsx` file.
+
+#### Step 3 — Check peer dependencies
+
+Most react-bits animation components depend on one or more of:
+
+| Dependency | Install command |
+|---|---|
+| `three` | `npm install three @types/three` |
+| `@react-three/fiber` | `npm install @react-three/fiber` |
+| `@react-three/drei` | `npm install @react-three/drei` |
+| `framer-motion` | `npm install framer-motion` |
+| `gsap` | `npm install gsap` |
+
+Check the component's imports to determine which are needed.
+
+#### Step 4 — Usage patterns
+
+**Pattern A: Standalone renderer (e.g. LiquidEther, Aurora)**
+The component manages its own `WebGLRenderer` internally — render it as a plain `<div>`:
+```tsx
+import LiquidEther from "@/components/animations/LiquidEther";
+
+// Full-viewport fixed background
+<LiquidEther
+  style={{ position: "fixed", inset: 0, zIndex: -1, width: "100vw", height: "100vh" }}
+  colors={["#5227FF", "#FF9FFC", "#B19EEF"]}
+  autoDemo
+/>
+```
+
+**Pattern B: R3F Canvas component (e.g. MovingStars, Particles)**
+The component uses `useFrame` / R3F hooks — must be rendered inside `<Canvas>`:
+```tsx
+import { Canvas } from "@react-three/fiber";
+import MyParticles from "@/components/animations/MyParticles";
+
+<Canvas style={{ position: "fixed", inset: 0, zIndex: -1 }}>
+  <Suspense fallback={null}>
+    <MyParticles />
+  </Suspense>
+</Canvas>
+```
+
+**Pattern C: DOM/CSS animation (e.g. text effects, scroll animations)**
+Plain React component — use directly inline:
+```tsx
+import FancyText from "@/components/animations/FancyText";
+<FancyText text="Hello World" />
+```
+
+#### Step 5 — Next.js specific: SSR guard
+
+All react-bits components use browser APIs (`window`, `document`, `ResizeObserver`). In Next.js App Router:
+- Add `"use client"` at the top if not already present
+- The component must be rendered in a Client Component — do not use in Server Components directly
+- For `<Canvas>` wrappers, wrapping in `dynamic(() => import(...), { ssr: false })` is safest
+
+#### Step 6 — Theming integration
+
+To switch animations based on MUI theme mode (light/dark):
+```tsx
+"use client";
+import { useAppTheme } from "@/hooks/useAppTheme"; // reads from Redux themeSlice
+const { palette: { mode } } = useAppTheme();
+return mode === "dark" ? <DarkAnimation /> : <LightAnimation />;
+```
+
+### Example: LiquidEther as a full-viewport background (this project)
+
+```
+src/sharedComponents/animations/backgroundAnimations/
+  LiquidEther.tsx   ← copied from react-bits (Pattern A)
+  LiquidEther.css   ← companion styles
+  MovingStars.tsx   ← custom R3F component (Pattern B)
+  Scenebackground.tsx ← switches between them based on theme mode
+```
+
+`Scenebackground.tsx` is placed in root layout so the animation is always in the background behind all page content (`position: fixed; z-index: -1`).
+
 
 - Test files use the `*.e2e.ts` extension inside `src/`
 - Use `page.route(...)` to mock API/Firebase calls — do not rely on real credentials in tests
