@@ -36,8 +36,8 @@ export default function SceneBackground() {
   // Light mode: LiquidEther fluid simulation (manages its own Three.js renderer)
   return (
     <LiquidEther
-      mouseForce={20}
-      cursorSize={100}
+      mouseForce={30}
+      cursorSize={150}
       isViscous={false}
       viscous={30}
       colors={["#5227FF", "#FF9FFC", "#B19EEF", "#a1f406"]}
@@ -46,6 +46,7 @@ export default function SceneBackground() {
       autoIntensity={2.2}
       isBounce
       resolution={0.5}
+      autoResumeDelay={2500}
       style={{
         position: "fixed",
         top: 0,

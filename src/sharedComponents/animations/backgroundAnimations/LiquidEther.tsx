@@ -202,7 +202,7 @@ export default function LiquidEther({
           passive: true
         });
         this.listenerTarget.addEventListener('touchmove', this._onTouchMove, {
-          passive: true
+          passive: false   // non-passive: ensures full-rate events during scroll on mobile
         });
         this.listenerTarget.addEventListener('touchend', this._onTouchEnd);
         this.docTarget?.addEventListener('mouseleave', this._onDocumentLeave);
@@ -268,7 +268,7 @@ export default function LiquidEther({
         this.hasUserControl = true;
       }
       onDocumentTouchStart(event: TouchEvent) {
-        if (event.touches.length !== 1) return;
+        if (event.touches.length < 1) return;   // allow multi-touch; use first finger
         const t = event.touches[0];
         if (!this.updateHoverState(t.clientX, t.clientY)) return;
         if (this.onInteract) this.onInteract();
@@ -276,11 +276,12 @@ export default function LiquidEther({
         this.hasUserControl = true;
       }
       onDocumentTouchMove(event: TouchEvent) {
-        if (event.touches.length !== 1) return;
+        if (event.touches.length < 1) return;   // allow multi-touch; use first finger
         const t = event.touches[0];
         if (!this.updateHoverState(t.clientX, t.clientY)) return;
         if (this.onInteract) this.onInteract();
         this.setCoords(t.clientX, t.clientY);
+        this.hasUserControl = true;              // keep user control during drag
       }
       onTouchEnd() {
         this.isHoverInside = false;
