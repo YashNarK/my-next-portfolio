@@ -18,22 +18,30 @@ const ImageIntro = () => {
           position: "relative",
           width: { xs: "230px", sm: "360px" },
           height: { xs: "230px", sm: "360px" },
-          backgroundColor: theme.palette.background.paper,
-          overflow: "hidden",
           zIndex: 2,
-          borderRadius: "50%",
         }}
       >
-        {imageUrl ? (
-          <Image
-            src={imageUrl}
-            alt="Profile photo"
-            fill
-            sizes="(max-width: 600px) 230px, 360px"
-            style={{ objectFit: "cover" }}
-            priority
-          />
-        ) : null}
+        <Box
+          sx={{
+            position: "relative",
+            width: "100%",
+            height: "100%",
+            backgroundColor: theme.palette.background.paper,
+            overflow: "hidden",
+            borderRadius: "50%",
+          }}
+        >
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt="Profile photo"
+              fill
+              sizes="(max-width: 600px) 230px, 360px"
+              style={{ objectFit: "cover" }}
+              priority
+            />
+          ) : null}
+        </Box>
         <Box
           component="img"
           src={mySignUrl}
