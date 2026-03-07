@@ -3,7 +3,7 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useProjects from "@/hooks/useProjects";
 import { Grid } from "@mui/material";
-import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import ProjectDisplay from "./ProjectDisplay";
 import ProjectSkeleton from "./ProjectSkeleton";
 
@@ -11,6 +11,70 @@ const Project = () => {
   const theme = useAppTheme();
 
   const { data: projectsList, error, isLoading } = useProjects();
+  const [loadedPortraits, setLoadedPortraits] = useState<
+    Record<string, boolean>
+  >({});
+
+  const projectLoadKeys = useMemo(
+    () =>
+      projectsList?.map((project, index) => {
+        const imageUrl =
+          typeof project.potrait === "string" ? project.potrait : "";
+        return `${index}-${project.title}-${imageUrl}`;
+      }) ?? [],
+    [projectsList],
+  );
+
+  useEffect(() => {
+    if (!projectsList) {
+      setLoadedPortraits({});
+      return;
+    }
+
+    let isActive = true;
+    const preloads: HTMLImageElement[] = [];
+
+    setLoadedPortraits({});
+
+    projectsList.forEach((project, index) => {
+      const imageUrl =
+        typeof project.potrait === "string" ? project.potrait : "";
+      const key = `${index}-${project.title}-${imageUrl}`;
+
+      if (!imageUrl) {
+        setLoadedPortraits((prev) => ({ ...prev, [key]: true }));
+        return;
+      }
+
+      const preload = new window.Image();
+      preloads.push(preload);
+
+      const markLoaded = () => {
+        if (!isActive) return;
+        setLoadedPortraits((prev) => {
+          if (prev[key]) return prev;
+          return { ...prev, [key]: true };
+        });
+      };
+
+      preload.src = imageUrl;
+
+      if (preload.complete) {
+        markLoaded();
+      } else {
+        preload.onload = markLoaded;
+        preload.onerror = markLoaded;
+      }
+    });
+
+    return () => {
+      isActive = false;
+      preloads.forEach((preload) => {
+        preload.onload = null;
+        preload.onerror = null;
+      });
+    };
+  }, [projectsList]);
 
   if (error) throw new Error(error);
 
@@ -28,22 +92,6 @@ const Project = () => {
         minHeight: "100%",
       }}
     >
-      {/* Hidden preload images — kick off Firebase Storage downloads immediately */}
-      {projectsList?.map((project) =>
-        project.potrait ? (
-          <Image
-            key={project.title}
-            src={project.potrait as string}
-            alt=""
-            width={1}
-            height={1}
-            unoptimized
-            priority
-            style={{ position: "absolute", width: 0, height: 0, opacity: 0 }}
-          />
-        ) : null
-      )}
-
       {isLoading || !projectsList
         ? Array(6)
             .fill(true)
@@ -59,20 +107,28 @@ const Project = () => {
               </Grid>
             ))
         : projectsList.map((project, index) => {
-            const potraitUrl = `url(${project.potrait})`;
+            const imageUrl =
+              typeof project.potrait === "string" ? project.potrait : "";
+            const loadKey = `${index}-${project.title}-${imageUrl}`;
+            const isPortraitLoaded = loadedPortraits[loadKey] ?? false;
+            const potraitUrl = imageUrl ? `url(${imageUrl})` : "none";
             return (
               <Grid
                 size={{ xs: 12, md: 6 }}
-                key={index}
+                key={projectLoadKeys[index] ?? index}
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
               >
-                <ProjectDisplay
-                  bgImageUrl={potraitUrl}
-                  theme={theme}
-                  project={project}
-                />
+                {isPortraitLoaded ? (
+                  <ProjectDisplay
+                    bgImageUrl={potraitUrl}
+                    theme={theme}
+                    project={project}
+                  />
+                ) : (
+                  <ProjectSkeleton />
+                )}
               </Grid>
             );
           })}

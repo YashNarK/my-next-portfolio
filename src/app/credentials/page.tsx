@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -24,6 +24,73 @@ const Credentials = () => {
   const theme = useTheme();
   const isMdUp = useMediaQuery(theme.breakpoints.up("md"));
   const { data: certificates, isLoading } = useCredentials();
+  const [loadedCredentialImages, setLoadedCredentialImages] = useState<
+    Record<string, boolean>
+  >({});
+
+  const credentialLoadKeys = useMemo(
+    () =>
+      certificates?.map((cert, index) => {
+        const imageUrl = typeof cert.image === "string" ? cert.image : "";
+        return `${index}-${cert.title}-${imageUrl}`;
+      }) ?? [],
+    [certificates],
+  );
+
+  const areCredentialImagesReady = useMemo(() => {
+    if (!certificates || certificates.length === 0) return true;
+    return credentialLoadKeys.every((key) => loadedCredentialImages[key]);
+  }, [certificates, credentialLoadKeys, loadedCredentialImages]);
+
+  useEffect(() => {
+    if (!certificates) {
+      setLoadedCredentialImages({});
+      return;
+    }
+
+    let isActive = true;
+    const preloads: HTMLImageElement[] = [];
+
+    setLoadedCredentialImages({});
+
+    certificates.forEach((cert, index) => {
+      const imageUrl = typeof cert.image === "string" ? cert.image : "";
+      const key = `${index}-${cert.title}-${imageUrl}`;
+
+      if (!imageUrl) {
+        setLoadedCredentialImages((prev) => ({ ...prev, [key]: true }));
+        return;
+      }
+
+      const preload = new window.Image();
+      preloads.push(preload);
+
+      const markLoaded = () => {
+        if (!isActive) return;
+        setLoadedCredentialImages((prev) => {
+          if (prev[key]) return prev;
+          return { ...prev, [key]: true };
+        });
+      };
+
+      preload.src = imageUrl;
+
+      if (preload.complete) {
+        markLoaded();
+      } else {
+        preload.onload = markLoaded;
+        preload.onerror = markLoaded;
+      }
+    });
+
+    return () => {
+      isActive = false;
+      preloads.forEach((preload) => {
+        preload.onload = null;
+        preload.onerror = null;
+      });
+    };
+  }, [certificates]);
 
   const LoadingSkeleton = () => {
     return (
@@ -75,7 +142,7 @@ const Credentials = () => {
   };
   return (
     <Box height={"100%"}>
-      {isLoading ? (
+      {isLoading || !areCredentialImagesReady ? (
         <LoadingSkeleton />
       ) : certificates && certificates.length > 0 ? (
         <Stack
@@ -108,8 +175,8 @@ const Credentials = () => {
                 paddingRight: isMdUp ? "150px" : "0px",
               }}
             >
-              {certificates.map((cert) => (
-                <SwiperSlide key={cert.id}>
+              {certificates.map((cert, index) => (
+                <SwiperSlide key={credentialLoadKeys[index] ?? index}>
                   <Box
                     display="flex"
                     flexDirection="column"
@@ -222,7 +289,7 @@ const Credentials = () => {
                 Issued at:{" "}
                 {localeDate(
                   certificates[selectedCertificate].issuedDate,
-                  "MMMM, YYYY"
+                  "MMMM, YYYY",
                 )}
               </Typography>
             </Stack>
