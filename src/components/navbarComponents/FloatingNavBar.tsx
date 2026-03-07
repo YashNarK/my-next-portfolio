@@ -25,11 +25,11 @@ import SocialButton from "./SocialButton";
 import ThemeToggleButton from "./ThemeToggleButton";
 const drawerWidth = { xs: 240, sm: 400 };
 const navItems = [
-  { label: "Home", path: "/" },
-  { label: "About", path: "/about" },
-  { label: "Credentials", path: "/credentials" },
-  { label: "Projects", path: "/projects" },
-  { label: "Publications", path: "/publications" },
+  { label: "Home", path: "/#home" },
+  { label: "About", path: "/#about" },
+  { label: "Credentials", path: "/#credentials" },
+  { label: "Projects", path: "/#projects" },
+  { label: "Publications", path: "/#publications" },
   { label: "Admin🔑", path: "/admin" },
 ];
 interface ISocialData {
@@ -40,7 +40,7 @@ interface ISocialData {
 }
 const ListSocialButtons = (
   social: Palette["social"],
-  mode: "full" | "iconOnly" = "full"
+  mode: "full" | "iconOnly" = "full",
 ) => {
   const socialDataList: ISocialData[] = [
     {
@@ -76,10 +76,155 @@ const ListSocialButtons = (
 
 export default function FloatingNavBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [activeHash, setActiveHash] = React.useState("home");
   const theme = useAppTheme();
   const social = theme.palette.social;
   const pathname = usePathname(); // Get current route
   const isLandscape = useIsLandscape();
+
+  const getSectionIdFromPath = React.useCallback((path: string) => {
+    if (!path.startsWith("/#")) return null;
+    const sectionId = path.split("#")[1] || "";
+    return sectionId || null;
+  }, []);
+
+  const scrollToSection = React.useCallback((sectionId: string) => {
+    if (typeof window === "undefined") return;
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+    setActiveHash(sectionId);
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    window.history.replaceState(null, "", `/#${sectionId}`);
+  }, []);
+
+  const handleSectionLinkClick = React.useCallback(
+    (event: React.MouseEvent, path: string) => {
+      const sectionId = getSectionIdFromPath(path);
+      if (!sectionId || pathname !== "/") return;
+
+      event.preventDefault();
+      scrollToSection(sectionId);
+      setMobileOpen(false);
+    },
+    [getSectionIdFromPath, pathname, scrollToSection],
+  );
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const knownSectionIds = navItems
+      .map((item) => getSectionIdFromPath(item.path))
+      .filter((id): id is string => Boolean(id));
+
+    const updateHash = () => {
+      const currentHash = window.location.hash.replace("#", "");
+      if (knownSectionIds.includes(currentHash)) {
+        setActiveHash(currentHash);
+        return;
+      }
+      setActiveHash("home");
+    };
+
+    updateHash();
+    window.addEventListener("hashchange", updateHash);
+
+    return () => {
+      window.removeEventListener("hashchange", updateHash);
+    };
+  }, [getSectionIdFromPath, pathname]);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined" || pathname !== "/") return;
+
+    const sectionIds = navItems
+      .map((item) => getSectionIdFromPath(item.path))
+      .filter((id): id is string => Boolean(id));
+
+    let isCancelled = false;
+    let retryTimeout: number | null = null;
+    let cleanupListeners: (() => void) | null = null;
+
+    const setupTracking = () => {
+      if (isCancelled) return;
+
+      const sections = sectionIds
+        .map((id) => document.getElementById(id))
+        .filter((section): section is HTMLElement => Boolean(section))
+        .sort((a, b) => a.offsetTop - b.offsetTop);
+
+      if (sections.length === 0) {
+        retryTimeout = window.setTimeout(setupTracking, 120);
+        return;
+      }
+
+      const navOffset = 130;
+      let isTicking = false;
+      const scrollElement = document.scrollingElement as HTMLElement | null;
+
+      const getScrollTop = () =>
+        window.scrollY ||
+        scrollElement?.scrollTop ||
+        document.documentElement.scrollTop ||
+        0;
+
+      const updateActiveSectionFromScroll = () => {
+        const currentScrollPosition = getScrollTop() + navOffset + 8;
+        let currentSectionId = sections[0].id;
+
+        for (const section of sections) {
+          if (section.offsetTop <= currentScrollPosition) {
+            currentSectionId = section.id;
+          } else {
+            break;
+          }
+        }
+
+        setActiveHash((prev) =>
+          prev === currentSectionId ? prev : currentSectionId,
+        );
+      };
+
+      const handleScrollOrResize = () => {
+        if (isTicking) return;
+        isTicking = true;
+        window.requestAnimationFrame(() => {
+          updateActiveSectionFromScroll();
+          isTicking = false;
+        });
+      };
+
+      updateActiveSectionFromScroll();
+      window.addEventListener("scroll", handleScrollOrResize, {
+        passive: true,
+      });
+      window.addEventListener("resize", handleScrollOrResize);
+      scrollElement?.addEventListener("scroll", handleScrollOrResize, {
+        passive: true,
+      });
+
+      cleanupListeners = () => {
+        window.removeEventListener("scroll", handleScrollOrResize);
+        window.removeEventListener("resize", handleScrollOrResize);
+        scrollElement?.removeEventListener("scroll", handleScrollOrResize);
+      };
+    };
+
+    setupTracking();
+
+    return () => {
+      isCancelled = true;
+      if (retryTimeout) window.clearTimeout(retryTimeout);
+      cleanupListeners?.();
+    };
+  }, [getSectionIdFromPath, pathname]);
+
+  const isNavItemActive = (path: string) => {
+    if (path === "/admin") return pathname === "/admin";
+    if (pathname !== "/") return false;
+
+    const hashValue = path.split("#")[1] || "home";
+    return activeHash === hashValue;
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -102,9 +247,14 @@ export default function FloatingNavBar() {
             <ListItemButton
               component={Link}
               href={path}
+              onClick={(event) => handleSectionLinkClick(event, path)}
               sx={{
                 textAlign: "center",
                 bgcolor: "inherit",
+                fontWeight: isNavItemActive(path) ? "bold" : "normal",
+                borderLeft: isNavItemActive(path)
+                  ? `4px solid ${theme.palette.secondary.main}`
+                  : "4px solid transparent",
                 "&:hover": { bgcolor: "inherit", color: "inherit" },
                 fontSize: {
                   xs: "1.2rem",
@@ -205,10 +355,11 @@ export default function FloatingNavBar() {
                       key={path}
                       component={Link}
                       href={path}
+                      onClick={(event) => handleSectionLinkClick(event, path)}
                       sx={{
                         position: "relative",
                         color: "inherit",
-                        fontWeight: pathname === path ? "bold" : "normal",
+                        fontWeight: isNavItemActive(path) ? "bold" : "normal",
                         textTransform: "none",
                         ":hover": {
                           bgcolor: theme.palette.secondary.main,
@@ -225,7 +376,7 @@ export default function FloatingNavBar() {
                             position: "absolute",
                             bottom: "-2px",
                             left: "50%",
-                            width: pathname === path ? "0.5cm" : "0%",
+                            width: isNavItemActive(path) ? "0.5cm" : "0%",
                             height: "2px",
                             backgroundColor: theme.palette.secondary.main,
                             transition: "width 0.3s ease-in-out",
