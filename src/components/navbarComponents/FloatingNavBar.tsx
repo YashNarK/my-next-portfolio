@@ -139,82 +139,75 @@ export default function FloatingNavBar() {
     const sectionIds = navItems
       .map((item) => getSectionIdFromPath(item.path))
       .filter((id): id is string => Boolean(id));
+    let rafId: number | null = null;
+    let retryInterval: number | null = null;
 
-    let isCancelled = false;
-    let retryTimeout: number | null = null;
-    let cleanupListeners: (() => void) | null = null;
-
-    const setupTracking = () => {
-      if (isCancelled) return;
-
-      const sections = sectionIds
-        .map((id) => document.getElementById(id))
-        .filter((section): section is HTMLElement => Boolean(section))
-        .sort((a, b) => a.offsetTop - b.offsetTop);
-
-      if (sections.length === 0) {
-        retryTimeout = window.setTimeout(setupTracking, 120);
-        return;
+    const syncHash = (sectionId: string) => {
+      const nextHash = `#${sectionId}`;
+      if (window.location.hash !== nextHash) {
+        window.history.replaceState(null, "", `/#${sectionId}`);
       }
-
-      const navOffset = 130;
-      let isTicking = false;
-      const scrollElement = document.scrollingElement as HTMLElement | null;
-
-      const getScrollTop = () =>
-        window.scrollY ||
-        scrollElement?.scrollTop ||
-        document.documentElement.scrollTop ||
-        0;
-
-      const updateActiveSectionFromScroll = () => {
-        const currentScrollPosition = getScrollTop() + navOffset + 8;
-        let currentSectionId = sections[0].id;
-
-        for (const section of sections) {
-          if (section.offsetTop <= currentScrollPosition) {
-            currentSectionId = section.id;
-          } else {
-            break;
-          }
-        }
-
-        setActiveHash((prev) =>
-          prev === currentSectionId ? prev : currentSectionId,
-        );
-      };
-
-      const handleScrollOrResize = () => {
-        if (isTicking) return;
-        isTicking = true;
-        window.requestAnimationFrame(() => {
-          updateActiveSectionFromScroll();
-          isTicking = false;
-        });
-      };
-
-      updateActiveSectionFromScroll();
-      window.addEventListener("scroll", handleScrollOrResize, {
-        passive: true,
-      });
-      window.addEventListener("resize", handleScrollOrResize);
-      scrollElement?.addEventListener("scroll", handleScrollOrResize, {
-        passive: true,
-      });
-
-      cleanupListeners = () => {
-        window.removeEventListener("scroll", handleScrollOrResize);
-        window.removeEventListener("resize", handleScrollOrResize);
-        scrollElement?.removeEventListener("scroll", handleScrollOrResize);
-      };
     };
 
-    setupTracking();
+    const getSections = () =>
+      sectionIds
+        .map((id) => document.getElementById(id))
+        .filter((section): section is HTMLElement => Boolean(section));
+
+    const updateActiveSectionFromScroll = () => {
+      const sections = getSections();
+      if (sections.length === 0) return;
+
+      const markerY = 138;
+      let currentSectionId = sections[0].id;
+
+      for (const section of sections) {
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= markerY) {
+          currentSectionId = section.id;
+        }
+      }
+
+      setActiveHash((prev) =>
+        prev === currentSectionId ? prev : currentSectionId,
+      );
+      syncHash(currentSectionId);
+    };
+
+    const scheduleUpdate = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(() => {
+        updateActiveSectionFromScroll();
+        rafId = null;
+      });
+    };
+
+    // Initial call and short retry window while sections/hydration settle.
+    scheduleUpdate();
+    retryInterval = window.setInterval(scheduleUpdate, 200);
+    window.setTimeout(() => {
+      if (retryInterval) {
+        window.clearInterval(retryInterval);
+      }
+    }, 3000);
+
+    window.addEventListener("scroll", scheduleUpdate, { passive: true });
+    document.addEventListener("scroll", scheduleUpdate, {
+      passive: true,
+      capture: true,
+    });
+    window.addEventListener("resize", scheduleUpdate);
+    window.addEventListener("load", scheduleUpdate);
 
     return () => {
-      isCancelled = true;
-      if (retryTimeout) window.clearTimeout(retryTimeout);
-      cleanupListeners?.();
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+      if (retryInterval) window.clearInterval(retryInterval);
+      window.removeEventListener("scroll", scheduleUpdate);
+      document.removeEventListener("scroll", scheduleUpdate, {
+        capture: true,
+      });
+      window.removeEventListener("resize", scheduleUpdate);
+      window.removeEventListener("load", scheduleUpdate);
     };
   }, [getSectionIdFromPath, pathname]);
 
