@@ -29,16 +29,25 @@ export async function updateResumeConfig(config: ResumeConfig): Promise<void> {
 
 export interface ProfileConfig {
   imageUrl: string;
+  thumbUrl?: string;
 }
 
 const PROFILE_DOC = "profile";
 
 export async function getProfileConfig(): Promise<ProfileConfig> {
   const snap = await getDoc(doc(db, COLLECTION, PROFILE_DOC));
-  if (snap.exists()) return snap.data() as ProfileConfig;
-  return { imageUrl: "" };
+  if (snap.exists()) {
+    const data = snap.data() as ProfileConfig;
+    return {
+      imageUrl: data.imageUrl ?? "",
+      thumbUrl: data.thumbUrl ?? "",
+    };
+  }
+  return { imageUrl: "", thumbUrl: "" };
 }
 
-export async function updateProfileConfig(config: ProfileConfig): Promise<void> {
-  await setDoc(doc(db, COLLECTION, PROFILE_DOC), config);
+export async function updateProfileConfig(
+  config: Partial<ProfileConfig>,
+): Promise<void> {
+  await setDoc(doc(db, COLLECTION, PROFILE_DOC), config, { merge: true });
 }

@@ -55,10 +55,34 @@ export default function ProfileAdminPage() {
     setIsUploading(true);
     setUploadError("");
     try {
-      const blob = await getCroppedImg(imageSrc, croppedAreaPixels);
-      const file = new File([blob], "profile.jpg", { type: "image/jpeg" });
-      const url = await uploadImage(file, "profile/profile-pic");
-      await updateProfileConfig({ imageUrl: url });
+      const fullBlob = await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels,
+        512,
+        0.82,
+      );
+      const thumbBlob = await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels,
+        160,
+        0.72,
+      );
+
+      const fullFile = new File([fullBlob], "profile.jpg", {
+        type: "image/jpeg",
+      });
+      const thumbFile = new File([thumbBlob], "profile-thumb.jpg", {
+        type: "image/jpeg",
+      });
+
+      const version = Date.now();
+
+      const [url, thumbUrl] = await Promise.all([
+        uploadImage(fullFile, `profile/profile-pic-${version}.jpg`),
+        uploadImage(thumbFile, `profile/profile-thumb-${version}.jpg`),
+      ]);
+
+      await updateProfileConfig({ imageUrl: url, thumbUrl });
       setSuccessMsg("Profile picture updated!");
       setImageSrc(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -89,7 +113,11 @@ export default function ProfileAdminPage() {
           page.
         </Typography>
 
-        {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
         {uploadError && (
           <Alert severity="error" sx={{ mb: 2 }}>
             {uploadError}
@@ -105,7 +133,7 @@ export default function ProfileAdminPage() {
         {!imageSrc && (
           <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
             <Avatar
-              src={profileConfig?.imageUrl}
+              src={profileConfig?.thumbUrl || profileConfig?.imageUrl}
               sx={{ width: 150, height: 150, mb: 1 }}
             />
             <Typography variant="caption" color="text.secondary">
