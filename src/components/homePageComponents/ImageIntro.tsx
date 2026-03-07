@@ -6,7 +6,7 @@ const ImageIntro = () => {
   const theme = useAppTheme();
   const { profileConfig } = useProfileConfig();
 
-  const imageUrl = profileConfig?.imageUrl || "/img/myImageCropped.png";
+  const imageUrl = profileConfig?.imageUrl;
   const mySignUrl = `/img/sign-${
     theme.palette.mode === "light" ? "black" : "white"
   }.png`;

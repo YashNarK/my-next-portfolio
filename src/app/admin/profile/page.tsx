@@ -105,7 +105,7 @@ export default function ProfileAdminPage() {
         {!imageSrc && (
           <Box display="flex" flexDirection="column" alignItems="center" mb={3}>
             <Avatar
-              src={profileConfig?.imageUrl || "/img/myImageCropped.png"}
+              src={profileConfig?.imageUrl}
               sx={{ width: 150, height: 150, mb: 1 }}
             />
             <Typography variant="caption" color="text.secondary">
