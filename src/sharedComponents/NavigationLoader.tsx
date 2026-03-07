@@ -29,12 +29,27 @@ export default function NavigationLoader() {
       if (!anchor) return;
       const href = anchor.getAttribute("href");
       if (!href) return;
+
+      const isSamePageHashNavigation = (() => {
+        try {
+          const url = new URL(href, window.location.origin);
+          return (
+            url.origin === window.location.origin &&
+            url.pathname === pathname &&
+            url.hash.length > 0
+          );
+        } catch {
+          return false;
+        }
+      })();
+
       // Skip external links, mailto, tel, hash-only, or same page
       if (
         href.startsWith("http") ||
         href.startsWith("mailto:") ||
         href.startsWith("tel:") ||
         href.startsWith("#") ||
+        isSamePageHashNavigation ||
         href === pathname
       )
         return;
@@ -43,6 +58,17 @@ export default function NavigationLoader() {
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
   }, [dispatch, pathname]);
+
+  // If only the hash changes on the same pathname, the route does not change.
+  // Ensure loader is not left open from any edge case.
+  useEffect(() => {
+    const handleHashChange = () => {
+      dispatch(setNavigating(false));
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, [dispatch]);
 
   return (
     <Backdrop
