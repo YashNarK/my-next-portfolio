@@ -18,6 +18,7 @@ import ImageIntro from "./ImageIntro";
 import InfinityTypingText from "./InfinityTypingText";
 import { SvgImage } from "./SvgImage";
 import { calculateExperience } from "@/utils/dateFunctions";
+import ForestEffect from "./ForestEffect";
 
 type variantType =
   | "playful"
@@ -69,17 +70,20 @@ const Banner = () => {
         }}
       >
         <CodeLikeTypography>
-          {` Hello, I'm `}
-          <Typography
-            variant={nameVariant}
-            color={textColor}
-            sx={{
-              fontSize: { xs: "1.5rem", sm: "2.5rem" },
-              fontWeight: "bold",
-            }}
-          >
-            Narendran
-          </Typography>
+          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <ForestEffect text="Hello, I'm" color={textColor} fontSize="2rem" />
+            <Typography
+              variant={nameVariant}
+              color={textColor}
+              sx={{
+                fontSize: { xs: "1.5rem", sm: "2.5rem" },
+                fontWeight: "bold",
+                ml: 1,
+              }}
+            >
+              Narendran
+            </Typography>
+          </span>
         </CodeLikeTypography>
         <CodeLikeTypography>
           I am a <InfinityTypingText />
@@ -88,7 +92,8 @@ const Banner = () => {
           With a total experience of {calculateExperience()}
         </CodeLikeTypography>
         <CodeLikeTypography>
-          Expertise in microservices, event-driven systems, multi-frontend architectures
+          Expertise in microservices, event-driven systems, multi-frontend{" "}
+          architectures
         </CodeLikeTypography>
         <CodeLikeTypography>Tools of My Trade:</CodeLikeTypography>
         <CodeLikeTypography>
