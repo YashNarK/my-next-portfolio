@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "cross-env NODE_OPTIONS='--inspect' next dev --turbopack",
+    "dev-profiler": "cross-env NEXT_PROFILER=1 NODE_ENV=development npm run dev",
     "prebuild": "node -e \"require('node:fs').rmSync('.next',{recursive:true,force:true})\"",
     "build": "next build",
     "start": "node scripts/start.mjs",
@@ -49,6 +50,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/react-vertical-timeline-component": "^3.3.6",
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "tailwindcss": "^4",
