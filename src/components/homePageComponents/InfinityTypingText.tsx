@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 const titles = [
   "MERN Fullstack Developer",
-  "Blockchain Solutions Architect",
-  "Smart Contract & DeFi Developer",
+  "System Design Engineer",
+  "Next.js Expert",
 ];
 
 export default function InfinityTypingText() {
