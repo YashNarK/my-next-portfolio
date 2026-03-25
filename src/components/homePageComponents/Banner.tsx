@@ -18,7 +18,6 @@ import ImageIntro from "./ImageIntro";
 import InfinityTypingText from "./InfinityTypingText";
 import { SvgImage } from "./SvgImage";
 import { calculateExperience } from "@/utils/dateFunctions";
-import { Code } from "@mui/icons-material";
 
 type variantType =
   | "playful"

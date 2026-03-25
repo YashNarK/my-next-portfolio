@@ -65,10 +65,10 @@ const CustomTimelineElement = ({
     // Split on ". " or ".Client:" or ".Client: " or ".\n" or end of string, but not inside a placeholder
     let parts: string[] = tempText
       .split(/\.(?=\s|Client:|$)/g)
-      .map((s: any) => (typeof s === 'string' ? s.trim() : s))
+      .map((s: string) => s.trim())
       .filter(Boolean);
     // Restore placeholders
-    parts = parts.map((part: any) => {
+    parts = parts.map((part: string) => {
       Object.entries(placeholderMap).forEach(([ph, ext]) => {
         part = part.replace(new RegExp(ph, "g"), ext);
       });
@@ -78,9 +78,9 @@ const CustomTimelineElement = ({
   }
 
   const descParts = smartSplit(experienceItem.description);
-  const clientPart = descParts.find((s: any) => typeof s === 'string' && s.startsWith("Client:"));
+  const clientPart = descParts.find((s: string) => s.startsWith("Client:"));
   const client = clientPart ? clientPart.replace("Client:", "").trim() : null;
-  const points = descParts.filter((s: any) => typeof s === 'string' && !s.startsWith("Client:"));
+  const points = descParts.filter((s: string) => !s.startsWith("Client:"));
 
   return (
     <VerticalTimelineElement
@@ -124,7 +124,7 @@ const CustomTimelineElement = ({
         )}
       </Typography>
       <ul style={{ margin: "8px 0 0 16px", padding: 0 }}>
-        {points.map((point: any, idx: any) => (
+        {points.map((point: string, idx: number) => (
           <li key={idx} style={{ marginBottom: 4 }}>
             {point}.
           </li>
