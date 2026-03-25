@@ -29,6 +29,59 @@ const CustomTimelineElement = ({
     : `${localeDate(experienceItem.startDate)} - ${
         experienceItem.endDate && localeDate(experienceItem.endDate)
       }`;
+  // Auto-split description into bullet points and extract client badge
+
+  // Exception list for not splitting on periods within these tokens
+  const exceptions = [
+    ".js",
+    ".ts",
+    ".jsx",
+    ".tsx",
+    ".css",
+    ".json",
+    ".md",
+    ".mjs",
+    ".cjs",
+    ".html",
+    ".svg",
+    ".png",
+    ".jpg",
+    ".jpeg",
+    ".gif",
+    ".pdf",
+  ];
+
+  // Regex to split only on periods that are likely to end a sentence (not part of an exception)
+  function smartSplit(text: string): string[] {
+    // Replace exceptions with placeholders
+    const placeholderMap: { [key: string]: string } = {};
+    let tempText = text;
+    exceptions.forEach((ext: string, i: number) => {
+      const regex = new RegExp(ext.replace(".", "\\."), "gi");
+      const placeholder = `__EXT${i}__`;
+      placeholderMap[placeholder] = ext;
+      tempText = tempText.replace(regex, placeholder);
+    });
+    // Split on ". " or ".Client:" or ".Client: " or ".\n" or end of string, but not inside a placeholder
+    let parts: string[] = tempText
+      .split(/\.(?=\s|Client:|$)/g)
+      .map((s: any) => (typeof s === 'string' ? s.trim() : s))
+      .filter(Boolean);
+    // Restore placeholders
+    parts = parts.map((part: any) => {
+      Object.entries(placeholderMap).forEach(([ph, ext]) => {
+        part = part.replace(new RegExp(ph, "g"), ext);
+      });
+      return part;
+    });
+    return parts;
+  }
+
+  const descParts = smartSplit(experienceItem.description);
+  const clientPart = descParts.find((s: any) => typeof s === 'string' && s.startsWith("Client:"));
+  const client = clientPart ? clientPart.replace("Client:", "").trim() : null;
+  const points = descParts.filter((s: any) => typeof s === 'string' && !s.startsWith("Client:"));
+
   return (
     <VerticalTimelineElement
       key={experienceItem.id}
@@ -51,8 +104,32 @@ const CustomTimelineElement = ({
         className="vertical-timeline-element-subtitle"
       >
         {experienceItem.companyOrInstitution}, {experienceItem.location}
+        {client && (
+          <span style={{ marginLeft: 8 }}>
+            <span
+              style={{
+                display: "inline-block",
+                background: "#1976d2",
+                color: "#fff",
+                borderRadius: 8,
+                padding: "2px 8px",
+                fontSize: "0.8em",
+                marginLeft: 4,
+                verticalAlign: "middle",
+              }}
+            >
+              {client}
+            </span>
+          </span>
+        )}
       </Typography>
-      <p>{experienceItem.description}</p>
+      <ul style={{ margin: "8px 0 0 16px", padding: 0 }}>
+        {points.map((point: any, idx: any) => (
+          <li key={idx} style={{ marginBottom: 4 }}>
+            {point}.
+          </li>
+        ))}
+      </ul>
       {experienceItem.type === "education" && experienceItem.cgpa && (
         <p>
           <strong>CGPA:</strong> {experienceItem.cgpa}
@@ -60,7 +137,7 @@ const CustomTimelineElement = ({
       )}
     </VerticalTimelineElement>
   );
-};
+};;
 
 const ProfessionalTimeline = () => {
   const { data, isLoading } = useExperiences();
