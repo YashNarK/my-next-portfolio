@@ -17,6 +17,8 @@ import CodeLikeTypography from "./CodeLikeTypography";
 import ImageIntro from "./ImageIntro";
 import InfinityTypingText from "./InfinityTypingText";
 import { SvgImage } from "./SvgImage";
+import { calculateExperience } from "@/utils/dateFunctions";
+import { Code } from "@mui/icons-material";
 
 type variantType =
   | "playful"
@@ -32,7 +34,7 @@ const Banner = () => {
   const [variantIndex, setVariantIndex] = useState<number>(0);
   const variantList = useMemo<variantType[]>(
     () => ["playful", "professional", "handWritten", "caligraphy", "codeLike"],
-    []
+    [],
   );
   useEffect(() => {
     const nextVariant = async () => {
@@ -82,6 +84,12 @@ const Banner = () => {
         </CodeLikeTypography>
         <CodeLikeTypography>
           I am a <InfinityTypingText />
+        </CodeLikeTypography>
+        <CodeLikeTypography>
+          With a total experience of {calculateExperience()}
+        </CodeLikeTypography>
+        <CodeLikeTypography>
+          Expertise in microservices, event-driven systems, multi-frontend architectures
         </CodeLikeTypography>
         <CodeLikeTypography>Tools of My Trade:</CodeLikeTypography>
         <CodeLikeTypography>
@@ -140,11 +148,11 @@ const Banner = () => {
         </CodeLikeTypography>
         <CodeLikeTypography>
           <SvgImage
-            src={"/svg/bitcoin" + (mode === "dark" ? "-dark" : "") + ".svg"}
-            alt="Bitcoin"
+            src={"/svg/redis" + (mode === "dark" ? "-dark" : "") + ".svg"}
+            alt="Redis"
             animation={bounceUp}
           />
-          6. Blockchain
+          6. Redis
         </CodeLikeTypography>
       </Box>
     </Stack>
