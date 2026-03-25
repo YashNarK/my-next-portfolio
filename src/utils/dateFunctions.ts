@@ -13,7 +13,7 @@ export function localeDate(
   const formatted = dayjs.utc(dateISO_Value).local().format(formatType);
   return formatted;
 }
-export function calculateExperience(startDateStr: string): string {
+export function calculateExperience(startDateStr: string="2020-10-28"): string {
   const startDate = new Date(startDateStr);
   const today = new Date();
 
