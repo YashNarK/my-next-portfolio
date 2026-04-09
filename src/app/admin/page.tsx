@@ -15,6 +15,7 @@ const Page = () => {
     { name: "Publications", path: "admin/publications" },
     { name: "Resume", path: "admin/resume" },
     { name: "Profile Pic", path: "admin/profile" },
+    { name: "Notes", path: "admin/notes" },
     { name: "Logout", path: "api/auth/logout" },
   ];
   return (

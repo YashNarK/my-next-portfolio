@@ -73,10 +73,18 @@ interface IExperience {
   order?: number;
 }
 
+interface INote {
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type {
   myTechnologies,
   IProject,
   ICredential,
   IPublication,
   IExperience,
+  INote,
 };
