@@ -45,7 +45,7 @@ const ListSocialButtons = (
   const socialDataList: ISocialData[] = [
     {
       text: "LinkedIn",
-      href: "https://www.linkedin.com/in/narenkrithick/",
+      href: "https://www.linkedin.com/in/narendranai/",
       icon: <LinkedIn />,
       themeSelector: "linkedin",
     },
