@@ -30,6 +30,7 @@ const navItems = [
   { label: "Credentials", path: "/#credentials" },
   { label: "Projects", path: "/#projects" },
   { label: "Publications", path: "/#publications" },
+  { label: "Contact", path: "/#contact" },
   { label: "Admin🔑", path: "/admin" },
 ];
 interface ISocialData {
@@ -63,7 +64,7 @@ const ListSocialButtons = (
     },
     {
       text: "Mail",
-      href: "mailto:narenkrithick@gmail.com",
+      href: "mailto:ai.narendran@gmail.com",
       icon: <MailOutline />,
       themeSelector: "mail",
     },

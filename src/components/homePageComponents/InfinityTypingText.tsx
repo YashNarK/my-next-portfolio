@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 
 const titles = [
-  "MERN Fullstack Developer",
-  "System Design Engineer",
-  "Next.js Expert",
+  "Senior Full Stack Developer",
+  "Microservices & System Design Engineer",
+  "Event-Driven Platform Builder",
+  "Next.js & Node.js Expert",
 ];
 
 export default function InfinityTypingText() {

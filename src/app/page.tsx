@@ -4,6 +4,7 @@ import About from "./about/page";
 import Credentials from "./credentials/page";
 import Projects from "./projects/page";
 import Publications from "./publications/page";
+import Contact from "@/components/homePageComponents/Contact";
 
 const SectionPanel = ({
   id,
@@ -83,6 +84,10 @@ export default function Home() {
 
       <SectionPanel id="publications" title="Publications">
         <Publications />
+      </SectionPanel>
+
+      <SectionPanel id="contact" title="Contact">
+        <Contact />
       </SectionPanel>
     </Box>
   );

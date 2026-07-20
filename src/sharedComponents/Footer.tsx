@@ -20,7 +20,7 @@ const Footer = () => {
       }}
     >
       <Typography variant="professional">
-        © {currentYear} YashNarK. All rights reserved.
+        © {currentYear} Narendran A I. All rights reserved.
       </Typography>
     </Box>
   );

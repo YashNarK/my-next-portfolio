@@ -143,9 +143,17 @@ const ProfessionalTimeline = () => {
   const { data, isLoading } = useExperiences();
   const mode = useAppSelector((state) => state.theme.mode);
   useEffect(() => {
-    document.documentElement.style.setProperty(
-      "--timeline-line-color",
-      mode === "dark" ? "white" : "black"
+    const root = document.documentElement.style;
+    const isDark = mode === "dark";
+    root.setProperty("--timeline-line-color", isDark ? "white" : "black");
+    root.setProperty("--timeline-text-color", isDark ? "#f5f5f5" : "#1a1a1a");
+    root.setProperty(
+      "--timeline-card-bg",
+      isDark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.03)"
+    );
+    root.setProperty(
+      "--timeline-card-border",
+      isDark ? "rgba(255,255,255,0.14)" : "rgba(0,0,0,0.12)"
     );
   }, [mode]);
   const experiencesWithOrder = (data || [])

@@ -1,23 +1,17 @@
 "use client";
 
 import { useAppTheme } from "@/hooks/useAppTheme";
-import { useAppSelector } from "@/hooks/useReduxCustom";
-import {
-  bounceUp,
-  mirrorAndRevert,
-  pulseSpin,
-  rotate,
-  slideRightToLeft,
-  zoomOutFade,
-} from "@/lib/animation";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import { useEffect, useState, useMemo } from "react";
 import CodeLikeTypography from "./CodeLikeTypography";
 import ImageIntro from "./ImageIntro";
 import InfinityTypingText from "./InfinityTypingText";
-import { SvgImage } from "./SvgImage";
+import SkillMatrix from "./SkillMatrix";
 import { calculateExperience } from "@/utils/dateFunctions";
+import { useResumeConfig } from "@/hooks/useResumeConfig";
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import ForestEffect from "./ForestEffect";
 
 type variantType =
@@ -26,9 +20,11 @@ type variantType =
   | "caligraphy"
   | "codeLike"
   | "professional";
+
 const Banner = () => {
-  const mode = useAppSelector((state) => state.theme.mode);
   const theme = useAppTheme();
+  const { resumeConfig } = useResumeConfig();
+  const resumeUrl = resumeConfig?.urls?.[resumeConfig.activeIndex];
   const textColor = theme.palette.text.primary;
   const [nameVariant, setNameVariant] = useState<variantType>("codeLike");
   const [variantIndex, setVariantIndex] = useState<number>(0);
@@ -45,6 +41,7 @@ const Banner = () => {
     };
     nextVariant();
   }, [variantIndex, nameVariant, variantList]);
+
   return (
     <Stack
       className="banner-intro-area"
@@ -69,7 +66,7 @@ const Banner = () => {
           width: { xs: "100%", sm: "60%" },
         }}
       >
-        <CodeLikeTypography>
+        <CodeLikeTypography noRuler>
           <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
             <ForestEffect text="Hello, I'm" color={textColor} fontSize="2rem" />
             <Typography
@@ -85,79 +82,67 @@ const Banner = () => {
             </Typography>
           </span>
         </CodeLikeTypography>
-        <CodeLikeTypography>
+
+        <CodeLikeTypography noRuler>
           I am a <InfinityTypingText />
         </CodeLikeTypography>
-        <CodeLikeTypography>
-          With a total experience of {calculateExperience()}
-        </CodeLikeTypography>
-        <CodeLikeTypography>
-          Expertise in microservices, event-driven systems, multi-frontend{" "}
-          architectures
-        </CodeLikeTypography>
-        <CodeLikeTypography>Tools of My Trade:</CodeLikeTypography>
-        <CodeLikeTypography>
-          <SvgImage
-            src={"/svg/react" + (mode === "dark" ? "-dark" : "") + ".svg"}
-            alt="React"
-            animation={rotate}
-          />
-          1. React JS
-          <Typography variant="handWritten"> (With TypeScript)</Typography>
-        </CodeLikeTypography>
-        <CodeLikeTypography>
-          <SvgImage
-            src={"/svg/express" + (mode === "dark" ? "-dark" : "") + ".svg"}
-            alt="Express"
-            animation={slideRightToLeft}
-          />
-          2. Express JS
-        </CodeLikeTypography>
-        <CodeLikeTypography>
-          <SvgImage
-            src={"/svg/typescript" + (mode === "dark" ? "-dark" : "") + ".svg"}
-            alt="TypeScript"
-            animation={zoomOutFade}
-          />
-          3.{" "}
-          <Typography
-            variant="handWritten"
+
+        <Typography
+          variant="professional"
+          sx={{
+            display: "block",
+            mt: 1,
+            opacity: 0.75,
+            fontSize: { xs: "0.85rem", sm: "1rem" },
+            lineHeight: 1.6,
+          }}
+        >
+          {calculateExperience()} building microservices, event-driven systems
+          &amp; multi-frontend architectures.
+        </Typography>
+
+        <Stack
+          direction={{ xs: "column", sm: "row" }}
+          spacing={1.5}
+          sx={{ mt: 2.5, width: { xs: "100%", sm: "auto" } }}
+        >
+          <Button
+            variant="contained"
+            startIcon={<DownloadOutlinedIcon />}
+            disabled={!resumeUrl}
+            onClick={() =>
+              resumeUrl &&
+              window.open(resumeUrl, "_blank", "noopener,noreferrer")
+            }
+            sx={{ textTransform: "none", borderRadius: "999px", px: 2.5 }}
+          >
+            Download Résumé
+          </Button>
+          <Button
+            variant="outlined"
+            startIcon={<MailOutlineIcon />}
+            onClick={() =>
+              document
+                .getElementById("contact")
+                ?.scrollIntoView({ behavior: "smooth" })
+            }
             sx={{
-              textDecoration: "line-through",
-              textDecorationColor: "red",
-              textDecorationThickness: "4px",
+              textTransform: "none",
+              borderRadius: "999px",
+              px: 2.5,
+              color: "text.primary",
+              borderColor: "text.primary",
+              "&:hover": {
+                borderColor: "text.primary",
+                backgroundColor: "action.hover",
+              },
             }}
           >
-            JavaScript{" "}
-          </Typography>
-          TypeScript
-        </CodeLikeTypography>
+            Get in touch
+          </Button>
+        </Stack>
 
-        <CodeLikeTypography>
-          <SvgImage
-            src={"/svg/nextjs" + (mode === "dark" ? "-dark" : "") + ".svg"}
-            alt="NextJS"
-            animation={mirrorAndRevert}
-          />
-          4. Next JS
-        </CodeLikeTypography>
-        <CodeLikeTypography>
-          <SvgImage
-            src={`/svg/redux${mode === "dark" ? "-dark" : ""}.svg`}
-            alt="Redux"
-            animation={pulseSpin}
-          />
-          5. Redux{" "}
-          <Typography variant="handWritten"> (react-redux toolkit)</Typography>
-        </CodeLikeTypography>
-        <CodeLikeTypography>
-          <SvgImage
-            src={"/svg/redis" + (mode === "dark" ? "-dark" : "") + ".svg"}
-            alt="Redis"
-            animation={bounceUp}
-          />
-          6. Redis
-        </CodeLikeTypography>
+        <SkillMatrix />
       </Box>
     </Stack>
   );

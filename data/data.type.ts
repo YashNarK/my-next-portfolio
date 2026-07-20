@@ -9,13 +9,16 @@ type myFrontEndTechnologies =
   | "Material UI"
   | "Zustand"
   | "Vite";
-type myBackEndTechnologies = "Node.js" | "Express";
+type myBackEndTechnologies = "Node.js" | "Express" | "FastAPI" | "BullMQ";
 type myDatabasetechnologies =
   | "MongoDB"
   | "MySQL"
   | "PostgreSQL"
   | "CosmoDB"
-  | "SQL Server";
+  | "SQL Server"
+  | "Redis"
+  | "BigQuery";
+type myDevOpsTechnologies = "Docker" | "Azure DevOps" | "GCP" | "Azure";
 type myAPItechnologies = "GraphQL" | "REST API" | "Web3 API";
 type myBlockchainTechnologies = "Ethereum" | "Polygon" | "Hyperledger Fabric";
 type mySkills = "Web Development" | "Blockchain Development";
@@ -26,6 +29,7 @@ type myTechnologies =
   | myBackEndTechnologies
   | myDatabasetechnologies
   | myAPItechnologies
+  | myDevOpsTechnologies
   | myBlockchainTechnologies
   | mySkills
   | myVersionControlTechnologies;
@@ -49,6 +53,7 @@ interface ICredential {
   issuedDate: string;
   issuedBy: string;
   credentialID: string;
+  order?: number;
 }
 
 interface IPublication {
