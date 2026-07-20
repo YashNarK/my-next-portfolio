@@ -8,7 +8,6 @@ import {
   MailOutline,
 } from "@mui/icons-material";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 import { Box, Stack, Typography } from "@mui/material";
 
 const socials = [
@@ -79,22 +78,6 @@ const Contact = () => (
         <LocationOnOutlinedIcon fontSize="small" />
         <Typography variant="professional" sx={{ fontSize: "0.9rem" }}>
           Chennai, Tamil Nadu, India
-        </Typography>
-      </Stack>
-      <Stack direction="row" spacing={0.5} alignItems="center">
-        <PhoneOutlinedIcon fontSize="small" />
-        <Typography
-          component="a"
-          href="tel:+918124084482"
-          variant="professional"
-          sx={{
-            fontSize: "0.9rem",
-            color: "inherit",
-            textDecoration: "none",
-            "&:hover": { textDecoration: "underline" },
-          }}
-        >
-          +91 81240 84482
         </Typography>
       </Stack>
     </Stack>
