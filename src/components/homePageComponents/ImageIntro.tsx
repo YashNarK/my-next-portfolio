@@ -100,17 +100,24 @@ const ImageIntro = () => {
           ) : null}
         </Box>
         <Box
-          component="img"
-          src={mySignUrl}
-          alt="Signature"
           sx={{
             position: "absolute",
             bottom: "10px",
             right: "10px",
             width: { xs: "120px", sm: "200px" },
+            height: { xs: "62px", sm: "103px" },
             opacity: 0.8,
+            pointerEvents: "none",
           }}
-        />
+        >
+          <Image
+            src={mySignUrl}
+            alt="Signature"
+            fill
+            sizes="(max-width: 600px) 120px, 200px"
+            style={{ objectFit: "contain" }}
+          />
+        </Box>
       </Box>
     </Box>
   );
