@@ -29,3 +29,9 @@
   color: var(--timeline-text-color, inherit) !important;
   opacity: 0.7;
 }
+
+/* Decorative end-cap: keep the star icon, drop its empty content card. */
+.vertical-timeline-element--endcap .vertical-timeline-element-content,
+.vertical-timeline-element--endcap .vertical-timeline-element-content-arrow {
+  display: none !important;
+}

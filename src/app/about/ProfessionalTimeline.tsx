@@ -183,6 +183,7 @@ const ProfessionalTimeline = () => {
             );
           })}
         <VerticalTimelineElement
+          className="vertical-timeline-element--endcap"
           iconStyle={{ background: "rgb(16, 204, 82)", color: "#fff" }}
           icon={<StarIcon />}
         />
