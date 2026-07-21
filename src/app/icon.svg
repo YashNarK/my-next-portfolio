@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#04283a"/>
+      <stop offset="1" stop-color="#05041c"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ECFFCE"/>
+      <stop offset="1" stop-color="#AEEB5E"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="6" y="6" width="244" height="244" rx="54" fill="url(#bg)"/>
+  <rect x="7.5" y="7.5" width="241" height="241" rx="52.5" fill="none" stroke="#DAFDBA" stroke-opacity="0.4" stroke-width="3"/>
+  <g filter="url(#glow)">
+    <path d="M60 92 L88 128 L60 164" fill="none" stroke="url(#ink)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" opacity="0.92"/>
+    <path d="M116 168 V90 L182 168 V90" fill="none" stroke="url(#ink)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="120" y="190" width="62" height="12" rx="6" fill="url(#ink)"/>
+  </g>
+</svg>
