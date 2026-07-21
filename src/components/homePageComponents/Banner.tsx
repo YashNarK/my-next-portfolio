@@ -68,7 +68,9 @@ const Banner = () => {
       >
         <CodeLikeTypography noRuler>
           <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <ForestEffect text="Hello, I'm" color={textColor} fontSize="2rem" />
+            {/* Keep the greeting a step below the name at every width:
+                name is 1.5rem (xs) / 2.5rem (sm+). */}
+            <ForestEffect text="Hello, I'm" color={textColor} fontSize="clamp(1.1rem, 4vw, 2rem)" />
             <Typography
               variant={nameVariant}
               color={textColor}
