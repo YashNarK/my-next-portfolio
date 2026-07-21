@@ -7,6 +7,7 @@ import BlackHoleCursor from "@/sharedComponents/animations/blackholeCursorAnimat
 import Footer from "@/sharedComponents/Footer";
 import SceneBackground from "@/sharedComponents/animations/backgroundAnimations/Scenebackground";
 import NavigationLoader from "@/sharedComponents/NavigationLoader";
+import ChatBotWidget from "@/components/chatbotComponents/ChatBotWidget";
 const siteUrl = "https://www.narendranai.work";
 const siteName = "Narendran A I";
 const title = "Narendran A I — Senior Full Stack Developer";
@@ -88,6 +89,7 @@ export default function RootLayout({
             </Box>
             <Footer />
           </Box>
+          <ChatBotWidget />
         </Providers>
       </body>
     </html>
