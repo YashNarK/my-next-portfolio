@@ -92,7 +92,7 @@ export default function Admin() {
     if (formData.image instanceof File) {
       imageURL = await uploadImage(
         formData.image,
-        `${formData.title}/cred-image`
+        `credentials/${formData.title}/cred-image`
       );
     } else if (typeof formData.image === "string") {
       imageURL = formData.image;
