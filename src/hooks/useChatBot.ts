@@ -6,6 +6,8 @@ import useProjects from "./useProjects";
 import useCredentials from "./useCredentials";
 import usePublications from "./usePublications";
 import { useResumeConfig } from "./useResumeConfig";
+import useSkills from "./useSkills";
+import useSkillViews from "./useSkillViews";
 import { buildKnowledgeBase } from "@/lib/chatbot/knowledgeBase";
 import { getBotAnswer } from "@/lib/chatbot/engine";
 import { greetingResponse } from "@/lib/chatbot/responses";
@@ -27,11 +29,24 @@ export function useChatBot() {
   const { data: credentials, isLoading: credentialsLoading, error: credentialsError } = useCredentials();
   const { data: publications, isLoading: publicationsLoading, error: publicationsError } = usePublications();
   const { resumeConfig, isLoading: resumeLoading } = useResumeConfig();
+  const { data: skills, isLoading: skillsLoading, error: skillsError } = useSkills();
+  const { data: skillViews, isLoading: skillViewsLoading, error: skillViewsError } = useSkillViews();
 
   const isDataLoading =
-    experiencesLoading || projectsLoading || credentialsLoading || publicationsLoading || resumeLoading;
+    experiencesLoading ||
+    projectsLoading ||
+    credentialsLoading ||
+    publicationsLoading ||
+    resumeLoading ||
+    skillsLoading ||
+    skillViewsLoading;
   const hasDataError = Boolean(
-    experiencesError || projectsError || credentialsError || publicationsError
+    experiencesError ||
+      projectsError ||
+      credentialsError ||
+      publicationsError ||
+      skillsError ||
+      skillViewsError
   );
 
   const knowledgeBase = useMemo(
@@ -41,11 +56,23 @@ export function useChatBot() {
         projects,
         credentials,
         publications,
+        skills,
+        skillViews,
         resumeUrl: resumeConfig?.urls?.[resumeConfig.activeIndex] ?? null,
         isDataLoading,
         hasDataError,
       }),
-    [experiences, projects, credentials, publications, resumeConfig, isDataLoading, hasDataError]
+    [
+      experiences,
+      projects,
+      credentials,
+      publications,
+      skills,
+      skillViews,
+      resumeConfig,
+      isDataLoading,
+      hasDataError,
+    ]
   );
 
   const appendMessage = useCallback((role: ChatMessage["role"], text: string) => {

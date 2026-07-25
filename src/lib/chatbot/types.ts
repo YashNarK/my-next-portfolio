@@ -6,6 +6,12 @@ export interface SkillGroup {
   items: string[];
 }
 
+/** Minimal skill shape the retrieval engine needs for alias matching. */
+export interface ChatBotSkill {
+  label: string;
+  aliases: string[];
+}
+
 export interface ContactInfo {
   email: string;
   linkedin: string;
@@ -25,6 +31,7 @@ export interface KnowledgeBase {
   resumeUrl: string | null;
   skillGroups: SkillGroup[];
   allSkillNames: string[];
+  skills: ChatBotSkill[];
   experiences: (IExperience & { id: string })[];
   projects: (IProject & { id: string })[];
   credentials: (ICredential & { id: string })[];

@@ -13,6 +13,7 @@ const Page = () => {
     { name: "Experience", path: "admin/about" },
     { name: "Credentials", path: "admin/credentials" },
     { name: "Publications", path: "admin/publications" },
+    { name: "Skills", path: "admin/skills" },
     { name: "Resume", path: "admin/resume" },
     { name: "Profile Pic", path: "admin/profile" },
     { name: "Notes", path: "admin/notes" },

@@ -34,7 +34,7 @@ function skillHitsResponse(
   query: string,
   kb: KnowledgeBase
 ): string {
-  const hits = matchSkills(query);
+  const hits = matchSkills(query, kb.skills);
   const lines = hits.map((hit) => {
     const usage = findUsagesOfSkill(hit.skill.label, kb.projects, kb.experiences);
     return R.skillConfirmResponse(hit.skill.label, usage);
@@ -96,7 +96,9 @@ function genericIntentResponse(id: GenericIntentId, kb: KnowledgeBase): string {
         R.projectsListResponse(kb)
       );
     case "skillsList":
-      return R.skillsListResponse(kb);
+      return listResponseWithLoadingGuard(kb, kb.skillGroups.length, () =>
+        R.skillsListResponse(kb)
+      );
     case "educationList":
       return listResponseWithLoadingGuard(kb, kb.experiences.length, () =>
         R.educationListResponse(kb)

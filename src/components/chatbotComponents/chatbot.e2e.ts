@@ -31,7 +31,7 @@ test.describe("Chatbot widget", () => {
     await expect(page.getByRole("dialog")).toBeHidden();
   });
 
-  test("answers a skills question from static profile data", async ({ page }) => {
+  test("answers a skills question from Firestore skills data", async ({ page }) => {
     await page
       .getByRole("button", { name: /chat with narendran's portfolio assistant/i })
       .click();

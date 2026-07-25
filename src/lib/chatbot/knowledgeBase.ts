@@ -1,8 +1,15 @@
-import { ICredential, IExperience, IProject, IPublication } from "../../../data/data.type";
-import { calculateExperience } from "@/utils/dateFunctions";
-import { KnowledgeBase } from "./types";
 import {
-  buildSkillGroups,
+  ICredential,
+  IExperience,
+  IProject,
+  IPublication,
+  ISkill,
+  ISkillView,
+} from "../../../data/data.type";
+import { calculateExperience } from "@/utils/dateFunctions";
+import { KnowledgeBase, SkillGroup } from "./types";
+import { deriveGroups, sortViews } from "@/lib/skills/deriveViews";
+import {
   CAREER_START_DATE,
   PROFILE_AVAILABILITY,
   PROFILE_BIO,
@@ -11,7 +18,6 @@ import {
   PROFILE_LOCATION,
   PROFILE_NAME,
   PROFILE_TITLE,
-  SKILLS,
 } from "./staticProfile";
 
 export interface RawChatData {
@@ -19,9 +25,18 @@ export interface RawChatData {
   projects?: (IProject & { id: string })[];
   credentials?: (ICredential & { id: string })[];
   publications?: (IPublication & { id: string })[];
+  skills?: (ISkill & { id: string })[];
+  skillViews?: (ISkillView & { id: string })[];
   resumeUrl?: string | null;
   isDataLoading: boolean;
   hasDataError: boolean;
+}
+
+// The chatbot presents skills grouped like the homepage's primary view: the
+// one keyed "language" if present, otherwise the lowest-ordered view.
+function primaryView(views: ISkillView[]): ISkillView | null {
+  if (!views.length) return null;
+  return views.find((v) => v.key === "language") ?? sortViews(views)[0];
 }
 
 /**
@@ -30,6 +45,20 @@ export interface RawChatData {
  * so downstream response builders never need optional chaining gymnastics.
  */
 export function buildKnowledgeBase(raw: RawChatData): KnowledgeBase {
+  const skills = Array.isArray(raw.skills) ? raw.skills : [];
+  const views = Array.isArray(raw.skillViews) ? raw.skillViews : [];
+  const view = primaryView(views);
+
+  const skillGroups: SkillGroup[] = view
+    ? deriveGroups(skills, view).map((g) => ({
+        title: g.title,
+        caption: g.caption,
+        items: g.items.map((s) => s.label),
+      }))
+    : [];
+
+  const activeSkills = skills.filter((s) => s.active !== false);
+
   return {
     name: PROFILE_NAME,
     fullName: PROFILE_FULL_NAME,
@@ -40,8 +69,12 @@ export function buildKnowledgeBase(raw: RawChatData): KnowledgeBase {
     availability: PROFILE_AVAILABILITY,
     contact: PROFILE_CONTACT,
     resumeUrl: raw.resumeUrl ?? null,
-    skillGroups: buildSkillGroups(),
-    allSkillNames: SKILLS.map((s) => s.label),
+    skillGroups,
+    allSkillNames: activeSkills.map((s) => s.label),
+    skills: activeSkills.map((s) => ({
+      label: s.label,
+      aliases: Array.isArray(s.aliases) ? s.aliases : [],
+    })),
     experiences: Array.isArray(raw.experiences) ? raw.experiences : [],
     projects: Array.isArray(raw.projects) ? raw.projects : [],
     credentials: Array.isArray(raw.credentials) ? raw.credentials : [],

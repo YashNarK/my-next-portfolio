@@ -4,7 +4,7 @@
 // derived from the live data so this stays correct even as admin content
 // changes, without needing a code change.
 import { ICredential, IExperience, IProject, IPublication } from "../../../data/data.type";
-import { SkillEntry, SKILLS } from "./staticProfile";
+import { ChatBotSkill } from "./types";
 import { includesWord, significantWordOverlapScore } from "./textUtils";
 
 type EntityCategory = "project" | "experience" | "credential" | "publication";
@@ -110,7 +110,7 @@ export function matchBestEntity(
 }
 
 interface SkillHit {
-  skill: SkillEntry;
+  skill: ChatBotSkill;
   matchedAlias: string;
 }
 
@@ -119,9 +119,12 @@ interface SkillHit {
  * alias wins when aliases overlap (e.g. "next.js" over the bare "js" that
  * would otherwise also match JavaScript inside it).
  */
-export function matchSkills(query: string): SkillHit[] {
+export function matchSkills(
+  query: string,
+  skills: ChatBotSkill[]
+): SkillHit[] {
   const candidates: SkillHit[] = [];
-  for (const skill of SKILLS) {
+  for (const skill of skills) {
     let bestAlias = "";
     for (const alias of skill.aliases) {
       if (alias.length > bestAlias.length && includesWord(query, alias)) {
