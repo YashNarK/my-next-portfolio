@@ -51,6 +51,10 @@ export const SKILLS: SkillEntry[] = [
   { label: "BullMQ", group: "JavaScript / TypeScript", aliases: ["bullmq", "bull mq", "bull queue"] },
   { label: "Python", group: "Python", aliases: ["python", "py"] },
   { label: "FastAPI", group: "Python", aliases: ["fastapi", "fast api"] },
+  { label: "LLM", group: "AI / GenAI", aliases: ["llm", "llms", "large language model", "large language models", "gpt", "language model"] },
+  { label: "LangChain", group: "AI / GenAI", aliases: ["langchain", "lang chain"] },
+  { label: "LangGraph", group: "AI / GenAI", aliases: ["langgraph", "lang graph"] },
+  { label: "RAG", group: "AI / GenAI", aliases: ["rag", "retrieval augmented generation", "retrieval-augmented generation"] },
   { label: "PostgreSQL", group: "Databases & Cloud", aliases: ["postgresql", "postgres", "psql"] },
   { label: "SQL Server", group: "Databases & Cloud", aliases: ["sql server", "sqlserver", "mssql", "ms sql"] },
   { label: "MongoDB", group: "Databases & Cloud", aliases: ["mongodb", "mongo"] },
@@ -59,6 +63,7 @@ export const SKILLS: SkillEntry[] = [
   { label: "Docker", group: "Databases & Cloud", aliases: ["docker", "dockerized", "containerization"] },
   { label: "Azure", group: "Databases & Cloud", aliases: ["azure", "azure devops", "microsoft azure"] },
   { label: "GCP", group: "Databases & Cloud", aliases: ["gcp", "google cloud", "google cloud platform"] },
+  { label: "Apache AGE", group: "Databases & Cloud", aliases: ["apache age", "age", "apacheage", "a graph extension"] },
 ];
 
 export function buildSkillGroups(): SkillGroup[] {

@@ -36,6 +36,11 @@ const S = {
   docker: { label: "Docker", icon: "docker" },
   azure: { label: "Azure", icon: "azure" },
   gcp: { label: "GCP", icon: "gcp" },
+  langchain: { label: "LangChain", icon: "langchain" },
+  langgraph: { label: "LangGraph", icon: "langgraph" },
+  rag: { label: "RAG", icon: "rag" },
+  llm: { label: "LLM", icon: "llm" },
+  apacheage: { label: "Apache AGE", icon: "apacheage" },
 } satisfies Record<string, Skill>;
 
 // View 1 — by language ecosystem (the "full-stack track" framing).
@@ -62,6 +67,11 @@ const byLanguage: Group[] = [
     items: [S.python, S.fastapi, S.rest],
   },
   {
+    title: "AI / GenAI",
+    caption: "LLM apps",
+    items: [S.llm, S.langchain, S.langgraph, S.rag],
+  },
+  {
     title: "Databases & Cloud",
     caption: "polyglot",
     items: [
@@ -73,6 +83,7 @@ const byLanguage: Group[] = [
       S.docker,
       S.azure,
       S.gcp,
+      S.apacheage,
     ],
   },
 ];
@@ -84,7 +95,14 @@ const byLayer: Group[] = [
     title: "API / Services",
     items: [S.node, S.express, S.fastapi, S.python, S.graphql, S.rest],
   },
-  { title: "Databases", items: [S.postgres, S.sqlserver, S.mongo, S.bigquery] },
+  {
+    title: "AI / LLM",
+    items: [S.llm, S.langchain, S.langgraph, S.rag],
+  },
+  {
+    title: "Databases",
+    items: [S.postgres, S.sqlserver, S.mongo, S.bigquery, S.apacheage],
+  },
   { title: "Cache & Messaging", items: [S.redis, S.bullmq] },
   { title: "Containerization", items: [S.docker] },
   { title: "Cloud", items: [S.azure, S.gcp] },
