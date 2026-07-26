@@ -69,15 +69,25 @@ const ProjectDisplay = ({
           sx={{
             backgroundColor: {
               xs: alpha(theme.palette.background.paper, 0.8),
-              md: alpha(theme.palette.background.paper, 0.6),
+              lg: alpha(theme.palette.background.paper, 0.6),
             },
-            position: "relative",
-            top: "30%",
-            left: "0%",
+            width: {
+              xs: "100%",
+              lg: "130%",
+            },
+            position: "absolute",
+            top: {
+              lg: "30%",
+              xs: "0%",
+            },
+            left: {
+              lg: "15%",
+              xs: "0%",
+            },
             zIndex: 5,
             transform: {
               xs: "none", // no transform on small devices
-              md: "translate(-50%, -50%)", // apply transform only from md and above
+              lg: "translate(-50%, -50%)", // apply transform only from md and above
             },
           }}
         >
@@ -85,7 +95,10 @@ const ProjectDisplay = ({
             variant="codeLike"
             sx={{
               color: theme.palette.text.primary,
-              fontSize: "32px",
+              fontSize: {
+                xs: "25px",
+                lg: "32px",
+              },
               textAlign: "center",
               fontWeight: 900,
             }}
@@ -116,8 +129,8 @@ const ProjectDisplay = ({
           flexWrap="wrap"
           p={2}
           sx={{
-            position: "relative",
-            top: "30%",
+            position: "absolute",
+            top: "65%",
             left: "0%",
             zIndex: 5,
           }}
