@@ -5,9 +5,9 @@ import FloatingNavBar from "../components/navbarComponents/FloatingNavBar";
 import "./globals.css";
 import BlackHoleCursorGate from "@/sharedComponents/animations/blackholeCursorAnimation/BlackHoleCursorGate";
 import Footer from "@/sharedComponents/Footer";
-import SceneBackground from "@/sharedComponents/animations/backgroundAnimations/Scenebackground";
+import SceneBackgroundGate from "@/sharedComponents/animations/backgroundAnimations/SceneBackgroundGate";
 import NavigationLoader from "@/sharedComponents/NavigationLoader";
-import ChatBotWidget from "@/components/chatbotComponents/ChatBotWidget";
+import ChatBotWidgetGate from "@/components/chatbotComponents/ChatBotWidgetGate";
 const siteUrl = "https://www.narendranai.work";
 const siteName = "Narendran A I";
 const title = "Narendran A I — Senior Full Stack Developer";
@@ -84,12 +84,12 @@ export default function RootLayout({
                 color: "inherit",
               }}
             >
-              <SceneBackground />
+              <SceneBackgroundGate />
               {children}
             </Box>
             <Footer />
           </Box>
-          <ChatBotWidget />
+          <ChatBotWidgetGate />
         </Providers>
       </body>
     </html>
