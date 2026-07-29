@@ -85,6 +85,22 @@ interface INote {
   updatedAt: string;
 }
 
+// An engineering problem worth remembering: what broke, why it was hard to
+// see, and what fixed it. Grouped by `category` (the broad area, e.g.
+// "LangGraph") and `subCategory` (the kind of problem within it, e.g.
+// "State Management"), so the list can be filtered from either direction.
+interface IChallenge {
+  category: string;
+  subCategory: string;
+  title: string;
+  description: string; // markdown-ish prose; newlines are preserved on render
+  codeExample?: string; // optional snippet — the fix, or the failing shape
+  referenceUrls?: string[]; // docs, issues, specs that informed the answer
+  order?: number; // manual ordering within a category
+  createdAt: string;
+  updatedAt: string;
+}
+
 // A view/dimension is one way of grouping skills (e.g. "By Language",
 // "By Layer"). Each view owns the ordered list of categories skills can
 // belong to under that view, plus per-category presentation (caption, accent).
@@ -125,6 +141,7 @@ export type {
   IPublication,
   IExperience,
   INote,
+  IChallenge,
   ISkill,
   ISkillView,
   ISkillCategory,
