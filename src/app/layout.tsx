@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import type { Metadata } from "next";
 import FloatingNavBar from "../components/navbarComponents/FloatingNavBar";
 import "./globals.css";
-import BlackHoleCursor from "@/sharedComponents/animations/blackholeCursorAnimation/BlackHoleCursor";
+import BlackHoleCursorGate from "@/sharedComponents/animations/blackholeCursorAnimation/BlackHoleCursorGate";
 import Footer from "@/sharedComponents/Footer";
 import SceneBackground from "@/sharedComponents/animations/backgroundAnimations/Scenebackground";
 import NavigationLoader from "@/sharedComponents/NavigationLoader";
@@ -64,7 +64,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Providers>
-          <BlackHoleCursor />
+          <BlackHoleCursorGate />
           <NavigationLoader />
 
           <Box
