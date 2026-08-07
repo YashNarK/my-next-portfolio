@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { IProject } from "../../../../data/data.type";
+import { IProject, IProjectShot } from "../../../../data/data.type";
 import { uploadImage } from "@/lib/firebase/uploadFiles";
 import {
   Container,
@@ -35,6 +35,7 @@ const emptyProject: IProject = {
   title: "",
   image: "",
   potrait: "",
+  gallery: [],
 };
 
 export default function Admin() {
@@ -42,9 +43,12 @@ export default function Admin() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState(emptyProject);
   const [techInput, setTechInput] = useState("");
+  // Newly picked gallery files live outside formData until submit uploads them.
+  const [galleryFiles, setGalleryFiles] = useState<File[]>([]);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
   const potraitInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
   const theme = useAppTheme();
 
   useEffect(() => {
@@ -84,7 +88,9 @@ export default function Admin() {
 
   function startEdit(project: IProject & { id: string }) {
     setEditingId(project.id);
-    setFormData({ ...project });
+    setFormData({ ...project, gallery: project.gallery ?? [] });
+    setGalleryFiles([]);
+    if (galleryInputRef.current) galleryInputRef.current.value = "";
   }
 
   async function handleDelete(id: string) {
@@ -105,6 +111,36 @@ export default function Admin() {
     if (file) {
       setFormData((prev) => ({ ...prev, potrait: file }));
     }
+  }
+
+  function handleGalleryChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setGalleryFiles(Array.from(e.target.files ?? []));
+  }
+
+  function handleShotCaption(index: number, caption: string) {
+    setFormData((prev) => ({
+      ...prev,
+      gallery: (prev.gallery ?? []).map((shot, i) =>
+        i === index ? { ...shot, caption } : shot
+      ),
+    }));
+  }
+
+  function handleShotRemove(index: number) {
+    setFormData((prev) => ({
+      ...prev,
+      gallery: (prev.gallery ?? []).filter((_, i) => i !== index),
+    }));
+  }
+
+  function handleShotMove(index: number, delta: number) {
+    setFormData((prev) => {
+      const next = [...(prev.gallery ?? [])];
+      const target = index + delta;
+      if (target < 0 || target >= next.length) return prev;
+      [next[index], next[target]] = [next[target], next[index]];
+      return { ...prev, gallery: next };
+    });
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -128,10 +164,22 @@ export default function Admin() {
       potraitURL = formData.potrait;
     }
 
+    // Existing shots keep their URLs; newly picked files upload under a
+    // per-project gallery prefix and append in the order they were selected.
+    const uploaded: IProjectShot[] = [];
+    for (const [i, file] of galleryFiles.entries()) {
+      const url = await uploadImage(
+        file,
+        `${formData.title}/gallery/${Date.now()}-${i}`
+      );
+      uploaded.push({ url });
+    }
+
     const dataToSave = {
       ...formData,
       image: imageURL,
       potrait: potraitURL,
+      gallery: [...(formData.gallery ?? []), ...uploaded],
     };
 
     delete (dataToSave as Record<string, unknown>).id; // in case id was carried over
@@ -144,8 +192,10 @@ export default function Admin() {
 
     setFormData(emptyProject);
     setEditingId(null);
+    setGalleryFiles([]);
     imageInputRef.current!.value = "";
     potraitInputRef.current!.value = "";
+    if (galleryInputRef.current) galleryInputRef.current.value = "";
     await loadProjects();
   }
 
@@ -233,6 +283,75 @@ export default function Admin() {
                   </Link>
                 </FormHelperText>
               )}
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <InputLabel>
+                Gallery — screenshots of the working app (multi-select)
+              </InputLabel>
+              <input
+                type="file"
+                accept="image/*"
+                multiple
+                onChange={handleGalleryChange}
+                name="gallery"
+                ref={galleryInputRef}
+              />
+              {galleryFiles.length > 0 && (
+                <FormHelperText>
+                  {galleryFiles.length} new image
+                  {galleryFiles.length === 1 ? "" : "s"} will be uploaded on
+                  save.
+                </FormHelperText>
+              )}
+
+              <Stack spacing={1} sx={{ mt: 2 }}>
+                {(formData.gallery ?? []).map((shot, i) => (
+                  <Stack
+                    key={shot.url}
+                    direction="row"
+                    spacing={1}
+                    alignItems="center"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={shot.url}
+                      alt=""
+                      width={72}
+                      height={46}
+                      style={{ objectFit: "cover", borderRadius: 4 }}
+                    />
+                    <TextField
+                      size="small"
+                      fullWidth
+                      label={`Caption ${i + 1}`}
+                      value={shot.caption ?? ""}
+                      onChange={(e) => handleShotCaption(i, e.target.value)}
+                    />
+                    <Button
+                      size="small"
+                      onClick={() => handleShotMove(i, -1)}
+                      disabled={i === 0}
+                    >
+                      ↑
+                    </Button>
+                    <Button
+                      size="small"
+                      onClick={() => handleShotMove(i, 1)}
+                      disabled={i === (formData.gallery ?? []).length - 1}
+                    >
+                      ↓
+                    </Button>
+                    <Button
+                      size="small"
+                      color="error"
+                      onClick={() => handleShotRemove(i)}
+                    >
+                      Remove
+                    </Button>
+                  </Stack>
+                ))}
+              </Stack>
             </Grid>
 
             <Grid size={{ xs: 12 }}>

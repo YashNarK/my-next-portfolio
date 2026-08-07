@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { slugify } from "@/utils/slugify";
 import { GitHub, ImportantDevices } from "@mui/icons-material";
 import { getAllProjects } from "@/lib/firebase/projects-crud";
-import Image from "next/image";
+import ProjectGallery from "./ProjectGallery";
+import { IProjectShot } from "../../../../data/data.type";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -17,6 +18,22 @@ export default async function ProjectDetailsPage({ params }: Props) {
 
   if (!project) return notFound();
 
+  // `image` predates the gallery, so treat it as the hero shot. When the same
+  // URL also appears in `gallery` the two collapse into one entry, keeping the
+  // gallery's caption — `image` alone carries no caption.
+  const shots: IProjectShot[] = [];
+  for (const shot of [
+    ...(typeof project.image === "string" && project.image
+      ? [{ url: project.image }]
+      : []),
+    ...(project.gallery ?? []),
+  ]) {
+    if (!shot.url) continue;
+    const existing = shots.find((s) => s.url === shot.url);
+    if (existing) existing.caption ??= shot.caption;
+    else shots.push({ ...shot });
+  }
+
   return (
     <Box p={5} mt={10} width={"100vw"}>
       <Grid
@@ -26,20 +43,7 @@ export default async function ProjectDetailsPage({ params }: Props) {
         alignItems={"center"}
       >
         <Grid size={{ xs: 12, sm: 6 }}>
-          <Box>
-            {typeof project.image === "string" && (
-              <Image
-                alt={project.title + " Image"}
-                src={project.image}
-                width={500}
-                height={300}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                }}
-              />
-            )}
-          </Box>
+          <ProjectGallery shots={shots} title={project.title} />
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>
           <Box>

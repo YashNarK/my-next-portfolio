@@ -34,11 +34,22 @@ type myTechnologies =
   | mySkills
   | myVersionControlTechnologies;
 
+// A single screenshot of the running product. `caption` is what an interviewer
+// reads under the image, so it should name the capability on screen rather than
+// describe the picture ("Hybrid search over the agronomic KB", not "search page").
+interface IProjectShot {
+  url: string;
+  caption?: string;
+}
+
 interface IProject {
   title: string;
   description: string;
   technologiesUsed: string[];
+  /** Primary/hero screenshot. Kept for back-compat; also seeds `gallery`. */
   image?: string | File;
+  /** Additional screenshots of the working app, captured from `demoLink`. */
+  gallery?: IProjectShot[];
   demoLink: string;
   sourceLink: string;
   potrait?: string | File;
@@ -137,6 +148,7 @@ interface ISkill {
 export type {
   myTechnologies,
   IProject,
+  IProjectShot,
   ICredential,
   IPublication,
   IExperience,

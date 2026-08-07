@@ -3,78 +3,24 @@
 import { useAppTheme } from "@/hooks/useAppTheme";
 import useProjects from "@/hooks/useProjects";
 import { Grid } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
 import ProjectDisplay from "./ProjectDisplay";
 import ProjectSkeleton from "./ProjectSkeleton";
+import { IProject } from "../../../data/data.type";
+
+/**
+ * The card is landscape, so the wide demo screenshot is the right art for it;
+ * `potrait` remains the fallback for projects not yet re-captured.
+ */
+const cardImage = (project: IProject) =>
+  typeof project.image === "string" && project.image
+    ? project.image
+    : typeof project.potrait === "string"
+      ? project.potrait
+      : "";
 
 const Project = () => {
   const theme = useAppTheme();
-
   const { data: projectsList, error, isLoading } = useProjects();
-  const [loadedPortraits, setLoadedPortraits] = useState<
-    Record<string, boolean>
-  >({});
-
-  const projectLoadKeys = useMemo(
-    () =>
-      projectsList?.map((project, index) => {
-        const imageUrl =
-          typeof project.potrait === "string" ? project.potrait : "";
-        return `${index}-${project.title}-${imageUrl}`;
-      }) ?? [],
-    [projectsList],
-  );
-
-  useEffect(() => {
-    if (!projectsList) {
-      setLoadedPortraits({});
-      return;
-    }
-
-    let isActive = true;
-    const preloads: HTMLImageElement[] = [];
-
-    setLoadedPortraits({});
-
-    projectsList.forEach((project, index) => {
-      const imageUrl =
-        typeof project.potrait === "string" ? project.potrait : "";
-      const key = `${index}-${project.title}-${imageUrl}`;
-
-      if (!imageUrl) {
-        setLoadedPortraits((prev) => ({ ...prev, [key]: true }));
-        return;
-      }
-
-      const preload = new window.Image();
-      preloads.push(preload);
-
-      const markLoaded = () => {
-        if (!isActive) return;
-        setLoadedPortraits((prev) => {
-          if (prev[key]) return prev;
-          return { ...prev, [key]: true };
-        });
-      };
-
-      preload.src = imageUrl;
-
-      if (preload.complete) {
-        markLoaded();
-      } else {
-        preload.onload = markLoaded;
-        preload.onerror = markLoaded;
-      }
-    });
-
-    return () => {
-      isActive = false;
-      preloads.forEach((preload) => {
-        preload.onload = null;
-        preload.onerror = null;
-      });
-    };
-  }, [projectsList]);
 
   if (error) throw new Error(error);
 
@@ -82,56 +28,46 @@ const Project = () => {
     <Grid
       className="projects-main-grid"
       container
-      spacing={5}
+      spacing={{ xs: 3, md: 4 }}
       pt={15}
       pb={10}
       sx={{
-        justifyContent: "flex-center",
-        alignItems: "center",
+        // Grid's negative margins sit flush against the viewport without this,
+        // so cards ran edge-to-edge on phones.
+        px: { xs: 2, sm: 3, md: 4 },
+        justifyContent: "center",
+        alignItems: "stretch",
         background: "transparent",
         minHeight: "100%",
+        // Without a cap the two columns drift to the screen edges on wide
+        // monitors and the grid reads as two disconnected lists.
+        maxWidth: 1200,
+        mx: "auto",
       }}
     >
       {isLoading || !projectsList
-        ? Array(6)
-            .fill(true)
-            .map((_, index) => (
-              <Grid
-                size={{ xs: 12, md: 6 }}
-                key={index}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <ProjectSkeleton />
-              </Grid>
-            ))
-        : projectsList.map((project, index) => {
-            const imageUrl =
-              typeof project.potrait === "string" ? project.potrait : "";
-            const loadKey = `${index}-${project.title}-${imageUrl}`;
-            const isPortraitLoaded = loadedPortraits[loadKey] ?? false;
-            const potraitUrl = imageUrl ? `url(${imageUrl})` : "none";
-            return (
-              <Grid
-                size={{ xs: 12, md: 6 }}
-                key={projectLoadKeys[index] ?? index}
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                {isPortraitLoaded ? (
-                  <ProjectDisplay
-                    bgImageUrl={potraitUrl}
-                    theme={theme}
-                    project={project}
-                  />
-                ) : (
-                  <ProjectSkeleton />
-                )}
-              </Grid>
-            );
-          })}
+        ? Array.from({ length: 4 }, (_, index) => (
+            <Grid size={{ xs: 12, md: 6 }} key={index} display="flex">
+              <ProjectSkeleton />
+            </Grid>
+          ))
+        : projectsList.map((project, index) => (
+            <Grid
+              size={{ xs: 12, md: 6 }}
+              key={project.id ?? index}
+              display="flex"
+              justifyContent="center"
+            >
+              {/* The card reserves the image box via aspect-ratio, so there is
+                  no layout shift to guard against while the shot decodes. */}
+              <ProjectDisplay
+                bgImageUrl={cardImage(project)}
+                theme={theme}
+                project={project}
+                priority={index < 2}
+              />
+            </Grid>
+          ))}
     </Grid>
   );
 };

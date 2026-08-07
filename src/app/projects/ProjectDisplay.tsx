@@ -2,175 +2,175 @@ import { Box, Stack, Theme, Typography, useMediaQuery } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import { IProject } from "../../../data/data.type";
 import Link from "next/link";
+import Image from "next/image";
 import { slugify } from "@/utils/slugify";
+
+/**
+ * Listing card for a single project. The card leads with a landscape
+ * screenshot of the running product rather than decorative art — an
+ * interviewer should be able to tell what the thing does before clicking.
+ */
 const ProjectDisplay = ({
   bgImageUrl,
   theme,
   project,
+  priority = false,
 }: {
+  /** Card image URL, already resolved by the listing (screenshot preferred). */
   bgImageUrl: string;
   theme: Theme;
   project: IProject;
+  /** Set on the cards above the fold so the screenshot is not lazy-loaded. */
+  priority?: boolean;
 }) => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const visibleTechCount = isMobile ? 3 : 6;
+  const visibleTechCount = isMobile ? 3 : 5;
   const hiddenCount = project.technologiesUsed.length - visibleTechCount;
   const projectSlug = slugify(project.title);
+  const border = alpha(theme.palette.text.primary, 0.15);
+
   return (
-    <Link href={`/projects/${projectSlug}`} style={{ textDecoration: "none" }}>
+    <Link
+      href={`/projects/${projectSlug}`}
+      style={{ textDecoration: "none", width: "100%", maxWidth: 560 }}
+    >
       <Box
-        width={300}
-        height={450}
-        position="relative"
-        m={0}
-        p={0}
         sx={{
-          transition: "transform 0.2s, box-shadow 0.2s",
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
+          borderRadius: 2,
+          overflow: "hidden",
+          border: `1px solid ${border}`,
+          backgroundColor: alpha(theme.palette.background.paper, 0.55),
+          backdropFilter: "blur(6px)",
+          transition:
+            "transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease",
           "&:hover": {
-            transform: "scale(1.1)",
-            boxShadow: 6,
-            zIndex: 10,
-            cursor: "pointer",
+            transform: "translateY(-6px)",
+            borderColor: alpha(theme.palette.primary.main, 0.6),
+            boxShadow: `0 20px 45px ${alpha(theme.palette.common.black, 0.5)}`,
+          },
+          "&:hover .project-shot": { transform: "scale(1.04)" },
+          "&:hover .project-cta": {
+            color: theme.palette.secondary.main,
+            transform: "translateX(3px)",
           },
         }}
       >
-        {/* Actual Potrait Image of project */}
+        {/* Screenshot of the running app, anchored to the top so headers and
+            primary content survive the crop at every card width. */}
         <Box
-          width={300}
-          height={450}
-          mx="auto"
           sx={{
-            position: "absolute",
-            backgroundImage: bgImageUrl,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "blur(1px)",
-            zIndex: 3,
-          }}
-        />
-        {/* A paper over the image that provides highlight to the text above */}
-        <Box
-          width={300}
-          height={450}
-          mx="auto"
-          sx={{
-            position: "absolute",
-            backgroundColor: theme.palette.text.secondary,
-            zIndex: 4,
-            opacity: 0.3,
-          }}
-        />
-
-        {/* The Title and One Liner Box */}
-        <Box
-          border={2}
-          borderColor={theme.palette.text.primary}
-          p={2}
-          sx={{
-            backgroundColor: {
-              xs: alpha(theme.palette.background.paper, 0.8),
-              lg: alpha(theme.palette.background.paper, 0.6),
-            },
-            width: {
-              xs: "100%",
-              lg: "130%",
-            },
-            position: "absolute",
-            top: {
-              lg: "30%",
-              xs: "0%",
-            },
-            left: {
-              lg: "15%",
-              xs: "0%",
-            },
-            zIndex: 5,
-            transform: {
-              xs: "none", // no transform on small devices
-              lg: "translate(-50%, -50%)", // apply transform only from md and above
-            },
+            position: "relative",
+            width: "100%",
+            // Matches the widescreen aspect the demo screenshots are captured
+            // at, so the frame crops almost nothing off the sides.
+            aspectRatio: "7 / 3",
+            overflow: "hidden",
+            backgroundColor: alpha(theme.palette.common.black, 0.4),
+            borderBottom: `1px solid ${border}`,
           }}
         >
+          {bgImageUrl && (
+            <Image
+              className="project-shot"
+              alt={`${project.title} screenshot`}
+              src={bgImageUrl}
+              fill
+              sizes="(max-width: 900px) 100vw, 560px"
+              priority={priority}
+              style={{
+                objectFit: "cover",
+                objectPosition: "top center",
+                transition: "transform 0.35s ease",
+              }}
+            />
+          )}
+        </Box>
+
+        <Stack spacing={1.5} sx={{ p: 2.5, flexGrow: 1 }}>
           <Typography
             variant="codeLike"
             sx={{
               color: theme.palette.text.primary,
-              fontSize: {
-                xs: "25px",
-                lg: "32px",
-              },
-              textAlign: "center",
-              fontWeight: 900,
+              fontSize: { xs: "1.25rem", md: "1.4rem" },
+              fontWeight: 800,
+              lineHeight: 1.2,
             }}
           >
             {project.title}
           </Typography>
+
           <Typography
-            variant="handWritten"
+            variant="professional"
             sx={{
-              color: theme.palette.text.primary,
-              fontSize: "20px",
-              textAlign: "end",
-              fontWeight: {
-                xs: 400,
-                md: 900,
-              },
-              display: "block",
+              color: alpha(theme.palette.text.primary, 0.7),
+              fontSize: "0.95rem",
+              lineHeight: 1.5,
+              display: "-webkit-box",
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
             }}
           >
             {project.oneLiner}
           </Typography>
-        </Box>
-        {/* Tags for technologies used */}
-        <Stack
-          direction="row"
-          spacing={1}
-          gap={1}
-          flexWrap="wrap"
-          p={2}
-          sx={{
-            position: "absolute",
-            top: "65%",
-            left: "0%",
-            zIndex: 5,
-          }}
-        >
-          {project.technologiesUsed.slice(0, visibleTechCount).map((tech) => (
-            <Typography
-              key={tech}
-              variant="codeLike"
-              sx={{
-                px: 1,
-                py: 0.5,
-                bgcolor: "primary.main",
-                color: "primary.contrastText",
-                borderRadius: 1,
-                mr: 1,
-                my: 1,
-                fontWeight: 900,
-                fontSize: "0.9rem",
-              }}
-            >
-              {tech}
-            </Typography>
-          ))}
 
-          {hiddenCount > 0 && (
-            <Typography
-              variant="caption"
-              sx={{
-                px: 1,
-                py: 0.5,
-                bgcolor: "grey.600",
-                color: "common.white",
-                borderRadius: 1,
-                mr: 1,
-                my: 1,
-              }}
-            >
-              +{hiddenCount}
-            </Typography>
-          )}
+          <Stack direction="row" flexWrap="wrap" gap={0.75} sx={{ pt: 0.5 }}>
+            {project.technologiesUsed.slice(0, visibleTechCount).map((tech) => (
+              <Typography
+                key={tech}
+                variant="codeLike"
+                sx={{
+                  px: 1,
+                  py: 0.35,
+                  borderRadius: 1,
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  color: theme.palette.primary.contrastText,
+                  backgroundColor: alpha(theme.palette.primary.main, 0.9),
+                }}
+              >
+                {tech}
+              </Typography>
+            ))}
+
+            {hiddenCount > 0 && (
+              <Typography
+                variant="codeLike"
+                sx={{
+                  px: 1,
+                  py: 0.35,
+                  borderRadius: 1,
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  color: alpha(theme.palette.text.primary, 0.8),
+                  border: `1px solid ${border}`,
+                }}
+              >
+                +{hiddenCount}
+              </Typography>
+            )}
+          </Stack>
+
+          {/* `primary.main` is a surface colour in this palette (near-black in
+              dark mode, pale mint in light), so it is unreadable as text in
+              both. Text colours are the only ones guaranteed to contrast. */}
+          <Typography
+            className="project-cta"
+            variant="codeLike"
+            sx={{
+              pt: 0.5,
+              mt: "auto",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              color: theme.palette.text.primary,
+              transition: "color 0.25s ease, transform 0.25s ease",
+            }}
+          >
+            View case study →
+          </Typography>
         </Stack>
       </Box>
     </Link>
