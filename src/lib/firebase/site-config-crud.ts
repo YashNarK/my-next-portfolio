@@ -30,6 +30,13 @@ export async function updateResumeConfig(config: ResumeConfig): Promise<void> {
 export interface ProfileConfig {
   imageUrl: string;
   thumbUrl?: string;
+  /**
+   * A tiny inline base64 JPEG (LQIP) of the cropped photo, generated at upload
+   * time. Because it travels inside the Firestore document rather than as its
+   * own request, it can be painted immediately — the circle is never empty
+   * while the full-resolution photo downloads.
+   */
+  blurDataURL?: string;
 }
 
 const PROFILE_DOC = "profile";
@@ -41,9 +48,10 @@ export async function getProfileConfig(): Promise<ProfileConfig> {
     return {
       imageUrl: data.imageUrl ?? "",
       thumbUrl: data.thumbUrl ?? "",
+      blurDataURL: data.blurDataURL ?? "",
     };
   }
-  return { imageUrl: "", thumbUrl: "" };
+  return { imageUrl: "", thumbUrl: "", blurDataURL: "" };
 }
 
 export async function updateProfileConfig(

@@ -6,53 +6,23 @@ import { useEffect, useState } from "react";
 
 const ImageIntro = () => {
   const theme = useAppTheme();
-  const { profileConfig, isLoading } = useProfileConfig();
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const { profileConfig } = useProfileConfig();
+  const [hasEntered, setHasEntered] = useState(false);
 
   const imageUrl = profileConfig?.imageUrl || profileConfig?.thumbUrl;
+  const blurDataURL = profileConfig?.blurDataURL;
   const mySignUrl = `/img/sign-${
     theme.palette.mode === "light" ? "black" : "white"
   }.png`;
 
+  // The entrance animation runs as soon as the component mounts. It used to be
+  // gated on the photo finishing its download, which is what left the page
+  // blank: nothing was on screen until a Firestore round trip *and* a full
+  // image download had both completed.
   useEffect(() => {
-    let isActive = true;
-
-    if (isLoading) {
-      setIsImageLoaded(false);
-      return () => {
-        isActive = false;
-      };
-    }
-
-    // If there is no profile image configured, avoid keeping the intro hidden.
-    if (!imageUrl) {
-      setIsImageLoaded(true);
-      return () => {
-        isActive = false;
-      };
-    }
-
-    setIsImageLoaded(false);
-    const preload = new window.Image();
-    preload.src = imageUrl;
-
-    const markLoaded = () => {
-      if (isActive) setIsImageLoaded(true);
-    };
-
-    if (preload.complete) {
-      markLoaded();
-    } else {
-      preload.onload = markLoaded;
-      preload.onerror = markLoaded;
-    }
-
-    return () => {
-      isActive = false;
-      preload.onload = null;
-      preload.onerror = null;
-    };
-  }, [imageUrl, isLoading]);
+    const frame = requestAnimationFrame(() => setHasEntered(true));
+    return () => cancelAnimationFrame(frame);
+  }, []);
 
   return (
     <Box
@@ -60,14 +30,13 @@ const ImageIntro = () => {
       alignItems={"center"}
       justifyContent={"center"}
       sx={{
-        transform: isImageLoaded
+        transform: hasEntered
           ? { xs: "translateY(0)", sm: "translateX(0)" }
           : { xs: "translateY(-120vh)", sm: "translateX(-120vw)" },
-        opacity: isImageLoaded ? 1 : 0,
+        opacity: hasEntered ? 1 : 0,
         transition:
           "transform 650ms cubic-bezier(0.22, 1, 0.36, 1), opacity 300ms ease",
         willChange: "transform, opacity",
-        pointerEvents: isImageLoaded ? "auto" : "none",
       }}
     >
       <Box
@@ -96,6 +65,14 @@ const ImageIntro = () => {
               sizes="(max-width: 600px) 230px, 360px"
               style={{ objectFit: "cover" }}
               priority
+              // The stored photo is already cropped and downscaled to 512px at
+              // quality 0.82 on upload, so the optimizer has little left to do —
+              // and skipping it keeps the URL identical to the <link rel="preload">
+              // emitted in the document head, so that preload is actually reused.
+              unoptimized
+              {...(blurDataURL
+                ? { placeholder: "blur" as const, blurDataURL }
+                : {})}
             />
           ) : null}
         </Box>

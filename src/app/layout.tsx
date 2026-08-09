@@ -8,6 +8,7 @@ import Footer from "@/sharedComponents/Footer";
 import SceneBackgroundGate from "@/sharedComponents/animations/backgroundAnimations/SceneBackgroundGate";
 import NavigationLoader from "@/sharedComponents/NavigationLoader";
 import ChatBotWidgetGate from "@/components/chatbotComponents/ChatBotWidgetGate";
+import { getProfileConfigServer } from "@/lib/firebase/profile-server";
 const siteUrl = "https://www.narendranai.work";
 const siteName = "Narendran A I";
 const title = "Narendran A I — Senior Full Stack Developer";
@@ -55,15 +56,31 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Resolved during SSR/ISR so the browser can begin downloading the profile
+  // photo from the HTML itself, in parallel with the JS bundle, instead of
+  // waiting for hydration + a Firestore round trip to even learn its URL.
+  const initialProfile = await getProfileConfigServer();
+  const profileImageUrl = initialProfile?.imageUrl || initialProfile?.thumbUrl;
+
   return (
     <html lang="en">
       <body>
-        <Providers>
+        {profileImageUrl && (
+          // Rendered unoptimized by <ImageIntro/>, so this href is byte-for-byte
+          // the request the <img> makes and the preload is guaranteed to be reused.
+          <link
+            rel="preload"
+            as="image"
+            href={profileImageUrl}
+            fetchPriority="high"
+          />
+        )}
+        <Providers initialProfile={initialProfile}>
           <BlackHoleCursorGate />
           <NavigationLoader />
 

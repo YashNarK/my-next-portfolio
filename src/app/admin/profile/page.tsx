@@ -1,6 +1,6 @@
 "use client";
 
-import { getCroppedImg } from "@/utils/cropImage";
+import { getCroppedBlurDataUrl, getCroppedImg } from "@/utils/cropImage";
 import { uploadImage } from "@/lib/firebase/uploadFiles";
 import { useProfileConfig } from "@/hooks/useProfileConfig";
 import {
@@ -67,6 +67,12 @@ export default function ProfileAdminPage() {
         160,
         0.72,
       );
+      // Inline placeholder stored alongside the URLs so the homepage has
+      // something to paint before the full photo arrives.
+      const blurDataURL = await getCroppedBlurDataUrl(
+        imageSrc,
+        croppedAreaPixels,
+      );
 
       const fullFile = new File([fullBlob], "profile.jpg", {
         type: "image/jpeg",
@@ -82,7 +88,7 @@ export default function ProfileAdminPage() {
         uploadImage(thumbFile, `profile/profile-thumb-${version}.jpg`),
       ]);
 
-      await updateProfileConfig({ imageUrl: url, thumbUrl });
+      await updateProfileConfig({ imageUrl: url, thumbUrl, blurDataURL });
       setSuccessMsg("Profile picture updated!");
       setImageSrc(null);
       if (fileInputRef.current) fileInputRef.current.value = "";

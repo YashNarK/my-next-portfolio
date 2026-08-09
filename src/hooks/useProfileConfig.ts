@@ -4,21 +4,20 @@ import {
   ProfileConfig,
 } from "@/lib/firebase/site-config-crud";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
-const QUERY_KEY = ["siteConfig", "profile"];
+import { PROFILE_QUERY_KEY } from "@/lib/queryKeys";
 
 export function useProfileConfig() {
   const queryClient = useQueryClient();
 
   const { data, isLoading, error } = useQuery<ProfileConfig>({
-    queryKey: QUERY_KEY,
+    queryKey: PROFILE_QUERY_KEY,
     queryFn: getProfileConfig,
     staleTime: 1000 * 60 * 5,
   });
 
   const mutation = useMutation({
     mutationFn: updateProfileConfig,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: QUERY_KEY }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: PROFILE_QUERY_KEY }),
   });
 
   return {

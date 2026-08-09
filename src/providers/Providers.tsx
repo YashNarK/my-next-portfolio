@@ -10,14 +10,30 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ErrorFallback from "@/components/errorPageComponents/ErrorFallback";
 import { ErrorBoundary } from "react-error-boundary";
+// Import the key from the standalone module (and the config as a type only) so
+// this file pulls no Firebase runtime code into the server module graph.
+import { PROFILE_QUERY_KEY } from "@/lib/queryKeys";
+import type { ProfileConfig } from "@/lib/firebase/site-config-crud";
 // A client-side QueryClientProvider for React Query
 // This is used for data fetching and caching
 // It allows components to fetch data and manage server state
 // without needing to pass props down through the component tree
 // or manage loading states manually.
-export const QueryProvider = ({ children }: { children: ReactNode }) => {
+export const QueryProvider = ({
+  children,
+  initialProfile,
+}: {
+  children: ReactNode;
+  initialProfile?: ProfileConfig | null;
+}) => {
   const [client] = useState(() => {
-    return new QueryClient();
+    const queryClient = new QueryClient();
+    // Seed the profile picture the server already resolved, so the homepage
+    // doesn't re-fetch it from Firestore before it can start loading the photo.
+    if (initialProfile) {
+      queryClient.setQueryData(PROFILE_QUERY_KEY, initialProfile);
+    }
+    return queryClient;
   });
 
   return (
@@ -40,7 +56,13 @@ const ClientThemeProvider = ({ children }: { children: ReactNode }) => {
 };
 
 // The main Providers component that wraps the entire app
-export const Providers = ({ children }: { children: ReactNode }) => {
+export const Providers = ({
+  children,
+  initialProfile,
+}: {
+  children: ReactNode;
+  initialProfile?: ProfileConfig | null;
+}) => {
   const [isClient, setIsClient] = useState(false);
 
   // 🛠️ **Fix #1: Hydration Issue**
@@ -59,7 +81,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
         {/* 🛠️ **Fix #2: Circular Dependency Issue** */}
         {/* We wrap `ClientThemeProvider` inside `<Provider>` to prevent `useAppTheme()` from 
           accessing the Redux store before it's available */}
-        <QueryProvider>
+        <QueryProvider initialProfile={initialProfile}>
           <ClientThemeProvider>{children}</ClientThemeProvider>
         </QueryProvider>
       </Provider>

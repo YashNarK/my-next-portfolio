@@ -10,6 +10,27 @@ function createImage(url: string): Promise<HTMLImageElement> {
   });
 }
 
+/**
+ * Produces a tiny base64 JPEG (LQIP) of the same crop, small enough to embed
+ * directly in a Firestore document (~0.5–1KB). Painted as the `blurDataURL`
+ * behind the real photo so the profile circle is filled the instant the page
+ * renders, with no additional network request.
+ */
+export async function getCroppedBlurDataUrl(
+  imageSrc: string,
+  pixelCrop: Area,
+  size = 16,
+  quality = 0.5,
+): Promise<string> {
+  const blob = await getCroppedImg(imageSrc, pixelCrop, size, quality);
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = () => reject(new Error("Failed to read blur placeholder"));
+    reader.readAsDataURL(blob);
+  });
+}
+
 export async function getCroppedImg(
   imageSrc: string,
   pixelCrop: Area,
