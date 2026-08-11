@@ -5,8 +5,10 @@ import {
   addNote,
   deleteNote,
   getAllNotes,
+  setNotesCategory,
   updateNote,
 } from "@/lib/firebase/notes-crud";
+import { assignableCategories } from "@/lib/notes";
 import {
   Autocomplete,
   Box,
@@ -37,17 +39,7 @@ export default function AdminNotesPage() {
 
   // Existing categories power the combobox, so related notes keep landing
   // under the same label instead of drifting into near-duplicate spellings.
-  // Only real ones: "Uncategorized" is a display bucket for notes that have
-  // no category, never a category to assign.
-  const categories = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          notes.map((note) => note.category?.trim()).filter((c): c is string => !!c),
-        ),
-      ).sort((a, b) => a.localeCompare(b)),
-    [notes],
-  );
+  const categories = useMemo(() => assignableCategories(notes), [notes]);
 
   useEffect(() => {
     loadNotes();
@@ -117,6 +109,13 @@ export default function AdminNotesPage() {
     setEditingId(null);
   }
 
+  // Errors are deliberately not swallowed here — NotesList surfaces them next
+  // to the selection, where the user can see which notes were being changed.
+  async function bulkSetCategory(ids: string[], category: string) {
+    await setNotesCategory(ids, category);
+    await loadNotes();
+  }
+
   return (
     <Paper
       elevation={3}
@@ -153,7 +152,9 @@ export default function AdminNotesPage() {
                 freeSolo
                 fullWidth
                 options={categories}
-                value={formData.category ?? ""}
+                // inputValue rather than value, so typing narrows the
+                // suggestions instead of listing every category
+                inputValue={formData.category ?? ""}
                 onInputChange={(_, value) =>
                   setFormData((prev) => ({ ...prev, category: value }))
                 }
@@ -199,6 +200,7 @@ export default function AdminNotesPage() {
           notes={notes}
           startEdit={startEdit}
           handleDelete={handleDelete}
+          bulkSetCategory={bulkSetCategory}
         />
       </Container>
     </Paper>

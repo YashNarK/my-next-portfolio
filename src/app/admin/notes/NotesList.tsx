@@ -1,8 +1,11 @@
 "use client";
 
 import {
+  Alert,
+  Autocomplete,
   Box,
   Button,
+  Checkbox,
   Chip,
   Divider,
   IconButton,
@@ -15,7 +18,13 @@ import {
 } from "@mui/material";
 import { useMemo, useState } from "react";
 import { INote } from "../../../../data/data.type";
-import { noteCategory, noteFileName, noteToPlainText } from "@/lib/notes";
+import {
+  assignableCategories,
+  noteCategory,
+  noteFileName,
+  noteToPlainText,
+  UNCATEGORIZED,
+} from "@/lib/notes";
 
 type StoredNote = INote & { id: string };
 
@@ -23,14 +32,25 @@ interface NotesListProps {
   notes: StoredNote[];
   startEdit: (note: StoredNote) => void;
   handleDelete: (id: string) => void;
+  /** Applies a category to many notes at once; `""` clears it. */
+  bulkSetCategory: (ids: string[], category: string) => Promise<void>;
 }
 
 const ALL = "All";
 
-const NotesList = ({ notes, startEdit, handleDelete }: NotesListProps) => {
+const NotesList = ({
+  notes,
+  startEdit,
+  handleDelete,
+  bulkSetCategory,
+}: NotesListProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState(ALL);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [bulkCategory, setBulkCategory] = useState("");
+  const [bulkPending, setBulkPending] = useState(false);
+  const [bulkError, setBulkError] = useState<string | null>(null);
 
   const categories = useMemo(
     () => [
@@ -41,6 +61,10 @@ const NotesList = ({ notes, startEdit, handleDelete }: NotesListProps) => {
     ],
     [notes],
   );
+
+  // Suggestions for the bulk combobox: real categories only, so retagging
+  // reuses an existing label instead of inventing a variant spelling.
+  const assignable = useMemo(() => assignableCategories(notes), [notes]);
 
   const filteredNotes = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
@@ -66,6 +90,53 @@ const NotesList = ({ notes, startEdit, handleDelete }: NotesListProps) => {
     }
     return Array.from(map.entries()).sort(([a], [b]) => a.localeCompare(b));
   }, [filteredNotes]);
+
+  // Selection is derived against the current notes rather than synced to them,
+  // so ids left behind by a delete or a reload can never linger in a bulk write.
+  const selection = useMemo(() => {
+    const live = new Set(notes.map((note) => note.id));
+    return selectedIds.filter((id) => live.has(id));
+  }, [selectedIds, notes]);
+
+  const selected = useMemo(() => new Set(selection), [selection]);
+  const shownSelectedCount = filteredNotes.filter((note) =>
+    selected.has(note.id),
+  ).length;
+  const allShownSelected =
+    filteredNotes.length > 0 && shownSelectedCount === filteredNotes.length;
+
+  function toggleNote(id: string) {
+    setSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+  }
+
+  /** Select-all acts on what is on screen, never on notes hidden by a filter. */
+  function toggleAllShown() {
+    const shownIds = filteredNotes.map((note) => note.id);
+    setSelectedIds((prev) =>
+      allShownSelected
+        ? prev.filter((id) => !shownIds.includes(id))
+        : Array.from(new Set([...prev, ...shownIds])),
+    );
+  }
+
+  async function applyBulkCategory(next: string) {
+    if (!selection.length) return;
+    setBulkPending(true);
+    setBulkError(null);
+    try {
+      await bulkSetCategory(selection, next);
+      setSelectedIds([]);
+      setBulkCategory("");
+    } catch (error) {
+      setBulkError(
+        error instanceof Error ? error.message : "Could not update the notes.",
+      );
+    } finally {
+      setBulkPending(false);
+    }
+  }
 
   async function handleCopy(note: StoredNote) {
     await navigator.clipboard.writeText(note.content);
@@ -147,6 +218,108 @@ const NotesList = ({ notes, startEdit, handleDelete }: NotesListProps) => {
         ))}
       </Stack>
 
+      <Paper
+        variant="outlined"
+        sx={{
+          p: 1.5,
+          mb: 3,
+          borderRadius: 2,
+          // lit up only while a selection is live, so the bar reads as an
+          // active mode rather than permanent chrome
+          bgcolor: selection.length ? "action.selected" : "transparent",
+        }}
+      >
+        <Stack
+          direction={{ xs: "column", md: "row" }}
+          spacing={1.5}
+          alignItems={{ md: "center" }}
+        >
+          <Stack direction="row" spacing={0.5} alignItems="center">
+            <Checkbox
+              size="small"
+              checked={allShownSelected}
+              indeterminate={shownSelectedCount > 0 && !allShownSelected}
+              onChange={toggleAllShown}
+              disabled={filteredNotes.length === 0 || bulkPending}
+              slotProps={{ input: { "aria-label": "Select all shown notes" } }}
+            />
+            <Typography variant="body2" color="text.secondary">
+              {selection.length
+                ? `${selection.length} selected`
+                : "Select notes to categorize"}
+            </Typography>
+          </Stack>
+
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={1}
+            alignItems={{ sm: "center" }}
+            sx={{ flex: 1 }}
+          >
+            <Autocomplete
+              freeSolo
+              size="small"
+              options={assignable}
+              // inputValue, not value: a freeSolo combobox whose `value`
+              // always equals its text makes MUI skip option filtering, so
+              // typing would list every category instead of narrowing.
+              inputValue={bulkCategory}
+              onInputChange={(_, value) => setBulkCategory(value)}
+              disabled={!selection.length || bulkPending}
+              sx={{ minWidth: 200, flex: 1 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Category for selected"
+                  placeholder="Snippets"
+                />
+              )}
+            />
+            <Button
+              variant="contained"
+              size="small"
+              onClick={() => applyBulkCategory(bulkCategory.trim())}
+              disabled={
+                !selection.length || !bulkCategory.trim() || bulkPending
+              }
+            >
+              {bulkPending ? "Working…" : "Apply"}
+            </Button>
+            <Tooltip
+              title={`Remove the category from the selected notes — they move to "${UNCATEGORIZED}"`}
+            >
+              {/* span keeps the tooltip alive while the button is disabled */}
+              <span>
+                <Button
+                  variant="outlined"
+                  color="warning"
+                  size="small"
+                  onClick={() => applyBulkCategory("")}
+                  disabled={!selection.length || bulkPending}
+                >
+                  Clear category
+                </Button>
+              </span>
+            </Tooltip>
+            {selection.length > 0 && (
+              <Button
+                size="small"
+                onClick={() => setSelectedIds([])}
+                disabled={bulkPending}
+              >
+                Deselect
+              </Button>
+            )}
+          </Stack>
+        </Stack>
+
+        {bulkError && (
+          <Alert severity="error" sx={{ mt: 1.5 }} onClose={() => setBulkError(null)}>
+            {bulkError}
+          </Alert>
+        )}
+      </Paper>
+
       {filteredNotes.length === 0 && (
         <Typography color="text.secondary" textAlign="center" py={4}>
           No notes found.
@@ -170,6 +343,8 @@ const NotesList = ({ notes, startEdit, handleDelete }: NotesListProps) => {
                     p: 2,
                     borderRadius: 3,
                     backgroundColor: "background.paper",
+                    outline: selected.has(note.id) ? "2px solid" : "none",
+                    outlineColor: "primary.main",
                     "&:hover": {
                       boxShadow: 6,
                       transform: "scale(1.005)",
@@ -185,6 +360,16 @@ const NotesList = ({ notes, startEdit, handleDelete }: NotesListProps) => {
                     gap={1}
                     mb={1}
                   >
+                    <Checkbox
+                      size="small"
+                      checked={selected.has(note.id)}
+                      onChange={() => toggleNote(note.id)}
+                      disabled={bulkPending}
+                      sx={{ mt: -0.5, ml: -1 }}
+                      slotProps={{
+                        input: { "aria-label": `Select ${note.title}` },
+                      }}
+                    />
                     <Typography
                       variant="h6"
                       sx={{ wordBreak: "break-word", flex: 1 }}

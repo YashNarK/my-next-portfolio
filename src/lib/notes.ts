@@ -20,6 +20,24 @@ export function noteCategory(note: Pick<INote, "category">): string {
 }
 
 /**
+ * The categories that actually exist on notes, sorted, for the comboboxes
+ * that assign one. Excludes the `UNCATEGORIZED` bucket on purpose: that label
+ * is how a missing category is displayed, never a value to write to a note —
+ * clearing the category is what puts a note back in that bucket.
+ */
+export function assignableCategories(
+  notes: Pick<INote, "category">[],
+): string[] {
+  return Array.from(
+    new Set(
+      notes
+        .map((note) => note.category?.trim())
+        .filter((category): category is string => !!category),
+    ),
+  ).sort((a, b) => a.localeCompare(b));
+}
+
+/**
  * Turns a note title into the `<title>.txt` filename it downloads as.
  * Spaces and casing are kept — this is a human-facing filename, not a slug —
  * but anything a filesystem or a Content-Disposition header would choke on
