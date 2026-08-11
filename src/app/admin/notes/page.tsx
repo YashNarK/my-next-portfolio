@@ -8,6 +8,7 @@ import {
   updateNote,
 } from "@/lib/firebase/notes-crud";
 import {
+  Autocomplete,
   Box,
   Button,
   Container,
@@ -16,13 +17,14 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { INote } from "../../../../data/data.type";
 import NotesList from "./NotesList";
 
 const emptyNote: INote = {
   title: "",
   content: "",
+  category: "",
   createdAt: "",
   updatedAt: "",
 };
@@ -32,6 +34,20 @@ export default function AdminNotesPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<INote>(emptyNote);
   const theme = useAppTheme();
+
+  // Existing categories power the combobox, so related notes keep landing
+  // under the same label instead of drifting into near-duplicate spellings.
+  // Only real ones: "Uncategorized" is a display bucket for notes that have
+  // no category, never a category to assign.
+  const categories = useMemo(
+    () =>
+      Array.from(
+        new Set(
+          notes.map((note) => note.category?.trim()).filter((c): c is string => !!c),
+        ),
+      ).sort((a, b) => a.localeCompare(b)),
+    [notes],
+  );
 
   useEffect(() => {
     loadNotes();
@@ -56,7 +72,7 @@ export default function AdminNotesPage() {
 
   function startEdit(note: INote & { id: string }) {
     setEditingId(note.id);
-    setFormData({ ...note });
+    setFormData({ ...note, category: note.category ?? "" });
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -70,17 +86,22 @@ export default function AdminNotesPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     const now = new Date().toISOString();
+    // Stored empty rather than as "Uncategorized" — the bucket label is a
+    // presentation detail, not something to write into every document.
+    const category = formData.category?.trim() ?? "";
 
     if (editingId) {
       await updateNote(editingId, {
         title: formData.title,
         content: formData.content,
+        category,
         updatedAt: now,
       });
     } else {
       await addNote({
         title: formData.title,
         content: formData.content,
+        category,
         createdAt: now,
         updatedAt: now,
       });
@@ -111,21 +132,42 @@ export default function AdminNotesPage() {
           Notes Clipboard
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
-          Save and retrieve text notes. Use the copy button to instantly copy
-          content to clipboard.
+          Save and retrieve text notes. Copy the content to the clipboard, or
+          download a note as <code>&lt;title&gt;.txt</code>. Group related
+          notes with a category to keep the list manageable.
         </Typography>
 
         <Box component="form" onSubmit={handleSubmit} sx={{ mb: 6 }}>
           <Stack spacing={2}>
-            <TextField
-              fullWidth
-              label="Title"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
-              required
-              placeholder="Short label to identify this note"
-            />
+            <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+              <TextField
+                fullWidth
+                label="Title"
+                name="title"
+                value={formData.title}
+                onChange={handleChange}
+                required
+                placeholder="Short label to identify this note"
+              />
+              <Autocomplete
+                freeSolo
+                fullWidth
+                options={categories}
+                value={formData.category ?? ""}
+                onInputChange={(_, value) =>
+                  setFormData((prev) => ({ ...prev, category: value }))
+                }
+                sx={{ maxWidth: { sm: 260 } }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Category"
+                    placeholder="Snippets"
+                  />
+                )}
+              />
+            </Stack>
+
             <TextField
               fullWidth
               label="Content"

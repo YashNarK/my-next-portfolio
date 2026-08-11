@@ -17,6 +17,9 @@ declare namespace NodeJS {
       NEXT_PUBLIC_ENCRYPT_SECRET: string;
       ENCRYPT_SECRET: string;
       NEXT_PUBLIC_ADMIN_EMAIL: string;
+      // Shared secret for the read-only notes REST API (/api/notes).
+      // Unset means the endpoint returns 503 rather than falling open.
+      NOTES_API_TOKEN: string;
     }
   }
   

@@ -6,6 +6,7 @@ import {
   initializeApp
 } from "firebase-admin/app";
 import { getAuth } from "firebase-admin/auth";
+import { getFirestore } from "firebase-admin/firestore";
 
 // Make sure only one admin app is initialized
 const adminApp = getApps().length
@@ -19,3 +20,8 @@ const adminApp = getApps().length
     });
 
 export const adminAuth = getAuth(adminApp);
+
+// Server-side Firestore. Used by the notes REST API, which authenticates its
+// callers with a static bearer token rather than a Firebase session, so it has
+// no `request.auth` for security rules to work with and must read as admin.
+export const adminDb = getFirestore(adminApp);

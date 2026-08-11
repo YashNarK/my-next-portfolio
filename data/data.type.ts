@@ -89,9 +89,14 @@ interface IExperience {
   order?: number;
 }
 
+// A scratch note kept in the admin clipboard. `category` is a free-form label
+// (e.g. "Snippets", "Credentials") used only to group and filter the list —
+// it is optional so notes saved before categories existed keep working, and
+// anything without one is surfaced as "Uncategorized".
 interface INote {
   title: string;
   content: string;
+  category?: string;
   createdAt: string;
   updatedAt: string;
 }
