@@ -12,6 +12,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
+import CopyableField from "./CopyableField";
+import DownloadImageButton from "./DownloadImageButton";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -188,31 +190,39 @@ const Credentials = () => {
                     sx={{ background: "transparent" }}
                   >
                     {typeof cert.image === "string" && (
-                      <Image
-                        src={cert.image}
-                        alt={cert.title}
-                        width={500}
-                        height={300}
-                        unoptimized
-                        style={{
-                          width: "100%",
-                          height: "300px",
-                          maxHeight: "300px",
-                          objectFit: "contain",
-                          borderRadius: "10px",
-                          marginBottom: "1rem",
-                        }}
-                      />
+                      <Box sx={{ position: "relative", width: "100%" }}>
+                        <DownloadImageButton
+                          url={cert.image}
+                          title={cert.title}
+                        />
+                        <Image
+                          src={cert.image}
+                          alt={cert.title}
+                          width={500}
+                          height={300}
+                          unoptimized
+                          style={{
+                            width: "100%",
+                            height: "300px",
+                            maxHeight: "300px",
+                            objectFit: "contain",
+                            borderRadius: "10px",
+                            marginBottom: "1rem",
+                          }}
+                        />
+                      </Box>
                     )}
-                    <Typography
-                      variant="codeLike"
-                      sx={{
-                        fontSize: "1.2rem",
-                        textAlign: "center",
-                      }}
-                    >
-                      {cert.title}
-                    </Typography>
+                    <CopyableField value={cert.title} label="title">
+                      <Typography
+                        variant="codeLike"
+                        sx={{
+                          fontSize: "1.2rem",
+                          textAlign: "center",
+                        }}
+                      >
+                        {cert.title}
+                      </Typography>
+                    </CopyableField>
                   </Box>
                 </SwiperSlide>
               ))}
@@ -225,15 +235,22 @@ const Credentials = () => {
             width={{ xs: "100%", md: "50%" }}
             p={3}
           >
-            <Typography
-              variant="professional"
-              sx={{
-                fontSize: { xs: "0.95rem", md: "1rem" },
-                textAlign: "justify",
-              }}
+            <CopyableField
+              value={certificates[selectedCertificate].description}
+              label="description"
+              block
             >
-              {certificates[selectedCertificate].description}
-            </Typography>
+              <Typography
+                variant="professional"
+                component="span"
+                sx={{
+                  fontSize: { xs: "0.95rem", md: "1rem" },
+                  textAlign: "justify",
+                }}
+              >
+                {certificates[selectedCertificate].description}
+              </Typography>
+            </CopyableField>
             <Stack
               direction={{ xs: "column", sm: "row" }}
               sx={{
@@ -256,25 +273,45 @@ const Credentials = () => {
                 >
                   Credential ID:
                 </Typography>
-                <Typography
-                  variant="professional"
-                  sx={{ fontSize: "0.9rem", display: "block", my: 3 }}
+                <CopyableField
+                  value={certificates[selectedCertificate].credentialID}
+                  label="credential ID"
                 >
-                  {certificates[selectedCertificate].credentialID}
-                </Typography>
+                  <Typography
+                    variant="professional"
+                    sx={{ fontSize: "0.9rem", my: 3 }}
+                  >
+                    {certificates[selectedCertificate].credentialID}
+                  </Typography>
+                </CopyableField>
               </Box>
-              <Button
-                variant="contained"
-                color="success"
-                LinkComponent={"a"}
-                href={certificates[selectedCertificate].link}
-                target="_blank"
-                sx={{
-                  height: "fit-content",
-                }}
+              <Stack
+                direction="row"
+                spacing={1.5}
+                alignItems="center"
+                sx={{ height: "fit-content" }}
               >
-                View Credential
-              </Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  LinkComponent={"a"}
+                  href={certificates[selectedCertificate].link}
+                  target="_blank"
+                  sx={{
+                    height: "fit-content",
+                  }}
+                >
+                  View Credential
+                </Button>
+                <CopyableField
+                  value={certificates[selectedCertificate].link}
+                  label="credential URL"
+                >
+                  <Typography variant="professional" sx={{ fontSize: "0.85rem" }}>
+                    Copy link
+                  </Typography>
+                </CopyableField>
+              </Stack>
             </Stack>
             <Stack
               direction={{ xs: "column", sm: "row" }}
