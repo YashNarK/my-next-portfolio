@@ -13,13 +13,12 @@ import {
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import CopyableField from "./CopyableField";
-import DownloadImageButton from "./DownloadImageButton";
+import DownloadableBadgeImage from "./DownloadableBadgeImage";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Image from "next/image";
 
 const Credentials = () => {
   const [selectedCertificate, setSelectedCertificate] = useState(0);
@@ -190,29 +189,12 @@ const Credentials = () => {
                     sx={{ background: "transparent" }}
                   >
                     {typeof cert.image === "string" && (
-                      <Box sx={{ position: "relative", width: "100%" }}>
-                        <DownloadImageButton
-                          url={cert.image}
-                          title={cert.title}
-                        />
-                        <Image
-                          src={cert.image}
-                          alt={cert.title}
-                          width={500}
-                          height={300}
-                          unoptimized
-                          style={{
-                            width: "100%",
-                            height: "300px",
-                            maxHeight: "300px",
-                            objectFit: "contain",
-                            borderRadius: "10px",
-                            marginBottom: "1rem",
-                          }}
-                        />
-                      </Box>
+                      <DownloadableBadgeImage
+                        src={cert.image}
+                        title={cert.title}
+                      />
                     )}
-                    <CopyableField value={cert.title} label="title">
+                    <CopyableField value={cert.title}>
                       <Typography
                         variant="codeLike"
                         sx={{
@@ -237,7 +219,6 @@ const Credentials = () => {
           >
             <CopyableField
               value={certificates[selectedCertificate].description}
-              label="description"
               block
             >
               <Typography
@@ -267,15 +248,19 @@ const Credentials = () => {
               mt={3}
             >
               <Box>
-                <Typography
-                  variant="professional"
-                  sx={{ fontSize: "0.9rem", display: "block", my: 3 }}
+                <CopyableField
+                  value={certificates[selectedCertificate].link}
+                  block
                 >
-                  Credential ID:
-                </Typography>
+                  <Typography
+                    variant="professional"
+                    sx={{ fontSize: "0.9rem", display: "block", my: 3 }}
+                  >
+                    Credential ID:
+                  </Typography>
+                </CopyableField>
                 <CopyableField
                   value={certificates[selectedCertificate].credentialID}
-                  label="credential ID"
                 >
                   <Typography
                     variant="professional"
@@ -285,33 +270,18 @@ const Credentials = () => {
                   </Typography>
                 </CopyableField>
               </Box>
-              <Stack
-                direction="row"
-                spacing={1.5}
-                alignItems="center"
-                sx={{ height: "fit-content" }}
+              <Button
+                variant="contained"
+                color="success"
+                LinkComponent={"a"}
+                href={certificates[selectedCertificate].link}
+                target="_blank"
+                sx={{
+                  height: "fit-content",
+                }}
               >
-                <Button
-                  variant="contained"
-                  color="success"
-                  LinkComponent={"a"}
-                  href={certificates[selectedCertificate].link}
-                  target="_blank"
-                  sx={{
-                    height: "fit-content",
-                  }}
-                >
-                  View Credential
-                </Button>
-                <CopyableField
-                  value={certificates[selectedCertificate].link}
-                  label="credential URL"
-                >
-                  <Typography variant="professional" sx={{ fontSize: "0.85rem" }}>
-                    Copy link
-                  </Typography>
-                </CopyableField>
-              </Stack>
+                View Credential
+              </Button>
             </Stack>
             <Stack
               direction={{ xs: "column", sm: "row" }}
