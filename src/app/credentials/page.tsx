@@ -289,9 +289,13 @@ const Credentials = () => {
               spacing={2}
               mt={3}
             >
-              <Typography variant="professional" sx={{ fontSize: "0.9rem" }}>
-                Issued by: {certificates[selectedCertificate].issuedBy}
-              </Typography>
+              <CopyableField
+                value={certificates[selectedCertificate].issuedBy}
+              >
+                <Typography variant="professional" sx={{ fontSize: "0.9rem" }}>
+                  Issued by: {certificates[selectedCertificate].issuedBy}
+                </Typography>
+              </CopyableField>
               <Typography variant="professional" sx={{ fontSize: "0.9rem" }}>
                 Issued at:{" "}
                 {localeDate(

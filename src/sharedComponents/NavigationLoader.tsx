@@ -30,6 +30,19 @@ export default function NavigationLoader() {
       const href = anchor.getAttribute("href");
       if (!href) return;
 
+      // Not every anchor click is a route change, and the loader only clears
+      // when `pathname` changes — so anything that leaves the current page
+      // where it is would hang the backdrop open forever.
+      //   - `download` links save a file instead of navigating
+      //   - blob:/data: hrefs are generated payloads, never routes
+      //   - target="_blank" opens elsewhere and leaves this document alone
+      if (
+        anchor.hasAttribute("download") ||
+        /^(blob:|data:|javascript:)/i.test(href) ||
+        anchor.target === "_blank"
+      )
+        return;
+
       const isSamePageHashNavigation = (() => {
         try {
           const url = new URL(href, window.location.origin);
